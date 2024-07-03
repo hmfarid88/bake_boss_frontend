@@ -42,8 +42,6 @@ const Page = () => {
     useEffect(() => {
         const filtered = allProducts.filter(product =>
             product.date.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-            product.supplierName.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-            product.supplierInvoice.toLowerCase().includes(filterCriteria.toLowerCase()) ||
             product.materialsName.toLowerCase().includes(filterCriteria.toLowerCase())
         );
         setFilteredProducts(filtered);
@@ -56,11 +54,15 @@ const Page = () => {
         return total + product.averageRate * product.remainingQty;
     }, 0);
 
+    const totalQty = filteredProducts.reduce((total, product) => {
+        return total + product.remainingQty;
+    }, 0);
+
     return (
         <div className="container-2xl">
             <div className="flex w-full min-h-[calc(100vh-228px)] p-4 items-center justify-center">
                 <div className="overflow-x-auto">
-                    <div className="flex justify-between p-5">
+                    <div className="flex justify-between pl-5 pr-5">
                         <label className="input input-bordered flex max-w-xs  items-center gap-2">
                             <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-4 w-4 opacity-70">
@@ -69,14 +71,12 @@ const Page = () => {
                         </label>
                         <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
                     </div>
-                    <div ref={contentToPrint} className="flex">
+                    <div ref={contentToPrint} className="flex-1 p-5">
                         <table className="table">
                             <thead>
                                 <tr>
                                     <th>SN</th>
                                     <th>DATE</th>
-                                    <th>SUPPLIER NAME</th>
-                                    <th>SUPPLIER INVOICE</th>
                                     <th>MATERIALS NAME</th>
                                     <th>PURCHASE PRICE</th>
                                     <th>QUANTITY</th>
@@ -88,8 +88,6 @@ const Page = () => {
                                     <tr key={index}>
                                         <td>{index + 1}</td>
                                         <td>{product.date}</td>
-                                        <td>{product.supplierName}</td>
-                                        <td>{product.supplierInvoice}</td>
                                         <td>{product.materialsName}</td>
                                         <td>{Number(product.averageRate.toFixed(2)).toLocaleString('en-IN')}</td>
                                         <td>{product.remainingQty.toLocaleString('en-IN')}</td>
@@ -99,8 +97,9 @@ const Page = () => {
                             </tbody>
                             <tfoot>
                                 <tr className="font-semibold text-lg">
-                                    <td colSpan={6}></td>
+                                    <td colSpan={3}></td>
                                     <td>TOTAL</td>
+                                    <td>{totalQty.toLocaleString('en-IN')}</td>
                                     <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
                                 </tr>
                             </tfoot>
