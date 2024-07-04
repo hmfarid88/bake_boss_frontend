@@ -30,7 +30,7 @@ const Login = () => {
         setPending(true);
 
         try {
-            const response = await fetch(`/api/proxy?path=/auth/userLogin?username=${username}&password=${password}`);
+            const response = await fetch(`${apiBaseUrl}/auth/userLogin?username=${username}&password=${password}`);
             const data = await response.json();
             if (!response.ok) {
                 toast.error(data.message);
