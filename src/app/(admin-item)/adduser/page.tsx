@@ -85,7 +85,7 @@ const Page = () => {
                     </form>
                 </div>
             </div>
-            <ToastContainer theme='dark' />
+            <ToastContainer autoClose={1000} theme='dark' />
         </div>
     )
 }

@@ -29,7 +29,7 @@ const Header: React.FC = () => {
   return (
     <div className="flex flex-col md:flex-row navbar bg-base-100 sticky top-0 z-40">
       <div className="flex-1">
-        <a className="btn btn-ghost uppercase text-xl">BAKE BOSS | {username ? username.username : 'Guest'}</a>
+        <a className="btn btn-ghost uppercase text-xl">{username ? username.username : 'Guest'}</a>
       </div>
 
       <div className="flex-none gap-2">

@@ -150,6 +150,10 @@ const Page: React.FC = () => {
     remainingQty: number,
     materialsName: string
   }
+  interface MarginSetup {
+    dpMargin: number;
+    rpMargin: number;
+  }
   const [items, setItems] = useState<items[]>([]);
   useEffect(() => {
     fetch(`${apiBaseUrl}/api/getItemList?username=${username}&itemName=${productName}`)
@@ -162,17 +166,50 @@ const Page: React.FC = () => {
       });
   }, [apiBaseUrl, productName, username]);
 
+  const [marginSetup, setMarginSetup] = useState<MarginSetup | null>(null);
+  useEffect(() => {
+    const fetchMarginSetup = async () => {
+      try {
+        const response = await fetch(`${apiBaseUrl}/paymentApi/getMargin/${username}`);
+        if (response.ok) {
+          const data = await response.json();
+          setMarginSetup(data);
+        } else {
+          toast.error("Failed to fetch margin setup.");
+        }
+      } catch (error) {
+        toast.error("Error fetching margin setup.");
+      }
+    };
 
+    if (username !== 'Guest') {
+      fetchMarginSetup();
+    }
+  }, [username, apiBaseUrl]);
 
   const calculateCost = () => {
     return items.reduce((cost, item) => cost + (item.averageRate * item.qty), 0);
   };
-  const calculateDp = () => {
-    return items.reduce((dp, item) => dp + ((item.averageRate * item.qty)+((item.averageRate * item.qty * 5) / 100)), 0);
+  // const calculateDp = () => {
+  //   return items.reduce((dp, item) => dp + ((item.averageRate * item.qty)+((item.averageRate * item.qty * marginSetup?.dpMargin) / 100)), 0);
 
+  // };
+  const calculateDp = () => {
+    if (!marginSetup) {
+      return 0;
+    }
+
+    return items.reduce((dp, item) =>
+      dp + ((item.averageRate * item.qty) + ((item.averageRate * item.qty * marginSetup.dpMargin) / 100)), 0
+    );
   };
+
   const calculateRp = () => {
-    return items.reduce((rp, item) => rp + ((item.averageRate * item.qty)+((item.averageRate * item.qty * 7) / 100)), 0);
+    if (!marginSetup) {
+      return 0;
+    }
+    return items.reduce((rp, item) =>
+      rp + ((item.averageRate * item.qty) + ((item.averageRate * item.qty * marginSetup.rpMargin) / 100)), 0);
   };
 
   const pid = uid();
@@ -656,7 +693,7 @@ const Page: React.FC = () => {
                   <Select className="text-black" name="pname" onChange={(selectedOption: any) => setProductName(selectedOption.value)} options={itemOption} required />
                   <p className="text-xs pt-2">Cost: {calculateCost().toFixed(2)} | Dp: {calculateDp().toFixed(2)} | Rp: {calculateRp().toFixed(2)}</p>
                 </label>
-            
+
                 <label className="form-control w-full max-w-xs">
                   <div className="label">
                     <span className="label-text-alt">PRODUCT QTY</span>
@@ -715,7 +752,7 @@ const Page: React.FC = () => {
           </div>
         </div>
       </div>
-      <ToastContainer autoClose={2000} theme="dark" />
+      <ToastContainer autoClose={1000} theme="dark" />
     </div>
   )
 }
