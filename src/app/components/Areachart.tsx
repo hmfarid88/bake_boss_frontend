@@ -5,26 +5,26 @@ import { AreaChart, Area, YAxis, XAxis, CartesianGrid, Tooltip, ResponsiveContai
 
   const data = [
     {
-      "name": "Mobile",
+      "name": "Pizza",
       "total": 40000,
        },
     {
-      "name": "Television",
+      "name": "Burger",
       "total": 60000,
       
     },
     {
-      "name": "Accessories",
+      "name": "Cake",
       "total": 50000,
       
     },
     {
-      "name": "Refregerator",
+      "name": "Sweets",
       "total": 70000,
      
     },
     {
-      "name": "Oven",
+      "name": "Popcorn",
       "total": 50000,
       
     },
