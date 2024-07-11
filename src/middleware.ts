@@ -45,8 +45,10 @@ import { NextRequest, NextResponse } from 'next/server';
 import { decrypt } from '@/app/lib/auth';
 import { cookies } from 'next/headers';
 
-const adminProtectedRoutes = ['/admin-dashboard'];
-const userProtectedRoutes = ['/dashboard'];
+// const adminProtectedRoutes = ['/admin-dashboard'];
+// const userProtectedRoutes = ['/dashboard'];
+const adminProtectedRoutes = [''];
+const userProtectedRoutes = [''];
 const publicRoutes = ['/'];
 
 export default async function middleware(req: NextRequest) {
