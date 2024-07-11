@@ -190,10 +190,7 @@ const Page: React.FC = () => {
   const calculateCost = () => {
     return items.reduce((cost, item) => cost + (item.averageRate * item.qty), 0);
   };
-  // const calculateDp = () => {
-  //   return items.reduce((dp, item) => dp + ((item.averageRate * item.qty)+((item.averageRate * item.qty * marginSetup?.dpMargin) / 100)), 0);
-
-  // };
+  
   const calculateDp = () => {
     if (!marginSetup) {
       return 0;

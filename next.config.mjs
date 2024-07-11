@@ -1,21 +1,21 @@
-// /** @type {import('next').NextConfig} */
+/** @type {import('next').NextConfig} */
 
-// const nextConfig = {
-//     images:{
-//         remotePatterns:[
-//             {
-//                 protocol:"https",
-//                 hostname:"lh3.googleusercontent.com"
-//             }
-//         ]
-//     },
-//     experimental: {
-//         serverActions: {
-//           allowedOrigins: ['http://localhost:8080'],
-//         },
-//       },
+const nextConfig = {
+    images:{
+        remotePatterns:[
+            {
+                protocol:"https",
+                hostname:"lh3.googleusercontent.com"
+            }
+        ]
+    },
+    experimental: {
+        serverActions: {
+          allowedOrigins: ['http://localhost:8080/bake_boss_backend'],
+        },
+      },
 
-// };
+};
 
 
 
@@ -48,30 +48,30 @@
 // };
 
 // export default mdxConfig(nextConfig);
-import dotenv from 'dotenv';
-dotenv.config({
-    path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env',
-});
+// import dotenv from 'dotenv';
+// dotenv.config({
+//     path: process.env.NODE_ENV === 'production' ? '.env.production' : '.env',
+// });
 
-const allowedOrigins =
-    process.env.NODE_ENV === 'production'
-        ? ['http://64.227.161.25/bake_boss_backend']
-        : ['http://localhost:8080'];
+// const allowedOrigins =
+//     process.env.NODE_ENV === 'production'
+//         ? ['http://64.227.161.25/bake_boss_backend']
+//         : ['http://localhost:8080'];
 
-const nextConfig = {
-    images: {
-        remotePatterns: [
-            {
-                protocol: "https",
-                hostname: "lh3.googleusercontent.com"
-            }
-        ]
-    },
-    experimental: {
-        serverActions: {
-            allowedOrigins
-        }
-    }
-};
+// const nextConfig = {
+//     images: {
+//         remotePatterns: [
+//             {
+//                 protocol: "https",
+//                 hostname: "lh3.googleusercontent.com"
+//             }
+//         ]
+//     },
+//     experimental: {
+//         serverActions: {
+//             allowedOrigins
+//         }
+//     }
+// };
 
-export default nextConfig;
+// export default nextConfig;

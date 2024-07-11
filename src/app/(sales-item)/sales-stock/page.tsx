@@ -1,8 +1,9 @@
 'use client'
 import React, { useState, useEffect, useRef } from "react";
 import { useAppSelector } from "@/app/store";
-import { FcPrint } from "react-icons/fc";
+import { FcPlus, FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
+import Select from "react-select";
 
 type Product = {
   category: string;
@@ -26,6 +27,8 @@ const Page = () => {
   const [filterCriteria, setFilterCriteria] = useState('');
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
+
+const handleProductRateSubmit=()=>{}
 
   useEffect(() => {
     fetch(`${apiBaseUrl}/api/getProductStock?username=${username}`)
@@ -57,9 +60,55 @@ const Page = () => {
     return total + product.remainingQty;
   }, 0);
 
+  const [productOption, setProductOption] = useState([]);
+  useEffect(() => {
+          fetch(`${apiBaseUrl}/api/getMadeProducts?username=${username}`)
+        .then(response => response.json())
+        .then(data => {
+          const transformedData = data.map((madeItem: any) => ({
+            value: madeItem,
+            label: madeItem
+          }));
+          setProductOption(transformedData);
+             })
+        .catch(error => console.error('Error fetching products:', error));
+  
+  }, [apiBaseUrl, username]);
   return (
     <div className="container-2xl">
-      <div className="flex w-full min-h-[calc(100vh-228px)] p-4 items-center justify-center">
+      <div className="flex w-full min-h-screen p-4 items-center justify-center">
+      {/* <div className="flex w-full justify-end">
+        <div>
+          <a href="#my_modal_1" className="btn btn-circle btn-ghost"><FcPlus size={35} /></a>
+          <div className="modal sm:modal-middle" role="dialog" id="my_modal_1">
+            <div className="modal-box">
+              <h3 className="font-bold text-lg">ADD PRODUCT RATE</h3>
+
+              <div className="flex w-full items-center justify-center p-2">
+                <label className="form-control w-full max-w-xs">
+                  <div className="label">
+                    <span className="label-text-alt">Select Product</span>
+                  </div>
+                  <div className="flex items-center justify-between">
+                  <Select className="text-black" name="psupplier" onChange={(selectedOption: any) => setProductName(selectedOption.value)} options={productOption} />
+                  <input type="text" name="sinvoice" onChange={(e: any) => setProductValue(e.target.value)} placeholder="Type here" className="border rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" />
+                    <button onClick={handleProductRateSubmit} disabled={pending} className="btn btn-square btn-success">{pending ? "Adding..." : "ADD"}</button>
+                  </div>
+                </label>
+              </div>
+
+           
+              <div className="modal-action">
+                <a href="#" className="btn btn-square btn-ghost">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-10 h-10">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> */}
         <div className="overflow-x-auto">
           <div className="flex justify-between pl-5 pr-5">
             <label className="input input-bordered flex max-w-xs  items-center gap-2">
