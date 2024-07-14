@@ -65,7 +65,7 @@ const Invoice = () => {
                         <h1 className='tracking-widest font-bold text-sm md:text-xl'>INVOICE</h1>
                     </div>
                     <div className="flex flex-col w-full justify-end items-end">
-                        <h1 className='uppercase font-bold text-xs md:text-md'>BAKE BOSS (PRODUCTION)</h1>
+                        <h1 className='uppercase font-bold text-xs md:text-md'>AURORA (PRODUCTION)</h1>
                         <h4 className='font-serif text-xs md:text-md'>Jalkuri, Fatullah</h4>
                         <h4 className='font-serif text-xs md:text-md'>Narayanganj</h4>
                     </div>

@@ -3,14 +3,16 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAppSelector } from "@/app/store";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
+import { toast } from "react-toastify";
+import revalidate from "@/app/revalidate";
 
 type Product = {
+    date: string;
     category: string;
     productName: string;
     dpRate: number;
-    rpRate: number;
-    costPrice: number;
-    remainingQty: number;
+    productQty: number;
+    invoiceNo: string;
 };
 
 
@@ -18,6 +20,7 @@ const Page = () => {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
+    const [pending, setPending] = useState(false);
 
     const contentToPrint = useRef(null);
     const handlePrint = useReactToPrint({
@@ -27,21 +30,25 @@ const Page = () => {
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [allProducts, setAllProducts] = useState<Product[]>([]);
 
+
     useEffect(() => {
-        fetch(`${apiBaseUrl}/api/getProductStock?username=${username}`)
+
+        fetch(`${apiBaseUrl}/api/pendingSalesStock?customer=${username}`)
             .then(response => response.json())
             .then(data => {
                 setAllProducts(data);
                 setFilteredProducts(data);
             })
             .catch(error => console.error('Error fetching products:', error));
+
     }, [apiBaseUrl, username]);
 
 
     useEffect(() => {
         const filtered = allProducts.filter(product =>
             product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-            product.category.toLowerCase().includes(filterCriteria.toLowerCase())
+            product.category.toLowerCase().includes(filterCriteria.toLowerCase()) ||
+            product.date.toLowerCase().includes(filterCriteria.toLowerCase())
         );
         setFilteredProducts(filtered);
     }, [filterCriteria, allProducts]);
@@ -50,12 +57,51 @@ const Page = () => {
         setFilterCriteria(e.target.value);
     };
     const totalValue = filteredProducts.reduce((total, product) => {
-        return total + product.dpRate * product.remainingQty;
+        return total + product.dpRate * product.productQty;
     }, 0);
 
     const totalQty = filteredProducts.reduce((total, product) => {
-        return total + product.remainingQty;
+        return total + product.productQty;
     }, 0);
+
+    const confirmAndHandleProductAccept = (e: any) => {
+        e.preventDefault();
+        const isConfirmed = window.confirm("Are you sure you want to accept the products ?");
+        if (isConfirmed) {
+            handleProductAccept(e);
+        }
+    };
+
+    const handleProductAccept = async (e: any) => {
+        e.preventDefault();
+        if (allProducts.length === 0) {
+            toast.warning("Sorry, your product list is empty!");
+            return;
+        }
+        setPending(true);
+        try {
+            const response = await fetch(`${apiBaseUrl}/api/addSalesStock`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ customer: username }),
+            });
+
+            if (!response.ok) {
+                const error = await response.json();
+                toast.error(error.message);
+            } else {
+                toast.success("Products added successfully !");
+                revalidate();
+            }
+
+        } catch (error: any) {
+            toast.error(error.message)
+        } finally {
+            setPending(false);
+        }
+    };
 
     return (
         <div className="container-2xl">
@@ -76,11 +122,12 @@ const Page = () => {
                                 <thead>
                                     <tr>
                                         <th>SN</th>
+                                        <th>DATE</th>
+                                        <th>INVOICE NO</th>
                                         <th>CATEGORY</th>
                                         <th>PRODUCT NAME</th>
-                                        <th>PURCHASE PRICE</th>
-                                        <th>SALE PRICE</th>
-                                        <th>QUANTITY</th>
+                                        <th>PURCHASE RATE</th>
+                                        <th>QTY (KG/PS)</th>
                                         <th>SUB TOTAL</th>
                                     </tr>
                                 </thead>
@@ -88,18 +135,20 @@ const Page = () => {
                                     {filteredProducts?.map((product, index) => (
                                         <tr key={index}>
                                             <td>{index + 1}</td>
+                                            <td>{product.date}</td>
+                                            <td className="uppercase">{product.invoiceNo}</td>
                                             <td>{product.category}</td>
                                             <td>{product.productName}</td>
                                             <td>{product.dpRate}</td>
-                                            <td>00</td>
-                                            <td>{product.remainingQty.toLocaleString('en-IN')}</td>
-                                            <td>{Number((product.dpRate * product.remainingQty).toFixed(2)).toLocaleString('en-IN')}</td>
+
+                                            <td>{product.productQty.toLocaleString('en-IN')}</td>
+                                            <td>{Number((product.dpRate * product.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
                                         </tr>
                                     ))}
                                 </tbody>
                                 <tfoot>
                                     <tr className="font-semibold text-lg">
-                                        <td colSpan={4}></td>
+                                        <td colSpan={5}></td>
                                         <td>TOTAL</td>
                                         <td>{totalQty.toLocaleString('en-IN')}</td>
                                         <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
@@ -110,7 +159,7 @@ const Page = () => {
                     </div>
                 </div>
                 <div className="flex">
-                    <button className="btn btn-warning">ACCEPT PRODUCTS</button>
+                    <button onClick={confirmAndHandleProductAccept} className="btn btn-warning" disabled={pending} >{pending ? "Submitting..." : "ACCEPT PRODUCTS"}</button>
                 </div>
             </div>
         </div>

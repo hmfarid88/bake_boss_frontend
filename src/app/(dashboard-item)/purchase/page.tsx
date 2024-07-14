@@ -8,7 +8,7 @@ import { useAppDispatch, useAppSelector } from "@/app/store";
 import { addProducts, addProductMaterials, deleteProduct, deleteAllProducts } from "@/app/store/productSlice";
 import { addItems, deleteItem, deleteAllItems } from "@/app/store/makeItemSlice";
 import { addMaterials, deleteAllMaterials, deleteMaterials } from "@/app/store/materialSlice";
-import { ToastContainer, toast } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 
 const Page: React.FC = () => {
@@ -443,7 +443,7 @@ const Page: React.FC = () => {
   const [itemOption, setItemOption] = useState([]);
   useEffect(() => {
     if (shouldFetch) {
-      fetch(`${apiBaseUrl}/api/getMadeProducts?username=${username}`)
+      fetch(`${apiBaseUrl}/api/getMadeProducts`)
         .then(response => response.json())
         .then(data => {
           const transformedData = data.map((madeItem: any) => ({
@@ -455,14 +455,14 @@ const Page: React.FC = () => {
         })
         .catch(error => console.error('Error fetching products:', error));
     }
-  }, [shouldFetch, apiBaseUrl, username]);
+  }, [shouldFetch, apiBaseUrl]);
 
   return (
     <div className="container-2xl min-h-screen">
       <div className="flex w-full justify-end">
         <div>
-          <a href="#my_modal_1" className="btn btn-circle btn-ghost"><FcPlus size={35} /></a>
-          <div className="modal sm:modal-middle" role="dialog" id="my_modal_1">
+          <a href="#my_modal_2" className="btn btn-circle btn-ghost"><FcPlus size={35} /></a>
+          <div className="modal sm:modal-middle" role="dialog" id="my_modal_2">
             <div className="modal-box">
               <h3 className="font-bold text-lg">ADD ITEM</h3>
 
@@ -533,7 +533,7 @@ const Page: React.FC = () => {
                 </label>
                 <label className="form-control w-full max-w-xs">
                   <div className="label">
-                    <span className="label-text-alt">QTY (GRAM / PS)</span>
+                    <span className="label-text-alt">QTY (KG / PS)</span>
                   </div>
                   <input type="number" name="qty" value={qty} onChange={(e: any) => setQty(e.target.value)} placeholder="Type here" className="border rounded-md p-2 w-full max-w-xs h-[40px] bg-white text-black" required />
                 </label>
@@ -609,13 +609,13 @@ const Page: React.FC = () => {
                   </label>
                   <label className="form-control w-full max-w-xs">
                     <div className="label">
-                      <span className="label-text-alt">RATE (PER GRAM / PS)</span>
+                      <span className="label-text-alt">RATE (PER KG / PS)</span>
                     </div>
                     <input type="number" name="item" value={materialsRate} onChange={(e: any) => setMaterialsRate(e.target.value)} placeholder="Type here" className="border rounded-md p-2 w-full max-w-xs h-[40px] bg-white text-black" required />
                   </label>
                   <label className="form-control w-full max-w-xs">
                     <div className="label">
-                      <span className="label-text-alt">QTY (GRAM / PS)</span>
+                      <span className="label-text-alt">QTY (KG / PS)</span>
                     </div>
                     <input type="number" name="item" value={materialsQty} onChange={(e: any) => setMaterialsQty(e.target.value)} placeholder="Type here" className="border rounded-md p-2 w-full max-w-xs h-[40px] bg-white text-black" required />
                   </label>
@@ -749,7 +749,7 @@ const Page: React.FC = () => {
           </div>
         </div>
       </div>
-      <ToastContainer autoClose={1000} theme="dark" />
+  
     </div>
   )
 }

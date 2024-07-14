@@ -6,6 +6,7 @@ import 'react-date-picker/dist/DatePicker.css';
 import 'react-calendar/dist/Calendar.css';
 import { Providers } from "./providers";
 import dynamic from "next/dynamic";
+import { ToastContainer } from "react-toastify";
 
 const ReduxProvider = dynamic(() => import("./store/redux-provider"), {
   ssr: false
@@ -30,6 +31,7 @@ export default function RootLayout({
         <ReduxProvider>
           <Providers>
             {children}
+            <ToastContainer autoClose={1000} theme="dark" />
           </Providers>
         </ReduxProvider>
 

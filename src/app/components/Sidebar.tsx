@@ -1,5 +1,4 @@
-"use client"
-import React, { useState } from 'react'
+
 import Link from 'next/link'
 import { IoHomeOutline } from "react-icons/io5";
 import { MdOutlineShoppingCartCheckout } from "react-icons/md";
@@ -12,34 +11,18 @@ import { PiNotebook } from "react-icons/pi";
 import { VscRepo } from "react-icons/vsc";
 import { MdOutlineInterests } from "react-icons/md";
 import { GrUserAdmin } from "react-icons/gr";
-import DatePicker from 'react-date-picker';
-import { FcCalendar } from 'react-icons/fc';
-import { toast, ToastContainer } from 'react-toastify';
-import { useRouter } from 'next/navigation';
 
-type ValuePiece = Date | null;
-type Value = ValuePiece | [ValuePiece, ValuePiece];
+import CashBook from './CashBook';
+
 
 export const Sidebar = () => {
-    const router = useRouter();
-    const [date, setDate] = useState<Value>(new Date());
-    const handleCashbook = (e: any) => {
-        e.preventDefault();
-        if (!date) {
-            toast.warning("Please, select any date!");
-            return;
-        }
-        router.push(`/cashbook?date=${date}`);
-    }
+    
     return (
         <div>
             <div className="modal sm:modal-middle" role="dialog" id="my_modal_1">
                 <div className="modal-box">
                     <div className='h-72'>
-                        <div className="flex gap-3 justify-center font-bold">
-                            <DatePicker calendarIcon={FcCalendar} className="rounded-md  z-20" clearIcon={null} maxDate={new Date()} format='y-MM-dd' onChange={setDate} value={date} />
-                            <button onClick={handleCashbook} className='btn bt-xs btn-success btn-square'>GO</button>
-                        </div>
+                        <CashBook />
                     </div>
                     <div className="modal-action">
                         <a href="#" className="btn btn-square btn-ghost">
@@ -89,14 +72,14 @@ export const Sidebar = () => {
                         <li><Link href="/salereport"><TbReportSearch size={20} /> DIST REPORT</Link></li>
                         <li><Link href="/paymentreport"><MdOutlinePayments size={20} /> PAYMENT REPORT</Link></li>
                         <li><Link href="/ledgerbook"><PiNotebook size={20} /> LEDGER BOOK</Link></li>
-                        <li><Link href="/cashbook"><VscRepo size={20} /> CASH BOOK</Link></li>
+                        <li><a href="#my_modal_1"><VscRepo size={20} /> CASH BOOK</a></li>
                         <li><Link href="/profitloss"><MdOutlineInterests size={20} /> PROFIT / LOSS</Link></li>
                         <li><Link href="/adminstration"><GrUserAdmin size={20} /> ADMINSTRATION</Link></li>
                     </ul>
 
                 </div>
             </div>
-            <ToastContainer autoClose={1000} theme="dark" />
+         
         </div>
     )
 }

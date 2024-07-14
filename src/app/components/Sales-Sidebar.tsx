@@ -11,9 +11,26 @@ import { PiNotebook } from "react-icons/pi";
 import { VscRepo } from "react-icons/vsc";
 import { MdOutlineInterests } from "react-icons/md";
 import { GrUserAdmin } from "react-icons/gr";
+import CashBook from './Sales-Cashbook';
+
 
 export const SalesSidebar = () => {
     return (
+        <div>
+        <div className="modal sm:modal-middle" role="dialog" id="my_modal_4">
+        <div className="modal-box">
+            <div className='h-72'>
+                <CashBook />
+            </div>
+            <div className="modal-action">
+                <a href="#" className="btn btn-square btn-ghost">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-10 h-10">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </div>
         <div className="drawer lg:drawer-open z-50">
             <input id="my-drawer-3" type="checkbox" className="drawer-toggle" />
             <div className="drawer-content flex flex-col">
@@ -45,12 +62,13 @@ export const SalesSidebar = () => {
                     <li><Link href="/sales-salereport"><TbReportSearch size={20} /> SALES REPORT</Link></li>
                     <li><Link href="/sales-paymentreport"><MdOutlinePayments size={20} /> PAYMENT REPORT</Link></li>
                     <li><Link href="/sales-ledgerbook"><PiNotebook size={20} /> LEDGER BOOK</Link></li>
-                    <li><Link href="/sales-cashbook"><VscRepo size={20} /> CASH BOOK</Link></li>
+                    <li><a href="#my_modal_4"><VscRepo size={20} /> CASH BOOK</a></li>
                     <li><Link href="/sales-profitloss"><MdOutlineInterests size={20} /> PROFIT / LOSS</Link></li>
                     <li><Link href="/sales-adminstration"><GrUserAdmin size={20} /> ADMINSTRATION</Link></li>
                 </ul>
 
             </div>
+        </div>
         </div>
     )
 }

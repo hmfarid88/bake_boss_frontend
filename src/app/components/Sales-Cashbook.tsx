@@ -1,0 +1,37 @@
+"use client"
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react'
+import { toast, ToastContainer } from 'react-toastify';
+
+const CashBook = () => {
+    const router = useRouter();
+    const [maxDate, setMaxDate] = useState('');
+
+    useEffect(() => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+        setMaxDate(formattedDate);
+    }, []);
+    const [date, setDate] = useState('');
+    const handleCashbook = (e: any) => {
+        e.preventDefault();
+        if (!date) {
+            toast.warning("Please, select any date!");
+            return;
+        }
+        router.push(`/sales-cashbook?date=${date}`);
+        setDate('');
+    }
+    return (
+        <div className="flex gap-3 justify-center font-bold">
+            <input type='date' className='input input-success' onChange={(e: any) => setDate(e.target.value)} max={maxDate} />
+            <button onClick={handleCashbook} className='btn bt-xs btn-success btn-square btn-outline'>GO</button>
+            <ToastContainer autoClose={1000} theme='dark'/>
+        </div>
+    )
+}
+
+export default CashBook

@@ -4,14 +4,16 @@ import { useAppSelector } from "@/app/store";
 import { FcPlus, FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
 import Select from "react-select";
+import { toast } from "react-toastify";
 
 type Product = {
+  date:string;
   category: string;
   productName: string;
-  dpRate: number;
-  rpRate: number;
   costPrice: number;
   remainingQty: number;
+  invoiceNo:string;
+  saleRate:number;
 };
 
 
@@ -19,6 +21,7 @@ const Page = () => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const uname = useAppSelector((state) => state.username.username);
   const username = uname ? uname.username : 'Guest';
+  const [pending, setPending] = useState(false);
 
   const contentToPrint = useRef(null);
   const handlePrint = useReactToPrint({
@@ -28,10 +31,42 @@ const Page = () => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
-const handleProductRateSubmit=()=>{}
+
+  const [productName, setProductName] = useState("");
+  const [productValue, setProductValue] = useState("");
+
+  const handleProductRateSubmit = async (e: any) => {
+    e.preventDefault();
+    if (!productName || !productValue) {
+      toast.warning("Field is empty !");
+      return;
+    }
+    setPending(true);
+    try {
+      const response = await fetch(`${apiBaseUrl}/api/productRateSetup`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ productName, saleRate: productValue, username }),
+      });
+
+      if (response.ok) {
+        toast.success("Rate added successfully !");
+      } else {
+        const data = await response.json();
+        toast.error(data.message);
+      }
+    } catch (error: any) {
+      toast.error(error.message)
+    } finally {
+      setPending(false);
+      setProductValue("");
+    }
+  };
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/api/getProductStock?username=${username}`)
+    fetch(`${apiBaseUrl}/sales/getSalesStock?username=${username}`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);
@@ -53,7 +88,7 @@ const handleProductRateSubmit=()=>{}
     setFilterCriteria(e.target.value);
   };
   const totalValue = filteredProducts.reduce((total, product) => {
-    return total + product.dpRate * product.remainingQty;
+    return total + product.saleRate * product.remainingQty;
   }, 0);
 
   const totalQty = filteredProducts.reduce((total, product) => {
@@ -62,42 +97,39 @@ const handleProductRateSubmit=()=>{}
 
   const [productOption, setProductOption] = useState([]);
   useEffect(() => {
-          fetch(`${apiBaseUrl}/api/getMadeProducts?username=${username}`)
-        .then(response => response.json())
-        .then(data => {
-          const transformedData = data.map((madeItem: any) => ({
-            value: madeItem,
-            label: madeItem
-          }));
-          setProductOption(transformedData);
-             })
-        .catch(error => console.error('Error fetching products:', error));
-  
+    fetch(`${apiBaseUrl}/api/getMadeProducts`)
+      .then(response => response.json())
+      .then(data => {
+        const transformedData = data.map((madeItem: any) => ({
+          value: madeItem,
+          label: madeItem
+        }));
+        setProductOption(transformedData);
+      })
+      .catch(error => console.error('Error fetching products:', error));
+
   }, [apiBaseUrl, username]);
   return (
-    <div className="container-2xl">
-      <div className="flex w-full min-h-screen p-4 items-center justify-center">
-      {/* <div className="flex w-full justify-end">
+    <div className="container-2xl min-h-screen">
+      <div className="flex w-full justify-end">
+        <a href="#my_modal_3" className="btn btn-circle btn-ghost"><FcPlus size={35} /></a>
+      </div>
+      <div className="flex w-full p-4 items-center justify-center">
         <div>
-          <a href="#my_modal_1" className="btn btn-circle btn-ghost"><FcPlus size={35} /></a>
-          <div className="modal sm:modal-middle" role="dialog" id="my_modal_1">
+          <div className="modal sm:modal-middle" role="dialog" id="my_modal_3">
             <div className="modal-box">
-              <h3 className="font-bold text-lg">ADD PRODUCT RATE</h3>
-
-              <div className="flex w-full items-center justify-center p-2">
+              <h3 className="font-bold text-sm">ADD PRODUCT RATE</h3>
+              <div className="flex flex-col gap-3 w-full items-center justify-center p-2">
                 <label className="form-control w-full max-w-xs">
                   <div className="label">
                     <span className="label-text-alt">Select Product</span>
                   </div>
-                  <div className="flex items-center justify-between">
                   <Select className="text-black" name="psupplier" onChange={(selectedOption: any) => setProductName(selectedOption.value)} options={productOption} />
-                  <input type="text" name="sinvoice" onChange={(e: any) => setProductValue(e.target.value)} placeholder="Type here" className="border rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" />
-                    <button onClick={handleProductRateSubmit} disabled={pending} className="btn btn-square btn-success">{pending ? "Adding..." : "ADD"}</button>
-                  </div>
                 </label>
+                <input type="text" value={productValue} onChange={(e: any) => setProductValue(e.target.value)} placeholder="Type here" className="border rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" />
+                <button onClick={handleProductRateSubmit} disabled={pending} className="btn btn-outline btn-success">{pending ? "Adding..." : "ADD"}</button>
               </div>
 
-           
               <div className="modal-action">
                 <a href="#" className="btn btn-square btn-ghost">
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-10 h-10">
@@ -108,7 +140,7 @@ const handleProductRateSubmit=()=>{}
             </div>
           </div>
         </div>
-      </div> */}
+
         <div className="overflow-x-auto">
           <div className="flex justify-between pl-5 pr-5">
             <label className="input input-bordered flex max-w-xs  items-center gap-2">
@@ -120,10 +152,12 @@ const handleProductRateSubmit=()=>{}
             <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
           </div>
           <div ref={contentToPrint} className="flex-1 p-5">
-            <table className="table">
+            <table className="table uppercase">
               <thead>
                 <tr>
                   <th>SN</th>
+                  <th>DATE</th>
+                  <th>INVOICE NO</th>
                   <th>CATEGORY</th>
                   <th>PRODUCT NAME</th>
                   <th>PURCHASE PRICE</th>
@@ -136,18 +170,20 @@ const handleProductRateSubmit=()=>{}
                 {filteredProducts?.map((product, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
+                    <td>{product.date}</td>
+                    <td>{product.invoiceNo}</td>
                     <td>{product.category}</td>
                     <td>{product.productName}</td>
-                    <td>{product.dpRate}</td>
+                    <td>{product.saleRate}</td>
                     <td>00</td>
                     <td>{product.remainingQty.toLocaleString('en-IN')}</td>
-                    <td>{Number((product.dpRate * product.remainingQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number((product.saleRate * product.remainingQty).toFixed(2)).toLocaleString('en-IN')}</td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
                 <tr className="font-semibold text-lg">
-                  <td colSpan={4}></td>
+                  <td colSpan={6}></td>
                   <td>TOTAL</td>
                   <td>{totalQty.toLocaleString('en-IN')}</td>
                   <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>

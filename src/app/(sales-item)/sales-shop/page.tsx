@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from "@/app/store";
-import { addProducts, deleteAllProducts, deleteProduct } from "@/app/store/productSaleSlice";
+import { addProducts, deleteAllProducts, deleteProduct } from "@/app/store/salesProductSaleSlice";
 import Select from "react-select";
 import { uid } from 'uid';
 import { DatePicker } from 'react-date-picker';
@@ -22,18 +22,20 @@ const Page: React.FC = () => {
     const [total, setTotal] = useState(0);
     const [qtyTotal, setQtyTotal] = useState(0);
 
-    const [productOption, setProductOption] = useState([]);
+
     const [selectedProid, setSelectedProid] = useState("");
     const [selectedQty, setSelectedQty] = useState("");
     const numericProductQty: number = Number(selectedQty);
 
     const [cname, setCname] = useState("");
     const [phoneNumber, setPhone] = useState("");
-    const [address, setAddress] = useState("");
+    const [soldBy, setSoldBy] = useState("");
+
+
 
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
-    const saleProducts = useAppSelector((state) => state.productTosale.products);
+    const saleProducts = useAppSelector((state) => state.salesProductTosale.products);
     const dispatch = useAppDispatch();
 
     const invoiceNo = uid();
@@ -50,7 +52,7 @@ const Page: React.FC = () => {
 
     const calculateTotal = () => {
         const total = saleProducts.reduce((sum, p) => {
-            return sum + (p.dpRate * p.productQty);
+            return sum + (p.saleRate * p.productQty);
         }, 0);
         setTotal(total);
     };
@@ -65,6 +67,7 @@ const Page: React.FC = () => {
     const handleDeleteProduct = (id: any) => {
         dispatch(deleteProduct(id));
     };
+  
     const handleProductSubmit = async (e: any) => {
         e.preventDefault();
         if (!selectedProid || !selectedQty) {
@@ -72,30 +75,29 @@ const Page: React.FC = () => {
             return;
         }
         try {
-            const response = await fetch(`${apiBaseUrl}/api/getSingleProduct?productId=${selectedProid}`);
+         const response = await fetch(`${apiBaseUrl}/sales/getSingleProduct?productId=${selectedProid}&username=${username}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
-            const productToSale = {
+                      
+            const itemsToSaleData = {
                 id: uid(),
                 date: data.date,
                 category: data.category,
                 productName: data.productName,
                 costPrice: data.costPrice,
-                dpRate: data.dpRate,
-                rpRate: data.rpRate,
-                customerPrice: data.customerPrice,
-                productQty: numericProductQty,
                 remainingQty: data.remainingQty,
+                saleRate: data.saleRate,
+                productQty: numericProductQty,
                 status: 'sold',
                 username: username
             };
             if (data.remainingQty < numericProductQty) {
                 toast.error("Sorry, not enough qty!");
                 return;
-            }
-            dispatch(addProducts(productToSale));
+            }       
+            dispatch(addProducts(itemsToSaleData));
             setSelectedQty("");
         } catch (error) {
             console.error('Error fetching product:', error);
@@ -141,14 +143,15 @@ const Page: React.FC = () => {
             setPending(false);
         }
     };
+    const [productOption, setProductOption] = useState([]);
 
     useEffect(() => {
-        fetch(`${apiBaseUrl}/api/getProductStock?username=${username}`)
+        fetch(`${apiBaseUrl}/sales/getSalesStock?username=${username}`)
             .then(response => response.json())
             .then(data => {
                 const transformedData = data.map((item: any) => ({
                     value: item.productId,
-                    label: item.productName + ", " + item.remainingQty
+                    label: item.productName + ", " + item.remainingQty + ", " + item.productId
                 }));
                 setProductOption(transformedData);
             })
@@ -202,9 +205,11 @@ const Page: React.FC = () => {
                                     <tr key={index}>
                                         <td>{index + 1}</td>
                                         <td>{p.productName} </td>
-                                        <td>{Number(p.dpRate.toFixed(2)).toLocaleString('en-IN')}</td>
+                                        {/* <td>{Number(p.saleRate.toFixed(2)).toLocaleString('en-IN')}</td> */}
+                                        <td>{p.saleRate} </td>
                                         <td>{p.productQty}</td>
-                                        <td>{Number((p.dpRate * p.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                                        {/* <td>{Number((p.saleRate * p.productQty).toFixed(2)).toLocaleString('en-IN')}</td> */}
+                                        <td>{p.saleRate*p.productQty} </td>
                                         <td className="flex justify-between gap-3">
                                             <button onClick={() => {
                                                 handleDeleteProduct(p.id);
@@ -244,22 +249,22 @@ const Page: React.FC = () => {
                                 </label>
                                 <label className="input input-bordered flex w-full max-w-xs items-center gap-2">
                                     <FcViewDetails size={20} />
-                                    <input type="text" className="grow" onChange={(e: any) => setAddress(e.target.value)} placeholder="Sold By" />
+                                    <input type="text" className="grow" onChange={(e: any) => setSoldBy(e.target.value)} placeholder="Sold By" />
                                 </label>
 
                             </div>
                             <div className="flex flex-col gap-3">
                                 <label className="input input-bordered flex w-full max-w-xs items-center gap-2">
                                     <MdAttachMoney size={20} />
-                                    <input type="text" className="grow" onChange={(e: any) => setCname(e.target.value)} placeholder="Total Amount" />
+                                    <input type="text" className="grow" value={850} placeholder="Total Amount" />
                                 </label>
                                 <label className="input input-bordered flex w-full max-w-xs items-center gap-2">
                                     <FaHandHoldingUsd size={20} />
-                                    <input type="text" className="grow" maxLength={11} onChange={(e: any) => setPhone(e.target.value.replace(/\D/g, ""))} value={phoneNumber} placeholder="Received Amount" />
+                                    <input type="text" className="grow" maxLength={11}  value={1000}  placeholder="Received Amount" />
                                 </label>
                                 <label className="input input-bordered flex w-full max-w-xs items-center gap-2">
                                     <RiHandCoinLine size={20} />
-                                    <input type="text" className="grow" onChange={(e: any) => setAddress(e.target.value)} placeholder="Return Amount" />
+                                    <input type="text" className="grow" value={150}   placeholder="Return Amount" readOnly />
                                 </label>
 
                             </div>

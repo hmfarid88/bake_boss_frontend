@@ -179,60 +179,13 @@ const Page: React.FC = () => {
                 <div className="flex flex-col w-full">
                     <div className="divider divider-accent tracking-widest font-bold p-5">PRODUCT RETURN</div>
                 </div>
-                <div className="flex items-center justify-center gap-2 z-10">
-                    <Select className="text-black h-[38px] w-64 md:w-96" autoFocus={true} onChange={(selectedOption: any) => setSelectedProid(selectedOption.value)} options={productOption} />
-                    <input type="number" className="w-[100px] h-[38px] p-2 bg-white text-black border rounded-md" placeholder="Qty" value={selectedQty} onChange={(e) => setSelectedQty(e.target.value)} />
-                    <button onClick={handleProductSubmit} className='btn btn-outline btn-success btn-sm h-[38px]'>ADD</button>
-                </div>
-                <div className="flex items-center justify-center w-full p-5">
-                    <div className="overflow-x-auto max-h-96">
-                        <table className="table table-pin-rows">
-                            <thead>
-                                <tr>
-                                    <th>SN</th>
-                                    <th>DESCRIPTION</th>
-                                    <th>UNIT RATE</th>
-                                    <th>QTY</th>
-                                    <th>SUB TOTAL</th>
-                                    <th>ACTION</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {saleProducts?.map((p, index) => (
-                                    <tr key={index}>
-                                        <td>{index + 1}</td>
-                                        <td>{p.productName} </td>
-                                        <td>{Number(p.dpRate.toFixed(2)).toLocaleString('en-IN')}</td>
-                                        <td>{p.productQty}</td>
-                                        <td>{Number((p.dpRate * p.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
-                                        <td className="flex justify-between gap-3">
-                                            <button onClick={() => {
-                                                handleDeleteProduct(p.id);
-                                            }} className="btn-xs rounded-md btn-outline btn-error"> <RiDeleteBin6Line size={18} />
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td className="text-lg font-semibold">TOTAL</td>
-                                    <td className="text-lg font-semibold">{qtyTotal} PS</td>
-                                    <td className="text-lg font-semibold">{Number(total.toFixed(2)).toLocaleString('en-IN')} TK</td>
-                                    <td></td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                </div>
-                <div className="flex items-center justify-center pt-10">
-                    <button className="btn btn-warning">RETURN TO PRODUCTION</button>
+                <div className="flex flex-col items-center justify-center gap-3">
+                    <Select className="text-black h-[38px] w-full max-w-xs" autoFocus={true} onChange={(selectedOption: any) => setSelectedProid(selectedOption.value)} options={productOption} />
+                    <input type="number" className="w-full max-w-xs h-[38px] p-2 bg-white text-black border rounded-md" placeholder="Qty" value={selectedQty} onChange={(e) => setSelectedQty(e.target.value)} />
+                    <input type="text" className="w-full max-w-xs h-[38px] p-2 bg-white text-black border rounded-md" placeholder="Note" />
+                    <button onClick={handleProductSubmit} className='btn btn-outline btn-success  h-[38px]'>RETURN</button>
                 </div>
             </div>
-        
-            <ToastContainer autoClose={1000} theme="dark" />
         </div>
     )
 }
