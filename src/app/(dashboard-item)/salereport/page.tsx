@@ -18,12 +18,12 @@ const Page = () => {
   const uname = useAppSelector((state) => state.username.username);
   const username = uname ? uname.username : 'Guest';
   const contentToPrint = useRef<HTMLDivElement>(null);
- 
+
   const [filterCriteria, setFilterCriteria] = useState('');
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
-  
+
   useEffect(() => {
     fetch(`${apiBaseUrl}/api/getSoldProduct?username=${username}`)
       .then(response => response.json())
@@ -38,7 +38,8 @@ const Page = () => {
   useEffect(() => {
     const filtered = allProducts.filter(product =>
       product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-      product.category.toLowerCase().includes(filterCriteria.toLowerCase())
+      product.category.toLowerCase().includes(filterCriteria.toLowerCase()) ||
+      product.invoiceNo.toLowerCase().includes(filterCriteria.toLowerCase())
     );
     setFilteredProducts(filtered);
   }, [filterCriteria, allProducts]);

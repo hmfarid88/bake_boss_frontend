@@ -129,14 +129,14 @@ const Page: React.FC = () => {
                     </div>
                     <div className="flex p-5">
                         <div className="card shadow-slate-700 border shadow-lg p-5">
-                            <div className="card-title items-center justify-between"><h1 className='uppercase'>{items[0]?.itemName}</h1><a href="#my_modal_1" className="btn btn-circle btn-ghost"><FiEdit size={20} /></a></div>
+                            <div className="card-title items-center justify-between"><h1 className='uppercase'>{items[0]?.itemName}</h1><a href="#my_modal_5" className="btn btn-circle btn-ghost"><FiEdit size={20} /></a></div>
                             <div className="card-body">
                                 <table className="table">
                                     <thead>
                                         <tr>
                                             <th>SN</th>
                                             <th>MATERIALS</th>
-                                            <th>GRAM / PS</th>
+                                            <th>KG / PS</th>
                                             <th>RATE</th>
                                             <th>SUB TOTAL</th>
                                         </tr>
@@ -163,7 +163,7 @@ const Page: React.FC = () => {
                             </div>
                         </div>
                         {/* modal area */}
-                        <div className="modal sm:modal-middle" role="dialog" id="my_modal_1">
+                        <div className="modal sm:modal-middle" role="dialog" id="my_modal_5">
                             <div className="modal-box">
                                 <h3 className="font-bold text-md uppercase">EDIT ITEM : {items[0]?.itemName}</h3>
                                 <table className="table">
@@ -171,7 +171,7 @@ const Page: React.FC = () => {
                                         <tr>
                                             <th>SN</th>
                                             <th>MATERIALS</th>
-                                            <th>QTY (GRAM / PS)</th>
+                                            <th>QTY (KG / PS)</th>
                                         </tr>
                                     </thead>
                                     <tbody>

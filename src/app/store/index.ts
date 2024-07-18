@@ -5,6 +5,7 @@ import productsaleReducer from "../store/productSaleSlice";
 import makeItemReducer from "../store/makeItemSlice";
 import materialReducer from "../store/materialSlice";
 import salesProductSaleReducer from "../store/salesProductSaleSlice";
+import additionalSaleReducer from "../store/additionalSale";
 
 import {
   persistReducer,
@@ -23,9 +24,10 @@ const rootReducer = combineReducers({
   products: productReducer,
   username: usernameReducer,
   productTosale:productsaleReducer,
-  salesProductTosale:salesProductSaleReducer,
+  salesProduct:salesProductSaleReducer,
   makeProducts:makeItemReducer,
   materialProducts:materialReducer,
+  additionalSale:additionalSaleReducer
  
 });
 

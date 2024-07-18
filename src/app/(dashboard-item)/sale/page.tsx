@@ -151,7 +151,6 @@ const Page: React.FC = () => {
   }, [apiBaseUrl, username]);
 
   const [salesuser, setSalesuser] = useState([]);
-
   useEffect(() => {
     fetch(`${apiBaseUrl}/auth/user/getSalesUser`)
       .then(response => response.json())
@@ -227,12 +226,11 @@ const Page: React.FC = () => {
         <div className="flex w-full justify-center p-5">
           <div className="card shadow shadow-slate-500 max-w-lg gap-3 p-5">
             <div className="card-title">Select Retailer</div>
-            <Select className="text-black h-[38px] w-64"  onChange={(selectedOption: any) => setRetailer(selectedOption.value)} options={salesuser} />
+            <Select className="text-black h-[38px] w-64" onChange={(selectedOption: any) => setRetailer(selectedOption.value)} options={salesuser} />
             <button onClick={handleFinalSubmit} disabled={pending} className="btn w-xs h-[38px] btn-success btn-outline font-bold">{pending ? <span className="loading loading-ring loading-md text-accent"></span> : "SUBMIT"}</button>
           </div>
         </div>
       </div>
-      <ToastContainer autoClose={1000} theme="dark" />
     </div>
   )
 }

@@ -5,10 +5,11 @@ import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
 
 type Product = {
+  date: string;
   category: string;
   productName: string;
-  invoiceNo: string;
-  dpRate: number;
+  soldInvoice: string;
+  saleRate: number;
   costPrice: number;
   productQty: number;
 };
@@ -28,7 +29,7 @@ const Page = () => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/api/getSoldProduct?username=${username}`)
+    fetch(`${apiBaseUrl}/sales/getOutletSale?username=${username}`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);
@@ -41,7 +42,9 @@ const Page = () => {
   useEffect(() => {
     const filtered = allProducts.filter(product =>
       product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-      product.category.toLowerCase().includes(filterCriteria.toLowerCase())
+      product.category.toLowerCase().includes(filterCriteria.toLowerCase()) ||
+      product.date.toLowerCase().includes(filterCriteria.toLowerCase()) ||
+      product.soldInvoice.toLowerCase().includes(filterCriteria.toLowerCase())
     );
     setFilteredProducts(filtered);
   }, [filterCriteria, allProducts]);
@@ -50,7 +53,7 @@ const Page = () => {
     setFilterCriteria(e.target.value);
   };
   const totalValue = filteredProducts.reduce((total, product) => {
-    return total + (product.dpRate * product.productQty);
+    return total + (product.saleRate * product.productQty);
   }, 0);
   const totalQty = filteredProducts.reduce((acc, item) => acc + item.productQty, 0);
   return (
@@ -71,6 +74,7 @@ const Page = () => {
               <thead>
                 <tr>
                   <th>SN</th>
+                  <th>DATE</th>
                   <th>CATEGORY</th>
                   <th>PRODUCT NAME</th>
                   <th>INVOICE NO</th>
@@ -84,19 +88,20 @@ const Page = () => {
                 {filteredProducts?.map((product, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
+                    <td>{product.date}</td>
                     <td>{product.category}</td>
                     <td>{product.productName}</td>
-                    <td className="uppercase">{product.invoiceNo}</td>
+                    <td className="uppercase">{product.soldInvoice}</td>
                     <td>{Number(product.costPrice.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{Number(product.dpRate.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number(product.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{product.productQty.toLocaleString('en-IN')}</td>
-                    <td>{Number((product.dpRate * product.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number((product.saleRate * product.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
                 <tr className="font-semibold text-lg">
-                  <td colSpan={5}></td>
+                  <td colSpan={6}></td>
                   <td>TOTAL</td>
                   <td>{totalQty}</td>
                   <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>

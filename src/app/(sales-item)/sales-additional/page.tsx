@@ -1,27 +1,25 @@
-'use client'
-import React, { useState, useEffect, useRef } from "react";
+"use client"
+import React, { useEffect, useRef, useState } from 'react'
+import { FcPlus, FcPrint } from 'react-icons/fc'
+import { toast } from 'react-toastify';
 import { useAppSelector } from "@/app/store";
-import { FcPlus, FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
-import Select from "react-select";
-import { toast } from "react-toastify";
 
 type Product = {
-  date: string;
   category: string;
   productName: string;
   costPrice: number;
-  remainingQty: number;
-  invoiceNo: string;
-  saleRate: number;
+  salePrice: number;
 };
-
-
 const Page = () => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const uname = useAppSelector((state) => state.username.username);
   const username = uname ? uname.username : 'Guest';
+  const [productName, setProductName] = useState("");
+  const [costPrice, setCostPrice] = useState("");
+  const [salePrice, setSalePrice] = useState("");
   const [pending, setPending] = useState(false);
+
 
   const contentToPrint = useRef(null);
   const handlePrint = useReactToPrint({
@@ -30,58 +28,51 @@ const Page = () => {
   const [filterCriteria, setFilterCriteria] = useState('');
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
-
-
-  const [productName, setProductName] = useState("");
-  const [productValue, setProductValue] = useState("");
-
-  const handleProductRateSubmit = async (e: any) => {
+  const handleAdditionalSubmit = async (e: any) => {
     e.preventDefault();
-    if (!productName || !productValue) {
-      toast.warning("Field is empty !");
+    if (!productName || !costPrice || !salePrice) {
+      toast.warning("All field is required");
       return;
     }
     setPending(true);
     try {
-      const response = await fetch(`${apiBaseUrl}/api/productRateSetup`, {
+      const response = await fetch(`${apiBaseUrl}/additionalStock/addOrUpdate`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ productName, saleRate: productValue, username }),
+        body: JSON.stringify({ category: "Additional", productName, costPrice, salePrice, username }),
       });
 
-      if (response.ok) {
-        toast.success("Rate added successfully !");
+      if (!response.ok) {
+        toast.error("Sorry, product not added!");
+        return;
       } else {
-        const data = await response.json();
-        toast.error(data.message);
+        toast.success("Product added successfully.")
+        setProductName("");
+        setCostPrice("");
+        setSalePrice("");
       }
     } catch (error: any) {
-      toast.error(error.message)
+      toast.error("An error occurred: " + error.message);
     } finally {
       setPending(false);
-      setProductValue("");
     }
-  };
-
+  }
   useEffect(() => {
-    fetch(`${apiBaseUrl}/sales/getSalesStock?username=${username}`)
+    fetch(`${apiBaseUrl}/additionalStock/getAdditionalProducts?username=${username}`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);
         setFilteredProducts(data);
       })
       .catch(error => console.error('Error fetching products:', error));
-  }, [apiBaseUrl, username]);
+  }, [apiBaseUrl, productName, username]);
 
 
   useEffect(() => {
     const filtered = allProducts.filter(product =>
-      product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-      product.category.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-      product.date.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-      product.invoiceNo.toLowerCase().includes(filterCriteria.toLowerCase())
+      product.productName.toLowerCase().includes(filterCriteria.toLowerCase())
     );
     setFilteredProducts(filtered);
   }, [filterCriteria, allProducts]);
@@ -89,54 +80,37 @@ const Page = () => {
   const handleFilterChange = (e: any) => {
     setFilterCriteria(e.target.value);
   };
-  const totalValue = filteredProducts.reduce((total, product) => {
-    return total + product.saleRate * product.remainingQty;
-  }, 0);
 
-  const totalQty = filteredProducts.reduce((total, product) => {
-    return total + product.remainingQty;
-  }, 0);
-
-  const [productOption, setProductOption] = useState([]);
-  useEffect(() => {
-    fetch(`${apiBaseUrl}/api/getMadeProducts`)
-      .then(response => response.json())
-      .then(data => {
-        const transformedData = data.map((madeItem: any) => ({
-          value: madeItem,
-          label: madeItem
-        }));
-        setProductOption(transformedData);
-      })
-      .catch(error => console.error('Error fetching products:', error));
-  }, [apiBaseUrl, username]);
-  
   return (
-    <div className="container-2xl min-h-screen">
+    <div className='container min-h-screen'>
       <div className="flex w-full justify-end">
-        <a href="#my_modal_3" className="btn btn-circle btn-ghost"><FcPlus size={35} /></a>
+        <a href="#my_modal_additional" className="btn btn-circle btn-ghost"><FcPlus size={35} /></a>
       </div>
       <div className="flex w-full p-4 items-center justify-center">
         <div>
-          <div className="modal sm:modal-middle" role="dialog" id="my_modal_3">
+          <div className="modal sm:modal-middle" role="dialog" id="my_modal_additional">
             <div className="modal-box">
-              <h3 className="font-bold text-sm">ADD PRODUCT RATE</h3>
+              <h4 className="font-bold text-sm">ADD ADDITIONAL PRODUCT</h4>
               <div className="flex flex-col gap-3 w-full items-center justify-center p-2">
                 <label className="form-control w-full max-w-xs">
                   <div className="label">
-                    <span className="label-text-alt">Select Product</span>
+                    <span className="label-text-alt">Product Name</span>
                   </div>
-                  <Select className="text-black" name="psupplier" onChange={(selectedOption: any) => setProductName(selectedOption.value)} options={productOption} />
+                  <input type='text' placeholder="Type here" className="border rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" value={productName} onChange={(e: any) => setProductName(e.target.value)} />
                 </label>
                 <label className="form-control w-full max-w-xs">
                   <div className="label">
-                    <span className="label-text-alt">Sale Rate</span>
+                    <span className="label-text-alt">Cost Price</span>
                   </div>
-                  <input type="number" value={productValue} onChange={(e: any) => setProductValue(e.target.value)} placeholder="Type here" className="border rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" />
+                  <input type="number" value={costPrice} onChange={(e: any) => setCostPrice(e.target.value)} placeholder="Type here" className="border rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" />
                 </label>
                 <label className="form-control w-full max-w-xs">
-                  <button onClick={handleProductRateSubmit} disabled={pending} className="btn btn-outline btn-success">{pending ? "Adding..." : "ADD"}</button>
+                  <div className="label">
+                    <span className="label-text-alt">Sale Price</span>
+                  </div>
+                  <input type="number" value={salePrice} onChange={(e: any) => setSalePrice(e.target.value)} placeholder="Type here" className="border rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" />
                 </label>
+                <button onClick={handleAdditionalSubmit} disabled={pending} className="btn btn-outline btn-success">{pending ? "Adding..." : "ADD"}</button>
               </div>
 
               <div className="modal-action">
@@ -165,39 +139,23 @@ const Page = () => {
               <thead>
                 <tr>
                   <th>SN</th>
-                  <th>DATE</th>
-                  <th>INVOICE NO</th>
                   <th>CATEGORY</th>
                   <th>PRODUCT NAME</th>
-                  <th>PURCHASE PRICE</th>
+                  <th>COST PRICE</th>
                   <th>SALE PRICE</th>
-                  <th>QUANTITY</th>
-                  <th>SUB TOTAL</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredProducts?.map((product, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>{product.date}</td>
-                    <td>{product.invoiceNo}</td>
                     <td>{product.category}</td>
                     <td>{product.productName}</td>
-                    <td>{product.saleRate}</td>
-                    <td>00</td>
-                    <td>{product.remainingQty.toLocaleString('en-IN')}</td>
-                    <td>{Number((product.saleRate * product.remainingQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{product.costPrice}</td>
+                    <td>{product.salePrice}</td>
                   </tr>
                 ))}
               </tbody>
-              <tfoot>
-                <tr className="font-semibold text-lg">
-                  <td colSpan={6}></td>
-                  <td>TOTAL</td>
-                  <td>{totalQty.toLocaleString('en-IN')}</td>
-                  <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
-                </tr>
-              </tfoot>
             </table>
           </div>
         </div>

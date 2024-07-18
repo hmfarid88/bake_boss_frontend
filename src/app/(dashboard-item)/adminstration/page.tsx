@@ -1,19 +1,20 @@
 "use client"
 import { useAppSelector } from '@/app/store';
 import React, { useEffect, useState } from 'react'
-import { toast, ToastContainer } from "react-toastify";
-
+import { toast } from "react-toastify";
+import Select from "react-select";
 const Page = () => {
   const uname = useAppSelector((state) => state.username.username);
   const username = uname ? uname.username : 'Guest';
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const [productName, setProductName] = useState("");
   const [dpMargin, setDpMargin] = useState("");
   const [rpMargin, setRpMargin] = useState("");
   const [pending, setPending] = useState(false);
 
   const handleMargin = async (e: any) => {
     e.preventDefault();
-    if (!dpMargin || !rpMargin) {
+    if (!productName || !dpMargin || !rpMargin) {
       toast.warning("Item is empty !");
       return;
     }
@@ -24,14 +25,14 @@ const Page = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ username, dpMargin: parseFloat(dpMargin), rpMargin: parseFloat(rpMargin) }),
+        body: JSON.stringify({ username, productName, dpMargin: parseFloat(dpMargin), rpMargin: parseFloat(rpMargin) }),
       });
 
       if (response.ok) {
         toast.success("Margin setup successfull !");
       } else {
         const data = await response.json();
-        toast.error(data.message || "Failed to set up margin.");
+        toast.error(data.message);
       }
     } catch (error) {
       toast.error("Invalid margin setup !")
@@ -41,30 +42,45 @@ const Page = () => {
       setRpMargin("");
     }
   }
-  
+  const [productOption, setProductOption] = useState([]);
+  useEffect(() => {
+    fetch(`${apiBaseUrl}/api/getMadeProducts`)
+      .then(response => response.json())
+      .then(data => {
+        const transformedData = data.map((madeItem: any) => ({
+          value: madeItem,
+          label: madeItem
+        }));
+        setProductOption(transformedData);
+      })
+      .catch(error => console.error('Error fetching products:', error));
+  }, [apiBaseUrl, username]);
   return (
     <div className='container min-h-screen'>
       <div className="flex flex-col gap-3 items-center justify-center">
-      
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text uppercase">DP Profit Margin (%)</span>
-            </div>
-            <input type="number" value={dpMargin} onChange={(e) => setDpMargin(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
-          </label>
-          <label className="form-control w-full max-w-xs">
-            <div className="label">
-              <span className="label-text uppercase">RP Profit Margin (%)</span>
-            </div>
-            <input type="number" value={rpMargin} onChange={(e) => setRpMargin(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
-          </label>
-            
-          <label className="form-control w-full max-w-xs">
-            <button onClick={handleMargin} className="btn btn-success btn-outline max-w-xs" disabled={pending} >{pending ? "Submitting..." : "SUBMIT"}</button>
-          </label>
-           </div>
-     
-      <ToastContainer autoClose={1000} theme='dark' />
+        <label className="form-control w-full max-w-xs">
+          <div className="label">
+            <span className="label-text uppercase">Select Product</span>
+          </div>
+          <Select className="text-black" name="psupplier" onChange={(selectedOption: any) => setProductName(selectedOption.value)} options={productOption} />
+        </label>
+        <label className="form-control w-full max-w-xs">
+          <div className="label">
+            <span className="label-text uppercase">DP Profit Margin (%)</span>
+          </div>
+          <input type="number" value={dpMargin} onChange={(e) => setDpMargin(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+        </label>
+        <label className="form-control w-full max-w-xs">
+          <div className="label">
+            <span className="label-text uppercase">RP Profit Margin (%)</span>
+          </div>
+          <input type="number" value={rpMargin} onChange={(e) => setRpMargin(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+        </label>
+
+        <label className="form-control w-full max-w-xs">
+          <button onClick={handleMargin} className="btn btn-success btn-outline max-w-xs" disabled={pending} >{pending ? "Submitting..." : "SUBMIT"}</button>
+        </label>
+      </div>
     </div>
   )
 }

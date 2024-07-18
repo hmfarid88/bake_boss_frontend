@@ -7,6 +7,9 @@ import { FaRegHandshake } from "react-icons/fa6";
 import Link from 'next/link';
 import Loading from '@/app/loading';
 import { useSearchParams } from 'next/navigation';
+import { IoLocationOutline } from "react-icons/io5";
+import { FaPhoneVolume } from "react-icons/fa";
+import { AiOutlineMail } from "react-icons/ai";
 
 const Invoice = () => {
     const uname = useAppSelector((state) => state.username.username);
@@ -18,44 +21,62 @@ const Invoice = () => {
     });
 
     const searchParams = useSearchParams();
-    const invoiceNo = searchParams.get('invoiceNo');
-    const [invoiceData, setInvoiceData] = useState<invoiceData[]>([]);
+    const soldInvoice = searchParams.get('soldInvoice');
+    const [invoiceData, setInvoiceData] = useState<invoiceData>();
 
     interface invoiceData {
+        customerInfo: any;
+        salesStock: any;
         date: string,
+        customerName: string,
+        phoneNumber: string,
+        soldBy: string,
+        soldInvoice: string,
         category: string,
         productName: string,
-        dpRate: number,
+        saleRate: number,
         productQty: number,
-        customer: string,
-        invoiceNo: number,
 
     }
-
+    interface shopData{
+        shopName:string,
+        phoneNumber:string,
+        address:string,
+        email:string
+    }
+    const [shopInfo, setShopInfo] = useState<shopData>();
+    useEffect(() => {
+        fetch(`${apiBaseUrl}/invoice/getShopInfo?username=${username}`)
+            .then(response => response.json())
+            .then(data => {
+                setShopInfo(data);
+            })
+            .catch(error => console.error('Error fetching products:', error));
+    }, [apiBaseUrl, username]);
 
     useEffect(() => {
-        if (username && invoiceNo) {
-            fetch(`${apiBaseUrl}/api/getInvoiceData?username=${username}&invoiceNo=${invoiceNo}`)
+        if (soldInvoice) {
+            fetch(`${apiBaseUrl}/invoice/outletInvoice?soldInvoice=${soldInvoice}`)
                 .then(response => response.json())
                 .then(data => {
                     setInvoiceData(data);
                 })
                 .catch(error => console.error('Error fetching invoice data:', error));
         }
-    }, [apiBaseUrl, username, invoiceNo]);
-
+    }, [apiBaseUrl, soldInvoice]);
 
     if (!invoiceData) {
         return <div><Loading /></div>;
     }
 
-    const subtotal = invoiceData.reduce((acc, item) => acc + item.dpRate * item.productQty, 0);
-    const totalQty = invoiceData.reduce((acc, item) => acc + item.productQty, 0);
+    const subtotal = invoiceData.salesStock.reduce((acc: number, item: { saleRate: number; productQty: number; }) => acc + item.saleRate * item.productQty, 0);
+    const totalQty = invoiceData.salesStock.reduce((acc: any, item: { productQty: any; }) => acc + item.productQty, 0);
+
 
     return (
         <div className="container min-h-[calc(100vh-228px)]">
             <div className="flex justify-end pr-10 pt-5 gap-3">
-                <Link href="/sale">  <button className='btn btn-ghost btn-square'><FcPlus size={36} /></button></Link>
+                <Link href="/sales-shop">  <button className='btn btn-ghost btn-square'><FcPlus size={36} /></button></Link>
                 <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
             </div>
             <div className="flex justify-center pb-5">
@@ -66,21 +87,22 @@ const Invoice = () => {
                             <h1 className='tracking-widest font-bold text-sm md:text-xl'>INVOICE</h1>
                         </div>
                         <div className="flex flex-col w-full justify-end items-end">
-                            <h1 className='uppercase font-bold text-xs md:text-md'>BAKE BOSS</h1>
-                            <h4 className='font-serif text-xs md:text-md'>B.B Road, Chasara</h4>
-                            <h4 className='font-serif text-xs md:text-md'>Narayanganj.</h4>
+                            <h1 className='uppercase font-bold text-sm md:text-md'>{shopInfo?.shopName}</h1>
+                            <h4 className='flex font-sans text-xs md:text-md'><IoLocationOutline className='mt-0.5 mr-1'/> {shopInfo?.address}</h4>
+                            <h4 className='flex font-sans text-xs md:text-md'><FaPhoneVolume className='mt-0.5 mr-1' /> {shopInfo?.phoneNumber}</h4>
+                            <h4 className='flex font-sans text-xs md:text-md'><AiOutlineMail className='mt-0.5 mr-1'/> {shopInfo?.email}</h4>
                         </div>
                         <div className="flex flex-col w-full">
                             <div className="divider divider-accent tracking-widest text-xs font-semibold mt-0 mb-1">INFORMATION</div>
                         </div>
                         <div className="flex w-full justify-between">
                             <div className="flex flex-col">
-                                <h2 className='uppercase font-bold text-xs md:text-md'>{invoiceData[0]?.customer}</h2>
-
+                                <h2 className='uppercase font-bold text-xs md:text-md'>NAME: {invoiceData.customerInfo.customerName || "Customer"}</h2>
+                                <p className='uppercase text-xs font-bold pt-1'>SOLD BY: {invoiceData.customerInfo.soldBy || "Shop"}</p>
                             </div>
                             <div className="flex flex-col items-end">
-                                <h4 className='font-semibold text-xs md:text-md uppercase'>Invoice No : {invoiceData[0]?.invoiceNo}</h4>
-                                <h4 className='font-semibold text-xs md:text-md uppercase pt-1'>Date : {invoiceData[0]?.date}</h4>
+                                <h4 className='font-semibold text-xs md:text-md uppercase'>Invoice No : {invoiceData.customerInfo.soldInvoice}</h4>
+                                <h4 className='font-semibold text-xs md:text-md uppercase pt-1'>Date : {invoiceData.salesStock[0].date}</h4>
                             </div>
                         </div>
                         <div className="w-full pt-2">
@@ -94,12 +116,12 @@ const Invoice = () => {
                                     </tr>
                                 </thead>
                                 <tbody className='text-xs md:text-md uppercase'>
-                                    {invoiceData?.map((products, index) => (
+                                    {invoiceData.salesStock.map((products: any, index: any) => (
                                         <tr key={index}>
                                             <td className='text-left p-0'>{products.category} {products.productName}</td>
-                                            <td>{products.dpRate.toLocaleString('en-IN')}.00</td>
+                                            <td>{Number(products.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
                                             <td>{products.productQty}</td>
-                                            <td className='text-right pr-0'>{(products.dpRate * products.productQty).toLocaleString('en-IN')}.00</td>
+                                            <td className='text-right pr-0'>{Number((products.saleRate * products.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -108,7 +130,7 @@ const Invoice = () => {
                                         <td></td>
                                         <td>TOTAL</td>
                                         <td>{totalQty.toLocaleString('en-IN')}</td>
-                                        <td className='text-end pr-0'>{subtotal.toLocaleString('en-IN')}.00</td>
+                                        <td className='text-end pr-0'>{Number(subtotal.toFixed(2)).toLocaleString('en-IN')}</td>
                                     </tr>
                                 </tfoot>
                             </table>
@@ -120,7 +142,7 @@ const Invoice = () => {
                             </div>
                         </div>
                         <div className="flex gap-2 pt-10">
-                          <FaRegHandshake size={24}/>  <p className='font-bold text-sm'>ধন্যবাদ, আবার আসবেন ।</p>
+                            <FaRegHandshake size={24} />  <p className='font-bold text-sm'>ধন্যবাদ, আবার আসবেন ।</p>
                         </div>
 
                     </div>

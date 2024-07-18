@@ -1,8 +1,8 @@
 "use client"
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react'
-import { toast, ToastContainer } from 'react-toastify';
-
+import { toast} from 'react-toastify';
+import { LiaHandScissors } from "react-icons/lia";
 const CashBook = () => {
     const router = useRouter();
     const [maxDate, setMaxDate] = useState('');
@@ -26,10 +26,9 @@ const CashBook = () => {
         setDate('');
     }
     return (
-        <div className="flex gap-3 justify-center font-bold">
-            <input type='date' className='input input-success' onChange={(e: any) => setDate(e.target.value)} max={maxDate} />
-            <button onClick={handleCashbook} className='btn bt-xs btn-success btn-square btn-outline'>GO</button>
-            <ToastContainer autoClose={1000} theme='dark'/>
+        <div className="flex flex-col gap-3 justify-center font-bold">
+            <input type='date' className='input input-sm input-success' onChange={(e: any) => setDate(e.target.value)} max={maxDate} />
+            <button onClick={handleCashbook} className='btn btn-sm btn-success'><LiaHandScissors size={20} /> GO </button>
         </div>
     )
 }

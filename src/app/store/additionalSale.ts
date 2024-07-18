@@ -7,7 +7,6 @@ interface Product {
     category: string;
     productName: string;
     costPrice: number;
-    remainingQty: number;
     saleRate: number;
     productQty: number;
     status: string;
@@ -22,12 +21,12 @@ const initialState: SalesProduct = {
     products: [],
 };
 
-export const salesProductSaleSlice = createSlice({
-    name: "salesProduct",
+export const additionalSaleSlice = createSlice({
+    name: "additionalSale",
     initialState,
     reducers: {
         showProducts: (state) => state,
-        addProducts: (state, action: PayloadAction<Product>) => {
+        aaddProducts: (state, action: PayloadAction<Product>) => {
             const exist = state.products.find((pro) => pro.productName === action.payload.productName)
             if (exist) {
                 swal("Oops!", "This Product is already exist!", "error");
@@ -37,16 +36,16 @@ export const salesProductSaleSlice = createSlice({
 
         },
 
-        deleteProduct: (state, action) => {
+        adeleteProduct: (state, action) => {
             const id = action.payload;
             state.products = state.products.filter((product) => product.id !== id);
         },
-        deleteAllProducts: (state) => {
+        adeleteAllProducts: (state) => {
             state.products = [];
         },
     }
 
 })
-export const { showProducts, addProducts, deleteProduct, deleteAllProducts } = salesProductSaleSlice.actions;
+export const { showProducts, aaddProducts, adeleteProduct, adeleteAllProducts } = additionalSaleSlice.actions;
 
-export default salesProductSaleSlice.reducer;
+export default additionalSaleSlice.reducer;
