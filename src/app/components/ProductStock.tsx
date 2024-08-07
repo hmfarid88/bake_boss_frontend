@@ -6,12 +6,12 @@ import { uid } from "uid";
 import { useAppDispatch, useAppSelector } from "@/app/store";
 import { addProducts, addProductMaterials, deleteProduct, deleteAllProducts } from "@/app/store/productSlice";
 import { toast } from 'react-toastify';
+import { FcPlus } from 'react-icons/fc';
 
 const ProductStock = () => {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     const [pending, setPending] = useState(false);
-    const [shouldFetch, setShouldFetch] = useState(true);
-
+    
     const dispatch = useAppDispatch();
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
@@ -67,7 +67,7 @@ const ProductStock = () => {
                     setMarginSetup(data);
                 }
             } catch (error) {
-                toast.error("Error fetching margin setup.");
+                // toast.error("Error fetching margin setup.");
             }
         };
 
@@ -96,6 +96,39 @@ const ProductStock = () => {
         }
         return items.reduce((rp, item) =>
             rp + ((item.averageRate * item.qty) + ((item.averageRate * item.qty * marginSetup.rpMargin) / 100)), 0);
+    };
+
+    const [categoryName, setCategoryName] = useState("");
+    const handleCategorySubmit = async (e: any) => {
+        e.preventDefault();
+
+        if (!categoryName) {
+            toast.warning("Category name is empty !")
+            return;
+        }
+        setPending(true)
+        try {
+            const response = await fetch(`${apiBaseUrl}/api/addCategoryName`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ categoryName, username }),
+            });
+
+            if (response.ok) {
+                toast.success("Item added successfully !");
+            } else {
+                const data = await response.json();
+                toast.error(data.message);
+            }
+        } catch (error) {
+            toast.error("Invalid product name !")
+        } finally {
+            setPending(false);
+            setCategoryName("");
+        }
+
     };
     const pid = uid();
   const handleMaterialsSubmit = async () => {
@@ -181,7 +214,7 @@ const ProductStock = () => {
     };
     const [categoryOption, setCategoryOption] = useState([]);
   useEffect(() => {
-    if (shouldFetch) {
+  
     fetch(`${apiBaseUrl}/api/getCategoryName?username=${username}`)
       .then(response => response.json())
       .then(data => {
@@ -191,16 +224,16 @@ const ProductStock = () => {
           label: item.categoryName
         }));
         setCategoryOption(transformedData);
-        setShouldFetch(false);
+   
       })
       .catch(error => console.error('Error fetching products:', error));
-    }
-  }, [apiBaseUrl, shouldFetch, username]);
+
+  }, [categoryName, apiBaseUrl, username]);
 
   
   const [itemOption, setItemOption] = useState([]);
   useEffect(() => {
-    if (shouldFetch) {
+
       fetch(`${apiBaseUrl}/api/getMadeProducts`)
         .then(response => response.json())
         .then(data => {
@@ -209,23 +242,24 @@ const ProductStock = () => {
             label: madeItem
           }));
           setItemOption(transformedData);
-          setShouldFetch(false);
+
         })
         .catch(error => console.error('Error fetching products:', error));
-    }
-  }, [shouldFetch, apiBaseUrl]);
+    
+  }, [apiBaseUrl]);
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full items-center">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full items-center">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full items-center">
                 <label className="form-control w-full max-w-xs">
                     <div className="label">
                         <span className="label-text-alt">STOCK DATE</span>
                     </div>
-                    <input type="date" name="date" onChange={(e: any) => setStockDate(e.target.value)} max={maxDate} value={maxDate} className="border rounded-md p-2 bg-white text-black  w-full max-w-xs h-[40px]" readOnly />
+                    <input type="date" name="date" onChange={(e: any) => setStockDate(e.target.value)} max={maxDate} value={maxDate} className="border rounded-md p-2 mt-1.5 bg-white text-black  w-full max-w-xs h-[40px]" readOnly />
                 </label>
                 <label className="form-control w-full max-w-xs">
                     <div className="label">
                         <span className="label-text-alt">CATEGORY</span>
+                        <a href="#my_modal_category" className="btn btn-xs btn-circle btn-ghost"><FcPlus size={20} /></a>
                     </div>
                     <Select className="text-black" name="catagory" onChange={(selectedOption: any) => setCategory(selectedOption.value)} options={categoryOption} required />
                 </label>
@@ -292,6 +326,28 @@ const ProductStock = () => {
                     <button onClick={handleFinalStockSubmit} className="btn btn-success btn-outline btn-sm max-w-xs" disabled={pending} >{pending ? "Submitting..." : "Add All Products"}</button>
                 </div>
             </div>
+            <div className="modal sm:modal-middle" role="dialog" id="my_modal_category">
+            <div className="modal-box">
+            <div className="flex w-full items-center justify-center p-2">
+                <label className="form-control w-full max-w-xs">
+                    <div className="label">
+                        <span className="label-text-alt">ADD CATEGORY</span>
+                    </div>
+                    <div className="flex items-center justify-between">
+                        <input type="text" value={categoryName} name="colorItem" onChange={(e: any) => setCategoryName(e.target.value)} placeholder="Type here" className="input input-bordered w-3/4 max-w-xs" required />
+                        <button onClick={handleCategorySubmit} disabled={pending} className="btn btn-square btn-success">{pending ? "Adding..." : "ADD"}</button>
+                    </div>
+                </label>
+            </div>
+              <div className="modal-action">
+                <a href="#" className="btn btn-square btn-ghost">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-10 h-10">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                  </svg>
+                </a>
+              </div>
+            </div>
+          </div>
         </div>
     )
 }

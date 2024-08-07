@@ -1,5 +1,5 @@
 import React from 'react'
-import OfficeRecev from '@/app/components/OfficeRecev';
+import OfficeReceive from '@/app/components/OfficeReceive';
 
 const Receive = () => {
    return (
@@ -8,7 +8,7 @@ const Receive = () => {
         <div role="tablist" className="tabs tabs-bordered">
           <input type="radio" name="my_tabs_1" role="tab" className="tab" aria-label="OFFICE RECEIVE" defaultChecked />
           <div role="tabpanel" className="tab-content p-10">
-            <OfficeRecev />
+            <OfficeReceive />
           </div>
         </div>
       </div>

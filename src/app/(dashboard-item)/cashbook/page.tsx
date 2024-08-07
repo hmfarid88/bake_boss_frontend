@@ -7,13 +7,13 @@ import { useReactToPrint } from 'react-to-print';
 interface Payment {
   date: string;
   name: string;
-  type: string;
+  note: string;
   amount: number;
 }
 interface Receive {
   date: string;
   name: string;
-  type: string;
+  note: string;
   amount: number;
 }
 
@@ -107,7 +107,7 @@ const CashBook = () => {
                     {receives?.map((receive, index) => (
                       <tr key={index}>
                         <td>{receive.date}</td>
-                        <td className='uppercase'>{receive.name}, {receive.type}</td>
+                        <td className='uppercase'>{receive.name}, {receive.note}</td>
                         <td>{(receive.amount ?? 0).toLocaleString('en-IN')}</td>
                       </tr>
                     ))}
@@ -141,7 +141,7 @@ const CashBook = () => {
                     {payments.map((payment, index) => (
                       <tr key={index}>
                         <td>{payment.date}</td>
-                        <td className='uppercase'>{payment.name}, {payment.type}</td>
+                        <td className='uppercase'>{payment.name}, {payment.note}</td>
                         <td>{(payment.amount ?? 0).toLocaleString('en-IN')}</td>
                       </tr>
                     ))}

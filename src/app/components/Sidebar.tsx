@@ -1,9 +1,8 @@
 
 import Link from 'next/link'
 import { IoHomeOutline } from "react-icons/io5";
-import { MdOutlineShoppingCartCheckout } from "react-icons/md";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
-import { RiSecurePaymentLine } from "react-icons/ri";
+import { RiFileDamageLine, RiSecurePaymentLine } from "react-icons/ri";
 import { GoDatabase } from "react-icons/go";
 import { TbReportSearch } from "react-icons/tb";
 import { MdOutlinePayments } from "react-icons/md";
@@ -12,6 +11,8 @@ import { VscRepo } from "react-icons/vsc";
 import { MdOutlineInterests } from "react-icons/md";
 import { GrUserAdmin } from "react-icons/gr";
 import CashBook from './CashBook';
+import Invoice from './Invoice';
+import { BsDatabaseAdd } from 'react-icons/bs';
 
 
 export const Sidebar = () => {
@@ -31,8 +32,17 @@ export const Sidebar = () => {
                     <label htmlFor="my-drawer-3" aria-label="close sidebar" className="drawer-overlay"></label>
                     <ul className="menu p-4 w-60 min-h-full bg-base-200 text-base-content">
                         <li><Link href="/dashboard"><IoHomeOutline size={20} /> HOME</Link></li>
-                        <li><Link href="/purchase"><MdOutlineShoppingCartCheckout size={20} /> PURCHASE</Link></li>
-                        <li><Link href="/sale"><HiOutlineShoppingBag size={20} /> DISTRIBUTION</Link></li>
+                        <li><Link href="/purchase"><BsDatabaseAdd size={20} /> PRODUCT STOCK</Link></li>
+                        <li><Link href="/damage-product"><RiFileDamageLine size={20} /> DAMAGE PRODUCT</Link></li>
+                        <li>
+                            <details>
+                                <summary><HiOutlineShoppingBag size={20} /> DISTRIBUTION</summary>
+                                <ul>
+                                    <li><a><Link href="/dp-dist">DP DISTRIBUTION</Link></a></li>
+                                    <li><a><Link href="/rp-dist">RP DISTRIBUTION</Link></a></li>
+                                </ul>
+                            </details>
+                        </li>
                         <li>
                             <details>
                                 <summary><RiSecurePaymentLine size={20} /> TRANSACTION</summary>
@@ -49,22 +59,71 @@ export const Sidebar = () => {
                                     <li><a><Link href="/itemlist">ITEMS LIST</Link></a></li>
                                     <li><a><Link href="/materials">MATERIALS STOCK</Link></a></li>
                                     <li><a><Link href="/stockreport">MADE PRODUCTS</Link></a></li>
+                                    <li><a><Link href="/damaged-product">DAMAGED PRODUCT</Link></a></li>
                                 </ul>
                             </details>
                         </li>
-                        <li><Link href="/salereport"><TbReportSearch size={20} /> DIST REPORT</Link></li>
-                        <li><Link href="/paymentreport"><MdOutlinePayments size={20} /> PAYMENT REPORT</Link></li>
-                        <li><Link href="/ledgerbook"><PiNotebook size={20} /> LEDGER BOOK</Link></li>
-                        <li><Link href="/profitloss"><MdOutlineInterests size={20} /> PROFIT / LOSS</Link></li>
-                        <li><Link href="/adminstration"><GrUserAdmin size={20} /> ADMINSTRATION</Link></li>
                         <li>
-                            <details className="collapse collapse-arrow bg-base-200">
-                                <summary className="collapse-title"><a className='flex gap-2'><VscRepo size={20} /> CASH BOOK </a></summary>
-                                <div className="collapse-content">
-                                    <CashBook />
-                                </div>
-                            </details >
+                            <details>
+                                <summary><TbReportSearch size={20} /> DIST REPORT</summary>
+                                <ul>
+                                    <li><a><Link href="/dp-dist-report">DP DISTRIBUTION</Link></a></li>
+                                    <li><a><Link href="/rp-dist-report">RP DISTRIBUTION</Link></a></li>
+                                </ul>
+                            </details>
+                            </li>
+                        <li>
+                            <details>
+                                <summary><MdOutlinePayments size={20} /> PAYMENT REPORT</summary>
+                                <ul>
+                                    <li><a><Link href="/expense-report"> EXPENSE REPORT</Link></a></li>
+                                    <li><a><Link href="/office-pay-report"> OFFICE PAYMENT</Link></a></li>
+                                    <li><a><Link href="/supplier-pay-report"> SUPPLIER PAYMENT</Link></a></li>
+                                </ul>
+                            </details>
                         </li>
+                        <li>
+                            <details>
+                                <summary><MdOutlinePayments size={20} /> RECEIVE REPORT</summary>
+                                <ul>
+                                <li><a><Link href="/office-receive-report"> OFFICE RECEIVE</Link></a></li>
+                                <li><a><Link href="/retailer-pay-report"> RETAILER PAYMENT</Link></a></li>
+                                </ul>
+                            </details>
+                        </li>
+                        <li>
+                            <details>
+                                <summary><PiNotebook size={20} /> LEDGER BOOK</summary>
+                                <ul>
+                                    <li><a><Link href="/supplier-ledger">SUPPLIER LEDGER</Link></a></li>
+                                    <li><a><Link href="/materials-ledger">MATERIALS LEDGER</Link></a></li>
+                                    <li><a><Link href="/stock-ledger">STOCK LEDGER</Link></a></li>
+                                </ul>
+                            </details>
+                        </li>
+                        <li>
+                            <details>
+                                <summary><a className='flex gap-2'><VscRepo size={20} /> CASH BOOK </a></summary>
+                                <ul>
+                                    <li>
+                                        <CashBook />
+                                    </li>
+                                </ul>
+                            </details>
+                        </li>
+                        <li>
+                            <details>
+                                <summary><a className='flex gap-2'><PiNotebook size={20}/>FIND INVOICE </a></summary>
+                                <ul>
+                                    <li>
+                                        <Invoice/>
+                                    </li>
+                                </ul>
+                            </details>
+                        </li>
+                        <li><Link href="/profit-report"><MdOutlineInterests size={20} /> PROFIT / LOSS</Link></li>
+                        <li><Link href="/adminstration"><GrUserAdmin size={20} /> ADMINSTRATION</Link></li>
+
                     </ul>
 
                 </div>

@@ -16,26 +16,27 @@ const Expense = () => {
   const [date, setDate] = useState<Value>(new Date());
   // expense
   const [expenseName, setExpenseName] = useState("");
+  const [expenseNote, setExpenseNote] = useState("");
   const [expensAmount, setExpenseAmount] = useState("");
 
   const handleExpenseSubmit = async (e: any) => {
     e.preventDefault();
-    if (!expenseName || !expensAmount) {
+    if (!expenseName || !expenseNote || !expensAmount) {
       toast.warning("Item is empty !");
       return;
     }
     setPending(true);
     try {
-      const response = await fetch(`${apiBaseUrl}/paymentApi/paymentRecord`, {
+      const response = await fetch(`${apiBaseUrl}/paymentApi/expenseRecord`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ date, paymentName: expenseName, paymentType: "expense", amount: expensAmount, username }),
+        body: JSON.stringify({ date, expenseName, expenseNote, amount: expensAmount, username }),
       });
 
       if (response.ok) {
-        toast.success("Payment added successfully !");
+        toast.success("Expense added successfully !");
       } else {
         const data = await response.json();
         toast.error(data.message);
@@ -45,6 +46,7 @@ const Expense = () => {
     } finally {
       setPending(false);
       setExpenseName("");
+      setExpenseNote("");
       setExpenseAmount("");
     }
   };
@@ -57,6 +59,14 @@ const Expense = () => {
                   <span className="label-text">Expense Name</span>
                 </div>
                 <input type="text" value={expenseName} onChange={(e) => setExpenseName(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+              </label>
+            </div>
+            <div className="flex">
+              <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text">Expense Note</span>
+                </div>
+                <input type="text" value={expenseNote} onChange={(e) => setExpenseNote(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
               </label>
             </div>
             <div className="flex">

@@ -3,16 +3,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAppSelector } from "@/app/store";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
-import DateToDate from "@/app/components/DateToDate";
 
 type Product = {
-  date: string;
   category: string;
   productName: string;
-  soldInvoice: string;
-  saleRate: number;
+  dpRate: number;
+  rpRate: number;
   costPrice: number;
-  productQty: number;
+  remainingQty: number;
 };
 
 
@@ -30,7 +28,7 @@ const Page = () => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/sales/getOutletSale?username=${username}`)
+    fetch(`${apiBaseUrl}/api/getDamagedStock?username=${username}`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);
@@ -43,9 +41,7 @@ const Page = () => {
   useEffect(() => {
     const filtered = allProducts.filter(product =>
       product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-      product.category.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-      product.date.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-      product.soldInvoice.toLowerCase().includes(filterCriteria.toLowerCase())
+      product.category.toLowerCase().includes(filterCriteria.toLowerCase())
     );
     setFilteredProducts(filtered);
   }, [filterCriteria, allProducts]);
@@ -54,19 +50,17 @@ const Page = () => {
     setFilterCriteria(e.target.value);
   };
   const totalValue = filteredProducts.reduce((total, product) => {
-    return total + (product.saleRate * product.productQty);
+    return total + product.costPrice * product.remainingQty;
   }, 0);
-  const totalQty = filteredProducts.reduce((acc, item) => acc + item.productQty, 0);
+
+  const totalQty = filteredProducts.reduce((total, product) => {
+    return total + product.remainingQty;
+  }, 0);
+
   return (
-    <div className="container-2xl min-h-[calc(100vh-228px)]">
-      <div className="flex w-full items-center justify-center">
-          <DateToDate/>
-        </div>
-        <div className="flex flex-col w-full">
-                    <div className="divider divider-accent tracking-widest font-bold p-2">SALES REPORT</div>
-                </div>
-      <div className="flex w-full  p-4 items-center justify-center">
-                <div className="overflow-x-auto">
+    <div className="container-2xl">
+      <div className="flex w-full min-h-[calc(100vh-228px)] p-4 items-center justify-center">
+        <div className="overflow-x-auto">
           <div className="flex justify-between pl-5 pr-5">
             <label className="input input-bordered flex max-w-xs  items-center gap-2">
               <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
@@ -81,12 +75,11 @@ const Page = () => {
               <thead>
                 <tr>
                   <th>SN</th>
-                  <th>DATE</th>
                   <th>CATEGORY</th>
                   <th>PRODUCT NAME</th>
-                  <th>INVOICE NO</th>
+                  <th>DP PRICE</th>
+                  <th>RP PRICE</th>
                   <th>COST PRICE</th>
-                  <th>SALE PRICE</th>
                   <th>QUANTITY</th>
                   <th>SUB TOTAL</th>
                 </tr>
@@ -95,22 +88,21 @@ const Page = () => {
                 {filteredProducts?.map((product, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
-                    <td>{product.date}</td>
                     <td>{product.category}</td>
                     <td>{product.productName}</td>
-                    <td className="uppercase">{product.soldInvoice}</td>
+                    <td>{product.dpRate}</td>
+                    <td>{product.rpRate}</td>
                     <td>{Number(product.costPrice.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{Number(product.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{product.productQty.toLocaleString('en-IN')}</td>
-                    <td>{Number((product.saleRate * product.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{product.remainingQty.toLocaleString('en-IN')}</td>
+                    <td>{Number((product.costPrice * product.remainingQty).toFixed(2)).toLocaleString('en-IN')}</td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
                 <tr className="font-semibold text-lg">
-                  <td colSpan={6}></td>
+                  <td colSpan={5}></td>
                   <td>TOTAL</td>
-                  <td>{totalQty}</td>
+                  <td>{totalQty.toLocaleString('en-IN')}</td>
                   <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
                 </tr>
               </tfoot>

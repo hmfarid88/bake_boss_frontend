@@ -6,7 +6,7 @@ import { FcCalendar } from "react-icons/fc";
 import { useAppSelector } from '@/app/store';
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
-const OfficeRecev = () => {
+const OfficeReceive = () => {
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -15,12 +15,13 @@ const OfficeRecev = () => {
     const [date, setDate] = useState<Value>(new Date());
    
     const [receiveName, setReceiveName] = useState("");
+    const [receiveNote, setReceiveNote] = useState("");
     const [receiveAmount, setReceiveAmount] = useState("");
   
     
     const handleReceiveSubmit = async (e: any) => {
       e.preventDefault();
-      if (!receiveName || !receiveAmount) {
+      if (!receiveName ||!receiveNote ||!receiveAmount) {
         toast.warning("Item is empty !");
         return;
       }
@@ -31,7 +32,7 @@ const OfficeRecev = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ date, receiveName, amount:receiveAmount, username }),
+          body: JSON.stringify({ date, receiveName, receiveNote, amount:receiveAmount, username }),
         });
   
         if (response.ok) {
@@ -45,6 +46,7 @@ const OfficeRecev = () => {
       } finally {
         setPending(false);
         setReceiveName("");
+        setReceiveNote("");
         setReceiveAmount("");
       }
     };
@@ -57,6 +59,14 @@ const OfficeRecev = () => {
                   <span className="label-text">Receive Name</span>
                 </div>
                 <input type="text" value={receiveName} onChange={(e) => setReceiveName(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+              </label>
+            </div>
+            <div className="flex">
+              <label className="form-control w-full max-w-xs">
+                <div className="label">
+                  <span className="label-text">Receive Note</span>
+                </div>
+                <input type="text" value={receiveNote} onChange={(e) => setReceiveNote(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
               </label>
             </div>
             <div className="flex">
@@ -76,4 +86,4 @@ const OfficeRecev = () => {
   )
 }
 
-export default OfficeRecev
+export default OfficeReceive

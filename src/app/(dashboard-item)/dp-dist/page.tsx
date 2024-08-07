@@ -6,7 +6,7 @@ import { addProducts, deleteAllProducts, deleteProduct } from "@/app/store/produ
 import Select from "react-select";
 import { uid } from 'uid';
 import { DatePicker } from 'react-date-picker';
-import { toast, ToastContainer } from "react-toastify";
+import { toast} from "react-toastify";
 import { FcCalendar } from "react-icons/fc";
 import { RiDeleteBin6Line } from "react-icons/ri";
 type ValuePiece = Date | null;

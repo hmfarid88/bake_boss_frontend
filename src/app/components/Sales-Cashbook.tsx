@@ -28,7 +28,7 @@ const CashBook = () => {
     return (
         <div className="flex flex-col gap-3 justify-center font-bold">
             <input type='date' className='input input-sm input-success' onChange={(e: any) => setDate(e.target.value)} max={maxDate} />
-            <button onClick={handleCashbook} className='btn btn-sm btn-success'><LiaHandScissors size={20} /> GO </button>
+            <button onClick={handleCashbook} className='btn btn-sm btn-success w-full'><LiaHandScissors size={20} /> GO </button>
         </div>
     )
 }

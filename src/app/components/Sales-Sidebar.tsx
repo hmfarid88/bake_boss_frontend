@@ -11,6 +11,7 @@ import { VscRepo } from "react-icons/vsc";
 import { MdOutlineInterests } from "react-icons/md";
 import { GrUserAdmin } from "react-icons/gr";
 import CashBook from './Sales-Cashbook';
+import Invoice from './Sales-Invoice';
 
 
 export const SalesSidebar = () => {
@@ -45,18 +46,47 @@ export const SalesSidebar = () => {
                             </details>
                         </li>
                         <li><Link href="/sales-salereport"><TbReportSearch size={20} /> SALES REPORT</Link></li>
-                        <li><Link href="/sales-paymentreport"><MdOutlinePayments size={20} /> PAYMENT REPORT</Link></li>
-                        <li><Link href="/sales-ledgerbook"><PiNotebook size={20} /> LEDGER BOOK</Link></li>
+                        <li>
+                            <details>
+                                <summary><MdOutlinePayments size={20} /> TRANS REPORT</summary>
+                                <ul>
+                                    <li><a><Link href="/sales-paymentreport"> PAYMENT REPORT</Link></a></li>
+                                    <li><a><Link href="/sales-receivereport"> RECEIVE REPORT</Link></a></li>
+                                </ul>
+                            </details>
+                        </li>
+                        <li>
+                            <details>
+                                <summary><PiNotebook size={20} /> LEDGER BOOK</summary>
+                                <ul>
+                                    <li><a><Link href="/sales-supplier-ledger">SUPPLIER LEDGER</Link></a></li>
+                                    <li><a><Link href="/sales-stock-ledger">STOCK LEDGER</Link></a></li>
+                                </ul>
+                            </details>
+                        </li>
+                        <li>
+                            <details>
+                                <summary><a className='flex gap-2'><VscRepo size={20} /> CASH BOOK </a></summary>
+                                <ul>
+                                    <li>
+                                        <CashBook />
+                                    </li>
+                                </ul>
+                            </details>
+                        </li>
+                        <li>
+                            <details>
+                                <summary><a className='flex gap-2'><PiNotebook size={20}/>FIND INVOICE </a></summary>
+                                <ul>
+                                    <li>
+                                        <Invoice/>
+                                    </li>
+                                </ul>
+                            </details>
+                        </li>
                         <li><Link href="/sales-profitloss"><MdOutlineInterests size={20} /> PROFIT / LOSS</Link></li>
                         <li><Link href="/sales-admin"><GrUserAdmin size={20} /> ADMINSTRATION</Link></li>
-                        <li>
-                            <details className="collapse collapse-arrow bg-base-200">
-                                <summary className="collapse-title"><a className='flex gap-2'><VscRepo size={20} /> CASH BOOK </a></summary>
-                                <div className="collapse-content">
-                                    <CashBook />
-                                </div>
-                            </details >
-                        </li>
+
                     </ul>
                 </div>
             </div>

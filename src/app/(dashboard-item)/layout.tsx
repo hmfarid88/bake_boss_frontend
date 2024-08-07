@@ -1,6 +1,7 @@
 import Header from "../components/Header"
 import Sidebar from "../components/Sidebar"
 import Footer from "../components/Footer"
+import { ToastContainer } from "react-toastify"
 
 export default function DashboardLayout({
     children,
@@ -18,7 +19,7 @@ export default function DashboardLayout({
                 <Footer />
             </div>
         </div>
-
+        <ToastContainer autoClose={1000} theme='dark' />
     </section>
 
 }

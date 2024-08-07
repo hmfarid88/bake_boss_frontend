@@ -1,7 +1,7 @@
 import React from 'react'
 import Expense from '@/app/components/Expense';
-import OfficeCost from '@/app/components/OfficeCost';
 import SupplierPayment from '@/app/components/SupplierPayment';
+import OfficePayment from '@/app/components/OfficePayment';
 
 const Payment = () => {
   return (
@@ -14,7 +14,7 @@ const Payment = () => {
           </div>
           <input type="radio" name="my_tabs_1" role="tab" className="tab" aria-label="OFFICE PAYMENT" />
           <div role="tabpanel" className="tab-content p-10">
-            <OfficeCost />
+            <OfficePayment />
           </div>
           <input type="radio" name="my_tabs_1" role="tab" className="tab" aria-label="SUPPLIER PAYMENT" />
           <div role="tabpanel" className="tab-content p-10">

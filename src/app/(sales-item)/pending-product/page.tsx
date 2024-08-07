@@ -66,7 +66,7 @@ const Page = () => {
 
     const confirmAndHandleProductAccept = (e: any) => {
         e.preventDefault();
-        const isConfirmed = window.confirm("Are you sure you want to accept the products ?");
+        const isConfirmed = window.confirm("Are you sure to accept the products ?");
         if (isConfirmed) {
             handleProductAccept(e);
         }

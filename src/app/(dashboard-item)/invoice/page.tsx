@@ -6,6 +6,9 @@ import { FcPrint, FcPlus, FcDataSheet} from "react-icons/fc";
 import Link from 'next/link';
 import Loading from '@/app/loading';
 import { useSearchParams } from 'next/navigation';
+import { IoLocationOutline } from 'react-icons/io5';
+import { FaPhoneVolume } from 'react-icons/fa';
+import { AiOutlineMail } from 'react-icons/ai';
 
 const Invoice = () => {
     const uname = useAppSelector((state) => state.username.username);
@@ -30,8 +33,21 @@ const Invoice = () => {
         invoiceNo: number,
 
     }
-
-
+    interface shopData{
+        shopName:string,
+        phoneNumber:string,
+        address:string,
+        email:string
+    }
+    const [shopInfo, setShopInfo] = useState<shopData>();
+    useEffect(() => {
+        fetch(`${apiBaseUrl}/invoice/getShopInfo?username=${username}`)
+            .then(response => response.json())
+            .then(data => {
+                setShopInfo(data);
+            })
+            .catch(error => console.error('Error fetching products:', error));
+    }, [apiBaseUrl, username]);
     useEffect(() => {
         if (username && invoiceNo) {
             fetch(`${apiBaseUrl}/api/getInvoiceData?username=${username}&invoiceNo=${invoiceNo}`)
@@ -65,10 +81,11 @@ const Invoice = () => {
                         <h1 className='tracking-widest font-bold text-sm md:text-xl'>INVOICE</h1>
                     </div>
                     <div className="flex flex-col w-full justify-end items-end">
-                        <h1 className='uppercase font-bold text-xs md:text-md'>AURORA (PRODUCTION)</h1>
-                        <h4 className='font-serif text-xs md:text-md'>Jalkuri, Fatullah</h4>
-                        <h4 className='font-serif text-xs md:text-md'>Narayanganj</h4>
-                    </div>
+                            <h1 className='uppercase font-bold text-sm md:text-md'>{shopInfo?.shopName}</h1>
+                            <h4 className='flex font-sans text-xs md:text-md'><IoLocationOutline className='mt-0.5 mr-1'/> {shopInfo?.address}</h4>
+                            <h4 className='flex font-sans text-xs md:text-md'><FaPhoneVolume className='mt-0.5 mr-1' /> {shopInfo?.phoneNumber}</h4>
+                            <h4 className='flex font-sans text-xs md:text-md'><AiOutlineMail className='mt-0.5 mr-1'/> {shopInfo?.email}</h4>
+                        </div>
                     <div className="flex flex-col w-full">
                         <div className="divider divider-accent tracking-widest text-xs font-semibold mt-0 mb-1">INFORMATION</div>
                     </div>

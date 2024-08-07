@@ -6,6 +6,7 @@ import makeItemReducer from "../store/makeItemSlice";
 import materialReducer from "../store/materialSlice";
 import salesProductSaleReducer from "../store/salesProductSaleSlice";
 import additionalSaleReducer from "../store/additionalSale";
+import damageProductReducer from "../store/damageProducts";
 
 import {
   persistReducer,
@@ -20,6 +21,7 @@ import {
 import storage from 'redux-persist/lib/storage';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 
+
 const rootReducer = combineReducers({
   products: productReducer,
   username: usernameReducer,
@@ -27,7 +29,8 @@ const rootReducer = combineReducers({
   salesProduct:salesProductSaleReducer,
   makeProducts:makeItemReducer,
   materialProducts:materialReducer,
-  additionalSale:additionalSaleReducer
+  additionalSale:additionalSaleReducer,
+  damageProduct:damageProductReducer
  
 });
 
