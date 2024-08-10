@@ -16,7 +16,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.20.3]
+        node-version: [18.20.4]
         # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
     env:
       SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
@@ -24,13 +24,13 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
     - run: npm ci
     - run: npm run build --if-present
     - name: Change Directory
-      run: cd /home/frontend/bake-boss/actions-runner/_work/bake_boss_frontend/bake_boss_frontend
+      run: cd /home/frontend/frontend/bake-boss/actions-runner/_work/bake_boss_frontend/bake_boss_frontend
     - run: pm2 restart 0
-
+    
