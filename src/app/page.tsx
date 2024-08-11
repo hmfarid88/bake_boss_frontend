@@ -8,7 +8,7 @@ const page = () => {
                 <div className="flex items-center justify-center bg-base-100">
                     <div>
                         <FcHeatMap size={50} className='bnt btn-ghost rounded-md border border-cyan-500' /><span className='text-3xl font-extrabold font-sans'>BILLING</span> <span className='text-3xl font-extrabold text-accent font-sans'>CRAFT</span>
-                        <p className='text-xs tracking-widest font-bold text-pretty'>SIMPLIFY YOUR BUSINESS</p>
+                        <p className='text-xs tracking-widest font-bold text-pretty'>SIMPLIFY YOUR BUSINES</p>
                     </div>
                 </div>
                 <div className="flex items-center justify-center">
