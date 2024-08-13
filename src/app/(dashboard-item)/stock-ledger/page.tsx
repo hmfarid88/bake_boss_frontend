@@ -11,6 +11,7 @@ type Product = {
   dpRate: number;
   rpRate: number;
   costPrice: number;
+  status: string;
   productQty: number;
   remainingQty: number;
 };
@@ -44,6 +45,7 @@ const Page = () => {
     const filtered = allProducts.filter(product =>
       product.date.toLowerCase().includes(filterCriteria.toLowerCase()) ||
       product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) ||
+      product.status.toLowerCase().includes(filterCriteria.toLowerCase()) ||
       product.category.toLowerCase().includes(filterCriteria.toLowerCase())
     );
     setFilteredProducts(filtered);
@@ -54,7 +56,7 @@ const Page = () => {
   };
 
   const totalQty = filteredProducts.reduce((total, product) => {
-    return total + product.remainingQty + product.productQty;
+    return total + product.remainingQty;
   }, 0);
 
   return (
@@ -81,8 +83,8 @@ const Page = () => {
                   <th>DP PRICE</th>
                   <th>RP PRICE</th>
                   <th>COST PRICE</th>
-                  <th>PREVIOUS QTY</th>
-                  <th>ADDED QTY</th>
+                  <th>STATUS</th>
+                  <th>QTY</th>
                   <th>REMAINING QTY</th>
 
                 </tr>
@@ -97,9 +99,9 @@ const Page = () => {
                     <td>{product.dpRate}</td>
                     <td>{product.rpRate}</td>
                     <td>{Number(product.costPrice.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{product.remainingQty.toLocaleString('en-IN')}</td>
+                    <td>{product.status}</td>
                     <td>{product.productQty.toLocaleString('en-IN')}</td>
-                    <td>{Number((product.remainingQty + product.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number((product.remainingQty).toFixed(2)).toLocaleString('en-IN')}</td>
                   </tr>
                 ))}
               </tbody>

@@ -40,7 +40,7 @@ const Materials = () => {
             toast.warning("Item is empty !");
             return;
         }
-        const materialsItem = { id: uid(), date: maxDate, supplierName: mSupplierName, supplierInvoice: mSupplierInvoice, materialsName, materialsRate, materialsQty, username, status: 'stored' };
+        const materialsItem = { id: uid(), date: materialDate, supplierName: mSupplierName, supplierInvoice: mSupplierInvoice, materialsName, materialsRate, materialsQty, username, status: 'stored' };
         dispatch(addMaterials(materialsItem))
         setMaterialsRate('');
         setMaterialsQty('');
@@ -184,7 +184,7 @@ const Materials = () => {
                         <div className="label">
                             <span className="label-text-alt">STOCK DATE</span>
                         </div>
-                        <input type="date" name="date" onChange={(e: any) => setMaterialDate(e.target.value)} max={maxDate} value={maxDate} className="border rounded-md p-2 mt-1.5 bg-white text-black  w-full max-w-xs h-[40px]" readOnly />
+                        <input type="date" name="date" onChange={(e: any) => setMaterialDate(e.target.value)} max={maxDate} value={materialDate} className="border rounded-md p-2 mt-1.5 bg-white text-black  w-full max-w-xs h-[40px]" />
                     </label>
                     <label className="form-control w-full max-w-xs">
                         <div className="label">
