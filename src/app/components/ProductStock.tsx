@@ -11,7 +11,7 @@ import { FcPlus } from 'react-icons/fc';
 const ProductStock = () => {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     const [pending, setPending] = useState(false);
-    
+
     const dispatch = useAppDispatch();
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
@@ -131,31 +131,31 @@ const ProductStock = () => {
 
     };
     const pid = uid();
-  const handleMaterialsSubmit = async () => {
-    try {
-      const updatedItems = items.map(item => ({
-        ...item,
-        remainingQty: (item.remainingQty - (item.qty * numericProductQty)),
-        madeItem: item.itemName,
-        status: 'used',
-        date: maxDate,
-        materialsRate: item.averageRate,
-        username: username,
-        materialsName: item.materialsName,
-        averageRate: item.averageRate,
-        materialsQty: item.qty * numericProductQty,
-        id: pid
-      }));
-      updatedItems.forEach(item => {
-        dispatch(addProductMaterials(item));
-      });
-    } catch (error) {
-      toast.error('Failed to update items.');
-    }
-  };
+    const handleMaterialsSubmit = async () => {
+        try {
+            const updatedItems = items.map(item => ({
+                ...item,
+                remainingQty: (item.remainingQty - (item.qty * numericProductQty)),
+                madeItem: item.itemName,
+                status: 'used',
+                date: maxDate,
+                materialsRate: item.averageRate,
+                username: username,
+                materialsName: item.materialsName,
+                averageRate: item.averageRate,
+                materialsQty: item.qty * numericProductQty,
+                id: pid
+            }));
+            updatedItems.forEach(item => {
+                dispatch(addProductMaterials(item));
+            });
+        } catch (error) {
+            toast.error('Failed to update items.');
+        }
+    };
     const handleProductStock = (e: any) => {
         e.preventDefault();
-        if (!category || !productName || !productQty) {
+        if (!stockDate || !category || !productName || !productQty) {
             toast.warning("Item is empty !");
             return;
         } else if (calculateCost() <= 0) {
@@ -165,7 +165,7 @@ const ProductStock = () => {
             toast.warning('DP Rate & RP Rate not added !');
             return;
         }
-        const product = { id: pid, date: maxDate, category, productName, costPrice: calculateCost().toFixed(2), dpRate: calculateDp().toFixed(2), rpRate: calculateRp().toFixed(2), productQty, username, status: 'stored' }
+        const product = { id: pid, date: stockDate, category, productName, costPrice: calculateCost().toFixed(2), dpRate: calculateDp().toFixed(2), rpRate: calculateRp().toFixed(2), productQty, username, status: 'stored' }
         dispatch(addProducts(product));
         handleMaterialsSubmit();
         setProductQty("");
@@ -213,62 +213,62 @@ const ProductStock = () => {
         }
     };
     const [categoryOption, setCategoryOption] = useState([]);
-  useEffect(() => {
-  
-    fetch(`${apiBaseUrl}/api/getCategoryName?username=${username}`)
-      .then(response => response.json())
-      .then(data => {
-        const transformedData = data.map((item: any) => ({
-          id: item.id,
-          value: item.categoryName,
-          label: item.categoryName
-        }));
-        setCategoryOption(transformedData);
-   
-      })
-      .catch(error => console.error('Error fetching products:', error));
+    useEffect(() => {
 
-  }, [categoryName, apiBaseUrl, username]);
+        fetch(`${apiBaseUrl}/api/getCategoryName?username=${username}`)
+            .then(response => response.json())
+            .then(data => {
+                const transformedData = data.map((item: any) => ({
+                    id: item.id,
+                    value: item.categoryName,
+                    label: item.categoryName
+                }));
+                setCategoryOption(transformedData);
 
-  
-  const [itemOption, setItemOption] = useState([]);
-  useEffect(() => {
+            })
+            .catch(error => console.error('Error fetching products:', error));
 
-      fetch(`${apiBaseUrl}/api/getMadeProducts`)
-        .then(response => response.json())
-        .then(data => {
-          const transformedData = data.map((madeItem: any) => ({
-            value: madeItem,
-            label: madeItem
-          }));
-          setItemOption(transformedData);
+    }, [categoryName, apiBaseUrl, username]);
 
-        })
-        .catch(error => console.error('Error fetching products:', error));
-    
-  }, [apiBaseUrl]);
+
+    const [itemOption, setItemOption] = useState([]);
+    useEffect(() => {
+
+        fetch(`${apiBaseUrl}/api/getMadeProducts`)
+            .then(response => response.json())
+            .then(data => {
+                const transformedData = data.map((madeItem: any) => ({
+                    value: madeItem,
+                    label: madeItem
+                }));
+                setItemOption(transformedData);
+
+            })
+            .catch(error => console.error('Error fetching products:', error));
+
+    }, [apiBaseUrl]);
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full items-center">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full items-center">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
+            <div className="grid grid-cols-1 gap-2 w-full">
                 <label className="form-control w-full max-w-xs">
                     <div className="label">
                         <span className="label-text-alt">STOCK DATE</span>
                     </div>
-                    <input type="date" name="date" onChange={(e: any) => setStockDate(e.target.value)} max={maxDate} value={maxDate} className="border rounded-md p-2 mt-1.5 bg-white text-black  w-full max-w-xs h-[40px]" readOnly />
+                    <input type="date" name="date" onChange={(e: any) => setStockDate(e.target.value)} max={maxDate} value={stockDate} className="border rounded-md p-2 mt-1.5 bg-white text-black  w-full max-w-xs h-[40px]" />
                 </label>
                 <label className="form-control w-full max-w-xs">
                     <div className="label">
                         <span className="label-text-alt">CATEGORY</span>
                         <a href="#my_modal_category" className="btn btn-xs btn-circle btn-ghost"><FcPlus size={20} /></a>
                     </div>
-                    <Select className="text-black" name="catagory" onChange={(selectedOption: any) => setCategory(selectedOption.value)} options={categoryOption} required />
+                    <Select className="text-black" name="catagory" onChange={(selectedOption: any) => setCategory(selectedOption.value)} options={categoryOption} />
                 </label>
 
-                <label className="form-control w-full max-w-xs pt-5">
+                <label className="form-control w-full max-w-xs">
                     <div className="label">
                         <span className="label-text-alt">PRODUCT NAME</span>
                     </div>
-                    <Select className="text-black" name="pname" onChange={(selectedOption: any) => setProductName(selectedOption.value)} options={itemOption} required />
+                    <Select className="text-black" name="pname" onChange={(selectedOption: any) => setProductName(selectedOption.value)} options={itemOption} />
                     <p className="text-xs pt-2">Cost: {calculateCost().toFixed(2)} | Dp: {calculateDp().toFixed(2)} | Rp: {calculateRp().toFixed(2)}</p>
                 </label>
 
@@ -276,16 +276,15 @@ const ProductStock = () => {
                     <div className="label">
                         <span className="label-text-alt">PRODUCT QTY</span>
                     </div>
-                    <input type="number" maxLength={5} name="pqty" value={productQty} placeholder="Type here" onChange={(e: any) => setProductQty(e.target.value.replace(/\D/g, ""))} className="border rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" required />
+                    <input type="number" maxLength={5} name="pqty" value={productQty} placeholder="Type here" onChange={(e: any) => setProductQty(e.target.value.replace(/\D/g, ""))} className="border rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" />
                 </label>
-                <label className="form-control w-full max-w-xs pt-7">
+                <label className="form-control w-full max-w-xs pt-5">
                     <button onClick={handleProductStock} className="btn btn-accent btn-sm h-[40px] w-full max-w-xs" >Add Product</button>
                 </label>
             </div>
 
-
-            <div className="flex flex-col w-full">
-                <div className="overflow-x-auto max-h-64">
+            <div className="flex flex-col">
+                <div className="overflow-x-auto min-h-36">
                     <table className="table table-pin-rows">
                         <thead>
                             <tr className="font-bold">
@@ -327,27 +326,27 @@ const ProductStock = () => {
                 </div>
             </div>
             <div className="modal sm:modal-middle" role="dialog" id="my_modal_category">
-            <div className="modal-box">
-            <div className="flex w-full items-center justify-center p-2">
-                <label className="form-control w-full max-w-xs">
-                    <div className="label">
-                        <span className="label-text-alt">ADD CATEGORY</span>
+                <div className="modal-box">
+                    <div className="flex w-full items-center justify-center p-2">
+                        <label className="form-control w-full max-w-xs">
+                            <div className="label">
+                                <span className="label-text-alt">ADD CATEGORY</span>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <input type="text" value={categoryName} name="colorItem" onChange={(e: any) => setCategoryName(e.target.value)} placeholder="Type here" className="input input-bordered w-3/4 max-w-xs" />
+                                <button onClick={handleCategorySubmit} disabled={pending} className="btn btn-square btn-success">{pending ? "Adding..." : "ADD"}</button>
+                            </div>
+                        </label>
                     </div>
-                    <div className="flex items-center justify-between">
-                        <input type="text" value={categoryName} name="colorItem" onChange={(e: any) => setCategoryName(e.target.value)} placeholder="Type here" className="input input-bordered w-3/4 max-w-xs" required />
-                        <button onClick={handleCategorySubmit} disabled={pending} className="btn btn-square btn-success">{pending ? "Adding..." : "ADD"}</button>
+                    <div className="modal-action">
+                        <a href="#" className="btn btn-square btn-ghost">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-10 h-10">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+                        </a>
                     </div>
-                </label>
+                </div>
             </div>
-              <div className="modal-action">
-                <a href="#" className="btn btn-square btn-ghost">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-10 h-10">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                  </svg>
-                </a>
-              </div>
-            </div>
-          </div>
         </div>
     )
 }

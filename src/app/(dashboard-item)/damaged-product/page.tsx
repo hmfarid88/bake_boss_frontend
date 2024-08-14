@@ -5,6 +5,7 @@ import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
 
 type Product = {
+  date: string;
   category: string;
   productName: string;
   dpRate: number;
@@ -75,6 +76,7 @@ const Page = () => {
               <thead>
                 <tr>
                   <th>SN</th>
+                  <th>DATE</th>
                   <th>CATEGORY</th>
                   <th>PRODUCT NAME</th>
                   <th>DP PRICE</th>
@@ -88,6 +90,7 @@ const Page = () => {
                 {filteredProducts?.map((product, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
+                    <td>{product.date}</td>
                     <td>{product.category}</td>
                     <td>{product.productName}</td>
                     <td>{product.dpRate}</td>
@@ -100,7 +103,7 @@ const Page = () => {
               </tbody>
               <tfoot>
                 <tr className="font-semibold text-lg">
-                  <td colSpan={5}></td>
+                  <td colSpan={6}></td>
                   <td>TOTAL</td>
                   <td>{totalQty.toLocaleString('en-IN')}</td>
                   <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>

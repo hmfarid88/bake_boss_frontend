@@ -224,8 +224,8 @@ const Page: React.FC = () => {
         <div className='container min-h-screen'>
             <div className="grid grid-cols-1 md:grid-cols-2">
                 <div className="flex flex-col w-full items-center justify-center pt-5">
-                    <div className="overflow-x-auto">
-                        <div className="flex justify-between pl-5 pr-5">
+                <div className="overflow-x-auto">
+                        <div className="flex justify-between pl-7 pr-5">
                             <label className="input input-bordered flex max-w-xs  items-center gap-2">
                                 <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-4 w-4 opacity-70">
@@ -234,15 +234,16 @@ const Page: React.FC = () => {
                             </label>
                             <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
                         </div>
+                      
                         <div ref={contentToPrint} className="flex-1 p-5">
                             <table className="table">
                                 <thead>
                                     <tr>
                                         <th>SN</th>
                                         <th>ITEM NAME</th>
-                                        <th>MATERIALS NAME</th>
+                                        <th>MATERIALS</th>
                                         <th>RATE</th>
-                                        <th>QUANTITY</th>
+                                        <th>QTY</th>
                                         <th>VALUE</th>
                                     </tr>
                                 </thead>
@@ -252,9 +253,9 @@ const Page: React.FC = () => {
                                             <td>{index + 1}</td>
                                             <td>{product.itemName}</td>
                                             <td>{product.materialsName}</td>
-                                            <td>{product.averageRate}</td>
-                                            <td>{product.qty}</td>
-                                            <td>{Number(product.qty * product.averageRate).toLocaleString('en-IN')}</td>
+                                            <td>{product.averageRate.toFixed(2)}</td>
+                                            <td>{product.qty.toFixed(2)}</td>
+                                            <td>{Number((product.qty * product.averageRate).toFixed(2)).toLocaleString('en-IN')}</td>
                                         </tr>
                                     ))}
                                 </tbody>

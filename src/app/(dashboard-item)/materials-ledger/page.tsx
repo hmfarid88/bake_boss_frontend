@@ -9,10 +9,9 @@ type Product = {
   materialsName: string;
   supplierName: string;
   supplierInvoice: string;
-  averageRate: number;
-  status: string;
+  materialsRate: number;
   materialsQty: number;
-  remainingQty: number;
+
 };
 
 
@@ -44,8 +43,7 @@ const Page = () => {
     const filtered = allProducts.filter(product =>
       product.date.toLowerCase().includes(filterCriteria.toLowerCase()) ||
       product.materialsName.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-      product.status.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-      product.supplierName.toLowerCase().includes(filterCriteria.toLowerCase())||
+      product.supplierName.toLowerCase().includes(filterCriteria.toLowerCase()) ||
       product.supplierInvoice.toLowerCase().includes(filterCriteria.toLowerCase())
     );
     setFilteredProducts(filtered);
@@ -56,7 +54,11 @@ const Page = () => {
   };
 
   const totalQty = filteredProducts.reduce((total, product) => {
-    return total + product.remainingQty;
+    return total + product.materialsQty;
+  }, 0);
+
+  const totalValue = filteredProducts.reduce((total, product) => {
+    return total + product.materialsQty*product.materialsRate;
   }, 0);
 
   return (
@@ -82,9 +84,8 @@ const Page = () => {
                   <th>SUPPLIER NAME</th>
                   <th>SUPPLIER INVOICE</th>
                   <th>COST PRICE</th>
-                  <th>STATUS</th>
                   <th>QTY</th>
-                  <th>REMAINING QTY</th>
+                  <th>SUB TOTAL</th>
 
                 </tr>
               </thead>
@@ -96,18 +97,18 @@ const Page = () => {
                     <td>{product.materialsName}</td>
                     <td>{product.supplierName}</td>
                     <td>{product.supplierInvoice}</td>
-                    <td>{Number(product.averageRate.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{product.status}</td>
+                    <td>{Number(product.materialsRate.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{product.materialsQty.toLocaleString('en-IN')}</td>
-                    <td>{Number((product.remainingQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{(product.materialsRate*product.materialsQty).toLocaleString('en-IN')}</td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
                 <tr className="font-semibold text-lg">
-                  <td colSpan={7}></td>
+                  <td colSpan={5}></td>
                   <td>TOTAL</td>
                   <td>{totalQty.toLocaleString('en-IN')}</td>
+                  <td>{totalValue.toLocaleString('en-IN')}</td>
                 </tr>
               </tfoot>
             </table>

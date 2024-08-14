@@ -36,7 +36,7 @@ const Materials = () => {
 
     const handleAddMaterials = (e: any) => {
         e.preventDefault();
-        if (!mSupplierName || !mSupplierInvoice || !materialsName || !materialsRate || !materialsQty) {
+        if (!materialDate ||!mSupplierName || !mSupplierInvoice || !materialsName || !materialsRate || !materialsQty) {
             toast.warning("Item is empty !");
             return;
         }
@@ -178,8 +178,8 @@ const Materials = () => {
 
         <div className="flex w-full">
             <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-3">
+           
                 <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-2">
-
                     <label className="form-control w-full max-w-xs">
                         <div className="label">
                             <span className="label-text-alt">STOCK DATE</span>
@@ -223,10 +223,10 @@ const Materials = () => {
                     <label className="form-control w-full max-w-xs pt-7">
                         <button onClick={handleAddMaterials} className="btn btn-accent btn-sm h-[40px] w-full max-w-xs" >Add Material</button>
                     </label>
-
                 </div>
+         
                 <div className="flex w-full">
-                    <div className="overflow-x-auto max-h-64">
+                    <div className="overflow-x-auto h-auto">
                         <table className="table table-pin-rows">
                             <thead>
                                 <tr className="font-bold">

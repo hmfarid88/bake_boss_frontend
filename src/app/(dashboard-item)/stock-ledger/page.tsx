@@ -11,9 +11,8 @@ type Product = {
   dpRate: number;
   rpRate: number;
   costPrice: number;
-  status: string;
   productQty: number;
-  remainingQty: number;
+
 };
 
 
@@ -45,7 +44,6 @@ const Page = () => {
     const filtered = allProducts.filter(product =>
       product.date.toLowerCase().includes(filterCriteria.toLowerCase()) ||
       product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-      product.status.toLowerCase().includes(filterCriteria.toLowerCase()) ||
       product.category.toLowerCase().includes(filterCriteria.toLowerCase())
     );
     setFilteredProducts(filtered);
@@ -56,7 +54,11 @@ const Page = () => {
   };
 
   const totalQty = filteredProducts.reduce((total, product) => {
-    return total + product.remainingQty;
+    return total + product.productQty;
+  }, 0);
+
+  const totalValue = filteredProducts.reduce((total, product) => {
+    return total + product.productQty * product.costPrice;
   }, 0);
 
   return (
@@ -83,9 +85,8 @@ const Page = () => {
                   <th>DP PRICE</th>
                   <th>RP PRICE</th>
                   <th>COST PRICE</th>
-                  <th>STATUS</th>
                   <th>QTY</th>
-                  <th>REMAINING QTY</th>
+                  <th>SUB TOTAL</th>
 
                 </tr>
               </thead>
@@ -99,17 +100,17 @@ const Page = () => {
                     <td>{product.dpRate}</td>
                     <td>{product.rpRate}</td>
                     <td>{Number(product.costPrice.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{product.status}</td>
                     <td>{product.productQty.toLocaleString('en-IN')}</td>
-                    <td>{Number((product.remainingQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number((product.productQty * product.costPrice).toFixed(2)).toLocaleString('en-IN')}</td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
                 <tr className="font-semibold text-lg">
-                  <td colSpan={8}></td>
+                  <td colSpan={6}></td>
                   <td>TOTAL</td>
                   <td>{totalQty.toLocaleString('en-IN')}</td>
+                  <td>{totalValue.toLocaleString('en-IN')}</td>
                 </tr>
               </tfoot>
             </table>

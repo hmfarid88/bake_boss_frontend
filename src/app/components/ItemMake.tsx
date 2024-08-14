@@ -17,7 +17,7 @@ const ItemMake = () => {
   const uname = useAppSelector((state) => state.username.username);
   const username = uname ? uname.username : 'Guest';
   const [ingredientsName, setIngredientsName] = useState("");
- 
+
   const [itemName, setItemName] = useState('');
   const [ingredients, setIngredients] = useState('');
   const [qty, setQty] = useState('');
@@ -30,32 +30,32 @@ const ItemMake = () => {
   const handleIngredientSubmit = async (e: any) => {
     e.preventDefault();
     if (!ingredientsName) {
-        toast.warning("Item is empty !");
-        return;
+      toast.warning("Item is empty !");
+      return;
     }
     setPending(true)
     try {
-        const response = await fetch(`${apiBaseUrl}/api/addMaterialsName`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ materialsName: ingredientsName, username }),
-        });
+      const response = await fetch(`${apiBaseUrl}/api/addMaterialsName`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ materialsName: ingredientsName, username }),
+      });
 
-        if (response.ok) {
-            toast.success("Item added successfully !");
-        } else {
-            const data = await response.json();
-            toast.error(data.message);
-        }
+      if (response.ok) {
+        toast.success("Item added successfully !");
+      } else {
+        const data = await response.json();
+        toast.error(data.message);
+      }
     } catch (error: any) {
-        toast.error("Sorrry, invalid item name!")
+      toast.error("Sorrry, invalid item name!")
     } finally {
-        setPending(false);
-        setIngredientsName("");
+      setPending(false);
+      setIngredientsName("");
     }
-};
+  };
   const handleAddItem = (e: any) => {
     e.preventDefault();
     if (!itemName || !ingredients || !qty) {
@@ -103,27 +103,27 @@ const ItemMake = () => {
   };
 
   const [materialsOption, setMaterialsOption] = useState([]);
- 
+
   useEffect(() => {
-    
-      fetch(`${apiBaseUrl}/api/getMaterialsName?username=${username}`)
-        .then(response => response.json())
-        .then(data => {
-          const transformedData = data.map((item: any) => ({
-            id: item.id,
-            value: item.materialsName,
-            label: item.materialsName
-          }));
-          setMaterialsOption(transformedData);
-          setShouldFetch(false);
-        })
-        .catch(error => console.error('Error fetching products:', error));
-    
+
+    fetch(`${apiBaseUrl}/api/getMaterialsName?username=${username}`)
+      .then(response => response.json())
+      .then(data => {
+        const transformedData = data.map((item: any) => ({
+          id: item.id,
+          value: item.materialsName,
+          label: item.materialsName
+        }));
+        setMaterialsOption(transformedData);
+        setShouldFetch(false);
+      })
+      .catch(error => console.error('Error fetching products:', error));
+
   }, [ingredientsName, apiBaseUrl, username]);
   return (
 
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 w-full items-center">
-      <div className="grid grid-cols-1 w-full md:grid-cols-2 gap-2">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
+      <div className="grid grid-cols-1 gap-2 w-full">
         <label className="form-control w-full max-w-xs">
           <div className="label">
             <span className="label-text-alt">ITEM NAME</span>
@@ -136,7 +136,6 @@ const ItemMake = () => {
             <a href="#my_modal_itemMake" className="btn btn-xs btn-circle btn-ghost"><FcPlus size={20} /></a>
           </div>
           <Select className="text-black" name="ingredient" onChange={(selectedOption: any) => setIngredients(selectedOption.value)} options={materialsOption} required />
-
         </label>
         <label className="form-control w-full max-w-xs">
           <div className="label">
@@ -149,8 +148,9 @@ const ItemMake = () => {
           <button onClick={handleAddItem} className="btn btn-accent btn-sm h-[40px] w-full max-w-xs" >Add Item</button>
         </label>
       </div>
+
       <div className="flex w-full">
-        <div className="overflow-x-auto max-h-64">
+        <div className="overflow-x-auto h-auto">
           <table className="table table-pin-rows">
             <thead>
               <tr className="font-bold">
@@ -183,17 +183,17 @@ const ItemMake = () => {
       {/* modal */}
       <div className="modal sm:modal-middle" role="dialog" id="my_modal_itemMake">
         <div className="modal-box">
-        <div className="flex w-full items-center justify-center p-2">
-                <label className="form-control w-full max-w-xs">
-                    <div className="label">
-                        <span className="label-text-alt">ADD MATERIALS</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                        <input type="text" value={ingredientsName} name="productItem" onChange={(e: any) => setIngredientsName(e.target.value)} placeholder="Type here" className="input input-bordered w-3/4 max-w-xs" required />
-                        <button onClick={handleIngredientSubmit} disabled={pending} className="btn btn-square btn-success">{pending ? "Adding..." : "ADD"}</button>
-                    </div>
-                </label>
-            </div>
+          <div className="flex w-full items-center justify-center p-2">
+            <label className="form-control w-full max-w-xs">
+              <div className="label">
+                <span className="label-text-alt">ADD MATERIALS</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <input type="text" value={ingredientsName} name="productItem" onChange={(e: any) => setIngredientsName(e.target.value)} placeholder="Type here" className="input input-bordered w-3/4 max-w-xs" required />
+                <button onClick={handleIngredientSubmit} disabled={pending} className="btn btn-square btn-success">{pending ? "Adding..." : "ADD"}</button>
+              </div>
+            </label>
+          </div>
           <div className="modal-action">
             <a href="#" className="btn btn-square btn-ghost">
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-10 h-10">
