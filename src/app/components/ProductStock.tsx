@@ -160,12 +160,12 @@ const ProductStock = () => {
         if (!stockDate || !category || !productName || !productQty) {
             toast.warning("Item is empty !");
             return;
-        } else if (calculateCost() <= 0) {
-            toast.warning('Not enough materials for this item !');
-            return;
-        } else if (calculateDp() <= 0 || calculateRp() <= 0) {
-            toast.warning('DP Rate & RP Rate not added !');
-            return;
+        // } else if (calculateCost() <= 0) {
+        //     toast.warning('Not enough materials for this item !');
+        //     // return;
+        // } else if (calculateDp() <= 0 || calculateRp() <= 0) {
+        //     toast.warning('DP Rate & RP Rate not added !');
+        //     // return;
         }
         const product = { id: pid, date: stockDate, category, productName, costPrice: calculateCost().toFixed(2), dpRate: calculateDp().toFixed(2), rpRate: calculateRp().toFixed(2), productQty, username, status: 'stored' }
         dispatch(addProducts(product));
