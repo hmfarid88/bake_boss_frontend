@@ -86,7 +86,8 @@ const ProductStock = () => {
         }
 
         return items.reduce((dp, item) =>
-            dp + ((item.averageRate * item.qty) + ((item.averageRate * item.qty * marginSetup.dpMargin) / 100)), 0
+            // dp + ((item.averageRate * item.qty) + ((item.averageRate * item.qty * marginSetup.dpMargin) / 100)), 0
+            dp + ((item.averageRate * item.qty) + 10), 0
         );
     };
 
@@ -95,7 +96,8 @@ const ProductStock = () => {
             return 0;
         }
         return items.reduce((rp, item) =>
-            rp + ((item.averageRate * item.qty) + ((item.averageRate * item.qty * marginSetup.rpMargin) / 100)), 0);
+            // rp + ((item.averageRate * item.qty) + ((item.averageRate * item.qty * marginSetup.rpMargin) / 100)), 0);
+            rp + ((item.averageRate * item.qty) + 20), 0);
     };
 
     const [categoryName, setCategoryName] = useState("");

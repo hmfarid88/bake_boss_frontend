@@ -4,6 +4,7 @@ import { useAppSelector } from "@/app/store";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 type Product = {
   supplierName: string;
@@ -24,9 +25,33 @@ const Page = () => {
   const [filterCriteria, setFilterCriteria] = useState('');
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
+  const [maxDate, setMaxDate] = useState('');
+  const [supplierName, setSupplierName] = useState('');
+  useEffect(() => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setMaxDate(formattedDate);
+  }, []);
 
-  const handleDetails = (supplierName: string) => {
-    router.push(`/details-supplier?supplierName=${encodeURIComponent(supplierName)}`);
+  const [startDate, setStartDate] = useState("");
+  const [endDate, setEndDate] = useState("");
+
+  const handleDetails = (e:any) => {
+    e.preventDefault();
+    if (!startDate || !endDate) {
+      toast.warning("Start date and end date required !");
+      return;
+    }
+    if (!supplierName) {
+      toast.warning("Supplier name is missing!");
+      return;
+    }
+    router.push(`/details-supplier?startDate=${startDate}&endDate=${endDate}&supplierName=${encodeURIComponent(supplierName)}`);
+    setStartDate("");
+    setEndDate("");
   }
   useEffect(() => {
     fetch(`${apiBaseUrl}/supplierBalance/supplier/balance?username=${username}`)
@@ -83,7 +108,8 @@ const Page = () => {
                     <td>{index + 1}</td>
                     <td className="uppercase">{product.supplierName}</td>
                     <td>{Number(product.balance.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td><button onClick={() => { handleDetails(product.supplierName) }} className="btn btn-xs btn-info">Details</button></td>
+                    <td><button onClick={() => setSupplierName(product.supplierName)} className="btn btn-xs btn-info"><a href="#my_modal_supplier_ledger">Details</a></button></td>
+                   
                   </tr>
                 ))}
               </tbody>
@@ -95,6 +121,36 @@ const Page = () => {
                 </tr>
               </tfoot>
             </table>
+          </div>
+        </div>
+      </div>
+      <div className="modal sm:modal-middle" role="dialog" id="my_modal_supplier_ledger">
+        <div className="modal-box">
+          <div className='flex flex-col gap-3 items-center justify-center'>
+            <label className="form-control w-full max-w-xs">
+              <div className="label">
+                <span className="label-text-alt">START DATE</span>
+              </div>
+              <input type="date" name="date" onChange={(e: any) => setStartDate(e.target.value)} max={maxDate} value={startDate} className="input input-bordered" />
+            </label>
+
+            <label className="form-control w-full max-w-xs">
+              <div className="label">
+                <span className="label-text-alt">END DATE</span>
+              </div>
+              <input type="date" name="date" onChange={(e: any) => setEndDate(e.target.value)} max={maxDate} value={endDate} className="input input-bordered" />
+            </label>
+            <label className="form-control w-full max-w-xs">
+
+              <button onClick={handleDetails} className='btn btn-outline btn-success'>GO</button>
+            </label>
+          </div>
+          <div className="modal-action">
+            <a href="#" className="btn btn-square btn-ghost">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-10 h-10">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+              </svg>
+            </a>
           </div>
         </div>
       </div>
