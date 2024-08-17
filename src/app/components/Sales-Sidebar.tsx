@@ -61,6 +61,7 @@ export const SalesSidebar = () => {
                                 <ul>
                                     <li><a><Link href="/sales-supplier-ledger">SUPPLIER LEDGER</Link></a></li>
                                     <li><a><Link href="/sales-stock-ledger">STOCK LEDGER</Link></a></li>
+                                    <li><a><Link href="/sales-stock-returned">RETURNED PRODUCT</Link></a></li>
                                 </ul>
                             </details>
                         </li>

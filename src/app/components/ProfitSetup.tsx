@@ -3,7 +3,10 @@ import { useAppSelector } from '@/app/store';
 import React, { useEffect, useState } from 'react'
 import { toast } from "react-toastify";
 import Select from "react-select";
-
+interface margin {
+    dpMargin: number;
+    rpMargin: number;
+}
 const ProfitSetup = () => {
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
@@ -56,6 +59,17 @@ const ProfitSetup = () => {
             })
             .catch(error => console.error('Error fetching products:', error));
     }, [apiBaseUrl, username]);
+
+    const [margin, setMargin] = useState<margin>();
+    useEffect(() => {
+        fetch(`${apiBaseUrl}/paymentApi/getMargin?username=${username}&productName=${productName}`)
+            .then(response => response.json())
+            .then(data => {
+                setMargin(data);
+            })
+            .catch(error => console.error('Error fetching products:', error));
+    }, [apiBaseUrl, username, productName]);
+
     return (
         <div className="flex flex-col gap-3 items-center justify-center">
             <label className="form-control w-full max-w-xs">
@@ -66,13 +80,13 @@ const ProfitSetup = () => {
             </label>
             <label className="form-control w-full max-w-xs">
                 <div className="label">
-                    <span className="label-text uppercase">DP Profit Margin (%)</span>
+                    <span className="label-text uppercase">DP Profit Margin ({margin?.dpMargin} %)</span>
                 </div>
                 <input type="number" value={dpMargin} onChange={(e) => setDpMargin(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
             </label>
             <label className="form-control w-full max-w-xs">
                 <div className="label">
-                    <span className="label-text uppercase">RP Profit Margin (%)</span>
+                    <span className="label-text uppercase">RP Profit Margin ({margin?.rpMargin} %)</span>
                 </div>
                 <input type="number" value={rpMargin} onChange={(e) => setRpMargin(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
             </label>

@@ -8,7 +8,7 @@ import { ToastContainer } from "react-toastify";
 const Page: React.FC = () => {
   return (
     <div className="container-2xl min-h-screen">
-      <div className="flex w-full">
+      <div className="flex w-full items-center justify-center">
         <div role="tablist" className="tabs tabs-bordered p-3">
           <input type="radio" name="my_tabs_2" role="tab" className="tab" aria-label="ITEM MAKING" defaultChecked />
           <div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">

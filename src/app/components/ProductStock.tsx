@@ -86,8 +86,8 @@ const ProductStock = () => {
         }
 
         return items.reduce((dp, item) =>
-            // dp + ((item.averageRate * item.qty) + ((item.averageRate * item.qty * marginSetup.dpMargin) / 100)), 0
-            dp + ((item.averageRate * item.qty) + 10), 0
+            dp + ((item.averageRate * item.qty) + ((item.averageRate * item.qty * marginSetup.dpMargin) / 100)), 0
+         
         );
     };
 
@@ -96,8 +96,8 @@ const ProductStock = () => {
             return 0;
         }
         return items.reduce((rp, item) =>
-            // rp + ((item.averageRate * item.qty) + ((item.averageRate * item.qty * marginSetup.rpMargin) / 100)), 0);
-            rp + ((item.averageRate * item.qty) + 20), 0);
+            rp + ((item.averageRate * item.qty) + ((item.averageRate * item.qty * marginSetup.rpMargin) / 100)), 0);
+          
     };
 
     const [categoryName, setCategoryName] = useState("");
@@ -160,12 +160,12 @@ const ProductStock = () => {
         if (!stockDate || !category || !productName || !productQty) {
             toast.warning("Item is empty !");
             return;
-        // } else if (calculateCost() <= 0) {
-        //     toast.warning('Not enough materials for this item !');
-        //     // return;
-        // } else if (calculateDp() <= 0 || calculateRp() <= 0) {
-        //     toast.warning('DP Rate & RP Rate not added !');
-        //     // return;
+        } else if (calculateCost() <= 0) {
+            toast.warning('Not enough materials for this item !');
+            return;
+        } else if (calculateDp() <= 0 || calculateRp() <= 0) {
+            toast.warning('DP Rate & RP Rate not added !');
+            return;
         }
         const product = { id: pid, date: stockDate, category, productName, costPrice: calculateCost().toFixed(2), dpRate: calculateDp().toFixed(2), rpRate: calculateRp().toFixed(2), productQty, username, status: 'stored' }
         dispatch(addProducts(product));
@@ -250,8 +250,9 @@ const ProductStock = () => {
 
     }, [apiBaseUrl]);
     return (
+        <div className="flex w-full">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
-            <div className="grid grid-cols-1 gap-2 w-full">
+            <div className="grid grid-cols-1 gap-2">
                 <label className="form-control w-full max-w-xs">
                     <div className="label">
                         <span className="label-text-alt">STOCK DATE</span>
@@ -285,8 +286,8 @@ const ProductStock = () => {
                 </label>
             </div>
 
-            <div className="flex flex-col">
-                <div className="overflow-x-auto min-h-36">
+            <div className="flex flex-col w-full">
+                <div className="overflow-x-auto h-auto">
                     <table className="table table-pin-rows">
                         <thead>
                             <tr className="font-bold">
@@ -349,6 +350,7 @@ const ProductStock = () => {
                     </div>
                 </div>
             </div>
+        </div>
         </div>
     )
 }

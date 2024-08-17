@@ -1,22 +1,19 @@
 'use client'
 import React, { useState, useEffect } from "react";
-import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from "@/app/store";
-import { addProducts, deleteAllProducts, deleteProduct } from "@/app/store/productSaleSlice";
+import { addProducts, deleteAllProducts, deleteProduct } from "@/app/store/salesDamageProduct";
 import Select from "react-select";
 import { uid } from 'uid';
 import { DatePicker } from 'react-date-picker';
-import { toast, ToastContainer } from "react-toastify";
-import { FcCalendar, FcManager, FcPhone, FcViewDetails } from "react-icons/fc";
-import { FaHandHoldingUsd } from "react-icons/fa";
-import { MdAttachMoney } from "react-icons/md";
-import { RiDeleteBin6Line, RiHandCoinLine } from "react-icons/ri";
+import { toast } from "react-toastify";
+import { FcCalendar } from "react-icons/fc";
+import { RiDeleteBin6Line } from "react-icons/ri";
+
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 const Page: React.FC = () => {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-    const router = useRouter();
     const [date, setDate] = useState<Value>(new Date());
     const [pending, setPending] = useState(false);
     const [total, setTotal] = useState(0);
@@ -26,14 +23,19 @@ const Page: React.FC = () => {
     const [selectedProid, setSelectedProid] = useState("");
     const [selectedQty, setSelectedQty] = useState("");
     const numericProductQty: number = Number(selectedQty);
-
-    const [cname, setCname] = useState("");
-    const [phoneNumber, setPhone] = useState("");
-    const [address, setAddress] = useState("");
-
+    const [reason, setReason] = useState("");
+    const [maxDate, setMaxDate] = useState('');
+    useEffect(() => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+        setMaxDate(formattedDate);
+    }, []);
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
-    const saleProducts = useAppSelector((state) => state.productTosale.products);
+    const damageProducts = useAppSelector((state) => state.salesDamageProduct.products);
     const dispatch = useAppDispatch();
 
     const invoiceNo = uid();
@@ -41,22 +43,22 @@ const Page: React.FC = () => {
     useEffect(() => {
         calculateTotal();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [saleProducts]);
+    }, [damageProducts]);
 
     useEffect(() => {
         calculateQtyTotal();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [saleProducts]);
+    }, [damageProducts]);
 
     const calculateTotal = () => {
-        const total = saleProducts.reduce((sum, p) => {
-            return sum + (p.dpRate * p.productQty);
+        const total = damageProducts.reduce((sum, p) => {
+            return sum + (p.costPrice * p.productQty);
         }, 0);
         setTotal(total);
     };
 
     const calculateQtyTotal = () => {
-        const qtytotal = saleProducts.reduce((sum, p) => {
+        const qtytotal = damageProducts.reduce((sum, p) => {
             return sum + (p.productQty);
         }, 0);
         setQtyTotal(qtytotal);
@@ -72,45 +74,48 @@ const Page: React.FC = () => {
             return;
         }
         try {
-            const response = await fetch(`${apiBaseUrl}/api/getSingleProduct?productId=${selectedProid}`);
+            const response = await fetch(`${apiBaseUrl}/sales/getSingleProduct?productId=${selectedProid}&username=${username}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status}`);
             }
             const data = await response.json();
-            const productToSale = {
+            const productData = data[0];
+            if (productData.remainingQty < numericProductQty) {
+                toast.error("Sorry, not enough qty!");
+                return;
+            }
+            const productToDamage = {
                 id: uid(),
-                date: data.date,
-                category: data.category,
-                productName: data.productName,
-                costPrice: data.costPrice,
-                dpRate: data.dpRate,
-                rpRate: data.rpRate,
-                customerPrice: data.customerPrice,
+                date: maxDate,
+                category: productData.category,
+                productName: productData.productName,
+                costPrice: productData.costPrice,
+                remainingQty: (productData.remainingQty - numericProductQty),
+                saleRate: productData.saleRate,
                 productQty: numericProductQty,
-                remainingQty: data.remainingQty,
-                status: 'sold',
+                status: 'Returned',
                 username: username
             };
             if (data.remainingQty < numericProductQty) {
                 toast.error("Sorry, not enough qty!");
                 return;
             }
-            dispatch(addProducts(productToSale));
+            dispatch(addProducts(productToDamage));
             setSelectedQty("");
         } catch (error) {
             console.error('Error fetching product:', error);
         }
     };
-    const productInfo = saleProducts.map(product => ({
+    const productInfo = damageProducts.map(product => ({
         ...product,
-        customer: cname,
+        soldInvoice: reason,
         invoiceNo: invoiceNo
     }));
 
     const handleFinalSubmit = async (e: any) => {
         e.preventDefault();
-        if (!cname) {
-            toast.error("Please, select any retailer!");
+        if (!reason) {
+            toast.error("Cause of damage is empty !");
             return;
         }
         if (productInfo.length === 0) {
@@ -119,7 +124,7 @@ const Page: React.FC = () => {
         }
         setPending(true);
         try {
-            const response = await fetch(`${apiBaseUrl}/api/productDistribution`, {
+            const response = await fetch(`${apiBaseUrl}/sales/outletStockReturn`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -128,12 +133,12 @@ const Page: React.FC = () => {
             });
 
             if (!response.ok) {
-                toast.error("Product sale not submitted !");
+                toast.error("Return product not submitted !");
                 return;
             }
-            setCname("");
+            toast.success("Product returned successfully")
+            setReason("");
             dispatch(deleteAllProducts());
-            router.push(`/invoice?invoiceNo=${invoiceNo}`);
 
         } catch (error: any) {
             toast.error("An error occurred: " + error.message);
@@ -143,7 +148,7 @@ const Page: React.FC = () => {
     };
 
     useEffect(() => {
-        fetch(`${apiBaseUrl}/api/getProductStock?username=${username}`)
+        fetch(`${apiBaseUrl}/sales/getSalesStock?username=${username}`)
             .then(response => response.json())
             .then(data => {
                 const transformedData = data.map((item: any) => ({
@@ -155,35 +160,72 @@ const Page: React.FC = () => {
             .catch(error => console.error('Error fetching products:', error));
     }, [apiBaseUrl, username]);
 
-    const [salesuser, setSalesuser] = useState([]);
-
-    useEffect(() => {
-        fetch(`${apiBaseUrl}/auth/user/getSalesUser`)
-            .then(response => response.json())
-            .then(data => {
-                const transformedData = data.map((item: any) => ({
-                    value: item.username,
-                    label: item.username
-                }));
-                setSalesuser(transformedData);
-            })
-            .catch(error => console.error('Error fetching products:', error));
-    }, [apiBaseUrl]);
 
     return (
         <div className='container-2xl min-h-screen'>
             <div className="flex flex-col">
                 <div className="flex justify-start font-bold pt-5 px-10 pb-0">
-                    <p>DATE : <DatePicker calendarIcon={FcCalendar} className="rounded-md max-w-xs z-20" clearIcon={null} maxDate={new Date()} minDate={new Date()} format='y-MM-dd' onChange={setDate} value={date} /></p>
+                    <p>DATE : <DatePicker calendarIcon={FcCalendar} className="rounded-md max-w-xs z-20" clearIcon={null} maxDate={new Date()} format='y-MM-dd' onChange={setDate} value={date} /></p>
                 </div>
                 <div className="flex flex-col w-full">
                     <div className="divider divider-accent tracking-widest font-bold p-5">PRODUCT RETURN</div>
                 </div>
-                <div className="flex flex-col items-center justify-center gap-3">
-                    <Select className="text-black h-[38px] w-full max-w-xs" autoFocus={true} onChange={(selectedOption: any) => setSelectedProid(selectedOption.value)} options={productOption} />
-                    <input type="number" className="w-full max-w-xs h-[38px] p-2 bg-white text-black border rounded-md" placeholder="Qty" value={selectedQty} onChange={(e) => setSelectedQty(e.target.value)} />
-                    <input type="text" className="w-full max-w-xs h-[38px] p-2 bg-white text-black border rounded-md" placeholder="Note" />
-                    <button onClick={handleProductSubmit} className='btn btn-outline btn-success  h-[38px]'>RETURN</button>
+                <div className="flex items-center justify-center gap-2 z-10">
+                    <Select className="text-black h-[38px] w-64 md:w-96" autoFocus={true} onChange={(selectedOption: any) => setSelectedProid(selectedOption.value)} options={productOption} />
+                    <input type="number" className="w-[100px] h-[38px] p-2 bg-white text-black border rounded-md" placeholder="Qty" value={selectedQty} onChange={(e) => setSelectedQty(e.target.value)} />
+                    <button onClick={handleProductSubmit} className='btn btn-outline btn-success btn-sm h-[38px]'>ADD</button>
+                </div>
+                <div className="flex items-center justify-center w-full p-5">
+                    <div className="overflow-x-auto max-h-96">
+                        <table className="table table-pin-rows">
+                            <thead>
+                                <tr>
+                                    <th>SN</th>
+                                    <th>DESCRIPTION</th>
+                                    <th>COST PRICE</th>
+                                    <th>QTY</th>
+                                    <th>SUB TOTAL</th>
+                                    <th>ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {damageProducts?.map((p, index) => (
+                                    <tr key={index}>
+                                        <td>{index + 1}</td>
+                                        <td>{p.productName} </td>
+                                        <td>{Number(p.costPrice.toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td>{p.productQty}</td>
+                                        <td>{Number((p.costPrice * p.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td className="flex justify-between gap-3">
+                                            <button onClick={() => {
+                                                handleDeleteProduct(p.id);
+                                            }} className="btn-xs rounded-md btn-outline btn-error"> <RiDeleteBin6Line size={18} />
+                                            </button>
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td className="text-lg font-semibold">TOTAL</td>
+                                    <td className="text-lg font-semibold">{qtyTotal} PS</td>
+                                    <td className="text-lg font-semibold">{Number(total.toFixed(2)).toLocaleString('en-IN')} TK</td>
+                                    <td></td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div className="flex flex-col md:flex-row justify-between">
+                <div className="flex w-full justify-center p-5">
+                    <div className="card shadow shadow-slate-500 max-w-lg gap-3 p-5">
+                        <div className="card-title text-sm">Add Reason</div>
+                        <input type="text" value={reason} className="input input-sm input-bordered" onChange={(e) => setReason(e.target.value)} />
+                        <button onClick={handleFinalSubmit} disabled={pending} className="btn btn-sm w-xs h-[38px] btn-success btn-outline font-bold">{pending ? <span className="loading loading-ring loading-md text-accent"></span> : "SUBMIT"}</button>
+                    </div>
                 </div>
             </div>
         </div>

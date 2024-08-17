@@ -7,6 +7,7 @@ import materialReducer from "../store/materialSlice";
 import salesProductSaleReducer from "../store/salesProductSaleSlice";
 import additionalSaleReducer from "../store/additionalSale";
 import damageProductReducer from "../store/damageProducts";
+import salesDamageProductReducer from "../store/salesDamageProduct";
 import damageMaterialReducer from "../store/damageMaterials";
 
 import {
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   materialProducts:materialReducer,
   additionalSale:additionalSaleReducer,
   damageProduct:damageProductReducer,
+  salesDamageProduct:salesDamageProductReducer,
   damageMaterials:damageMaterialReducer
  
 });

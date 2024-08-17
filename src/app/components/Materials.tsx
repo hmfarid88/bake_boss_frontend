@@ -36,7 +36,7 @@ const Materials = () => {
 
     const handleAddMaterials = (e: any) => {
         e.preventDefault();
-        if (!materialDate ||!mSupplierName || !mSupplierInvoice || !materialsName || !materialsRate || !materialsQty) {
+        if (!materialDate || !mSupplierName || !mSupplierInvoice || !materialsName || !materialsRate || !materialsQty) {
             toast.warning("Item is empty !");
             return;
         }
@@ -126,7 +126,7 @@ const Materials = () => {
                 },
                 body: JSON.stringify({ materialsName: ingredientsName, username }),
             });
-    
+
             if (response.ok) {
                 toast.success("Item added successfully !");
             } else {
@@ -178,7 +178,6 @@ const Materials = () => {
 
         <div className="flex w-full">
             <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-3">
-           
                 <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-2">
                     <label className="form-control w-full max-w-xs">
                         <div className="label">
@@ -224,7 +223,7 @@ const Materials = () => {
                         <button onClick={handleAddMaterials} className="btn btn-accent btn-sm h-[40px] w-full max-w-xs" >Add Material</button>
                     </label>
                 </div>
-         
+
                 <div className="flex w-full">
                     <div className="overflow-x-auto h-auto">
                         <table className="table table-pin-rows">

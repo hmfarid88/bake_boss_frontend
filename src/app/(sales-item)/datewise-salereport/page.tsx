@@ -63,9 +63,6 @@ const Page = () => {
     const totalQty = filteredProducts.reduce((acc, item) => acc + item.productQty, 0);
     return (
         <div className="container-2xl min-h-[calc(100vh-228px)]">
-            <div className="flex flex-col w-full">
-                <div className="divider divider-accent tracking-widest font-bold p-2">SALES REPORT</div>
-            </div>
             <div className="flex w-full  p-4 items-center justify-center">
                 <div className="overflow-x-auto">
                     <div className="flex justify-between pl-5 pr-5">
@@ -78,6 +75,11 @@ const Page = () => {
                         <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
                     </div>
                     <div ref={contentToPrint} className="flex-1 p-5">
+                        <div className="flex flex-col w-full items-center justify-center">
+                            <h4 className="font-semibold text-lg">SALES REPORT</h4>
+                            <h4>DATE : {startDate} TO {endDate}</h4>
+                        </div>
+                        <div className="pt-5">
                         <table className="table">
                             <thead>
                                 <tr>
@@ -116,6 +118,7 @@ const Page = () => {
                                 </tr>
                             </tfoot>
                         </table>
+                        </div>
                     </div>
                 </div>
             </div>

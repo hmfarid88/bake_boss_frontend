@@ -73,7 +73,7 @@ const Page = () => {
         setFilteredProducts(data);
       })
       .catch(error => console.error('Error fetching products:', error));
-  }, [apiBaseUrl, username]);
+  }, [apiBaseUrl, username, productValue]);
 
 
   useEffect(() => {
@@ -183,8 +183,8 @@ const Page = () => {
                     <td>{product.invoiceNo}</td>
                     <td>{product.category}</td>
                     <td>{product.productName}</td>
+                    <td>{product.costPrice}</td>
                     <td>{product.saleRate}</td>
-                    <td>00</td>
                     <td>{product.remainingQty.toLocaleString('en-IN')}</td>
                     <td>{Number((product.saleRate * product.remainingQty).toFixed(2)).toLocaleString('en-IN')}</td>
                   </tr>

@@ -31,7 +31,7 @@ const Page = () => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/sales/getOutletSale?username=${username}`)
+    fetch(`${apiBaseUrl}/sales/getOutletReturned?username=${username}`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);
@@ -77,7 +77,7 @@ const Page = () => {
       <div className="flex w-full items-center justify-center">
         <div className="overflow-x-auto">
           <div ref={contentToPrint} className="flex-1 p-5">
-            <div className="flex flex-col gap-2 items-center"><h4 className="font-bold text-lg">SALES REPORT</h4><CurrentMonthYear /></div>
+            <div className="flex flex-col gap-2 items-center"><h4 className="font-bold text-lg">RETURNED PRODUCT</h4><CurrentMonthYear /></div>
             <table className="table mt-5">
               <thead>
                 <tr>
