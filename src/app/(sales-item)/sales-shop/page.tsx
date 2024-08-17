@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from "@/app/store";
 import { addProducts, deleteAllProducts, deleteProduct } from "@/app/store/salesProductSaleSlice";
-import { aaddProducts, adeleteAllProducts, adeleteProduct } from "@/app/store/additionalSale";
+
 import Select from "react-select";
 import { uid } from 'uid';
 import { DatePicker } from 'react-date-picker';
@@ -48,85 +48,7 @@ const Page: React.FC = () => {
     const [customerName, setCustomerName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [soldBy, setSoldBy] = useState("");
-
-    const [selectedAdditional, setSelectedAdditional] = useState("");
-    const [addQty, setAddQty] = useState("");
-    const numericAddQty: number = Number(addQty);
-
-    const handleAdditionalSale = async (e: any) => {
-        e.preventDefault();
-        if (!selectedAdditional || !addQty) {
-            toast.error("Field is empty!")
-            return;
-        }
-
-        try {
-            const response = await fetch(`${apiBaseUrl}/additionalStock/getAdditionalByIdAndUsername?id=${selectedAdditional}&username=${username}`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-
-            const addSaleData = {
-                id: uid(),
-                date: maxDate,
-                category: data.category,
-                productName: data.productName,
-                costPrice: data.costPrice,
-                saleRate: data.salePrice,
-                productQty: numericAddQty,
-                status: 'sold',
-                username: username
-            };
-            dispatch(aaddProducts(addSaleData));
-            setAddQty("");
-        } catch (error) {
-            console.error('Error fetching product:', error);
-        }
-    };
-    const addproductInfo = addsaleProducts.map(product => ({
-        ...product,
-        soldInvoice: invoiceNo
-    }));
-    const finalAdditionalSale = async (e: any) => {
-        e.preventDefault();
-        if(addproductInfo.length===0){
-            toast.error("Your product list is empty!");
-            return;
-        }
-        setPending(true);
-        const addsalesRequest = {
-            customer: {
-                customerName:"customer",
-                phoneNumber:"00",
-                soldBy:"shop",
-                soldInvoice: invoiceNo
-            },
-            salesItems: addproductInfo,
-        };
-        try {
-            const response = await fetch(`${apiBaseUrl}/sales/outletSale`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(addsalesRequest),
-            });
-
-            if (!response.ok) {
-                toast.error("Product sale not submitted !");
-                return;
-            }
-          
-            dispatch(adeleteAllProducts());
-            router.push(`/sales-invoice?soldInvoice=${invoiceNo}`);
-
-        } catch (error: any) {
-            toast.error("An error occurred: " + error.message);
-        } finally {
-            setPending(false);
-        }
-    }
+           
     const [maxDate, setMaxDate] = useState('');
     useEffect(() => {
         const today = new Date();
@@ -143,21 +65,13 @@ const Page: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [saleProducts]);
 
-    useEffect(() => {
-        calculateAddTotal();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [addsaleProducts]);
-
+   
     useEffect(() => {
         calculateQtyTotal();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [saleProducts]);
 
-    useEffect(() => {
-        calculateAddQtyTotal();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [addsaleProducts]);
-
+   
     const calculateTotal = () => {
         const total = saleProducts.reduce((sum, p) => {
             return sum + (p.saleRate * p.productQty);
@@ -165,13 +79,7 @@ const Page: React.FC = () => {
         setTotal(total);
     };
 
-    const calculateAddTotal = () => {
-        const total = addsaleProducts.reduce((sum, p) => {
-            return sum + (p.saleRate * p.productQty);
-        }, 0);
-        setAddTotal(total);
-    };
-
+   
     const calculateQtyTotal = () => {
         const qtytotal = saleProducts.reduce((sum, p) => {
             return sum + (p.productQty);
@@ -179,21 +87,11 @@ const Page: React.FC = () => {
         setQtyTotal(qtytotal);
     };
 
-    const calculateAddQtyTotal = () => {
-        const qtytotal = addsaleProducts.reduce((sum, p) => {
-            return sum + (p.productQty);
-        }, 0);
-        setAddQtyTotal(qtytotal);
-    };
-
-    const handleDeleteProduct = (id: any) => {
+       const handleDeleteProduct = (id: any) => {
         dispatch(deleteProduct(id));
     };
 
-    const handleadDeleteProduct = (id: any) => {
-        dispatch(adeleteProduct(id));
-    };
-
+   
     const handleProductSubmit = async (e: any) => {
         e.preventDefault();
         if (!selectedProid || !selectedQty) {
@@ -295,92 +193,14 @@ const Page: React.FC = () => {
             .catch(error => console.error('Error fetching products:', error));
     }, [apiBaseUrl, username]);
 
-    const [additionalOption, setAdditionalOption] = useState([]);
-    useEffect(() => {
-        fetch(`${apiBaseUrl}/additionalStock/getAdditionalProducts?username=${username}`)
-            .then(response => response.json())
-            .then(data => {
-                const transformedData = data.map((item: any) => ({
-                    value: item.id,
-                    label: item.productName + ", " + item.salePrice
-                }));
-                setAdditionalOption(transformedData);
-            })
-            .catch(error => console.error('Error fetching products:', error));
-    }, [apiBaseUrl, username]);
 
     return (
         <div className='container-2xl min-h-screen'>
             <div className="flex flex-col">
                 <div className="flex justify-between font-bold pt-5 px-10 pb-0">
                     <p>DATE : <DatePicker calendarIcon={FcCalendar} className="rounded-md max-w-xs z-20" clearIcon={null} maxDate={new Date()} minDate={new Date()} format='y-MM-dd' onChange={setDate} value={date} /></p>
-                    <a href="#my_modal_additional_sale" className="btn btn-circle btn-ghost"><FcPlus size={35} /></a>
                 </div>
-                <div>
-                    <div className="modal sm:modal-middle" role="dialog" id="my_modal_additional_sale">
-                        <div className="modal-box">
-                            <h4 className="font-bold text-sm pl-4">ADDITIONAL SALE</h4>
-                            <div className="flex gap-2 w-full items-center justify-center p-2">
-                                <Select className="text-black h-[38px] w-64 z-50" autoFocus={true} onChange={(selectedOption: any) => setSelectedAdditional(selectedOption.value)} options={additionalOption} />
-                                <input type="number" value={addQty} onChange={(e: any) => setAddQty(e.target.value)} placeholder="Qty" className="border rounded-md p-2 w-[100px] h-[38px] bg-white text-black" />
-                                <button onClick={handleAdditionalSale} disabled={pending} className="btn btn-sm btn-outline btn-success">{pending ? "Adding..." : "ADD"}</button>
-                            </div>
-                            <div className="overflow-x-auto max-h-96">
-                                <table className="table table-pin-rows">
-                                    <thead>
-                                        <tr>
-                                            <th>SN</th>
-                                            <th>PRODUCT</th>
-                                            <th>UNIT</th>
-                                            <th>QTY</th>
-                                            <th>TOTAL</th>
-                                            <th>ACTION</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {addsaleProducts?.map((p, index) => (
-                                            <tr key={index}>
-                                                <td>{index + 1}</td>
-                                                <td>{p.productName} </td>
-                                                <td>{Number(p.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
-                                                <td>{p.productQty}</td>
-                                                <td>{Number((p.saleRate * p.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
-                                                <td className="flex justify-between gap-3">
-                                                    <button onClick={() => {
-                                                        handleadDeleteProduct(p.id);
-                                                    }} className="btn-xs rounded-md btn-outline btn-error"> <RiDeleteBin6Line size={18} />
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                    <tfoot>
-                                        <tr>
-                                            <td></td>
-                                            <td></td>
-                                            <td className="font-semibold">TOTAL</td>
-                                            <td className="font-semibold">{addqtyTotal} PS</td>
-                                            <td className="font-semibold">{Number(addtotal.toFixed(2)).toLocaleString('en-IN')} TK</td>
-                                            <td></td>
-                                        </tr>
-                                    </tfoot>
-                                </table>
-                            </div>
-                            <div className="flex items-center justify-center">
-                            <label className="form-control w-full max-w-xs">
-                                <button onClick={finalAdditionalSale} disabled={pending} className="btn btn-sm btn-success btn-outline  font-bold">{pending ? <span className="loading loading-ring loading-md text-accent"></span> : "SUBMIT"}</button>
-                            </label>
-                        </div>
-                            <div className="modal-action">
-                                <a href="#" className="btn btn-square btn-ghost">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-10 h-10">
-                                        <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
-                                    </svg>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+              
                 <div className="flex flex-col w-full">
                     <div className="divider divider-accent tracking-widest font-bold p-5">SALES AREA</div>
                 </div>

@@ -1,19 +1,13 @@
 "use client"
-import React, { useEffect, useRef, useState } from 'react'
-import { FcCalendar, FcPlus, FcPrint } from 'react-icons/fc'
+import React, { useEffect, useState } from 'react'
+import { FcCalendar} from 'react-icons/fc'
 import { toast } from 'react-toastify';
 import { useAppSelector } from "@/app/store";
-import { useReactToPrint } from 'react-to-print';
 import { uid } from 'uid';
 import DatePicker from 'react-date-picker';
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
-type Product = {
-  category: string;
-  productName: string;
-  costPrice: number;
-  salePrice: number;
-};
+
 const Page = () => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const uname = useAppSelector((state) => state.username.username);
@@ -34,14 +28,7 @@ const Page = () => {
     const formattedDate = `${year}-${month}-${day}`;
     setMaxDate(formattedDate);
   }, []);
-  const contentToPrint = useRef(null);
-  const handlePrint = useReactToPrint({
-    content: () => contentToPrint.current,
-  });
-  const [filterCriteria, setFilterCriteria] = useState('');
-  const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
-  const [allProducts, setAllProducts] = useState<Product[]>([]);
-
+   
   const handleAdditionalSubmit = async (e: any) => {
     e.preventDefault();
     if (!productName || !costPrice || !saleRate) {
@@ -74,28 +61,7 @@ const Page = () => {
       setPending(false);
     }
   }
-  useEffect(() => {
-    fetch(`${apiBaseUrl}/additionalStock/getAdditionalProducts?username=${username}`)
-      .then(response => response.json())
-      .then(data => {
-        setAllProducts(data);
-        setFilteredProducts(data);
-      })
-      .catch(error => console.error('Error fetching products:', error));
-  }, [apiBaseUrl, productName, username]);
-
-
-  useEffect(() => {
-    const filtered = allProducts.filter(product =>
-      product.productName.toLowerCase().includes(filterCriteria.toLowerCase())
-    );
-    setFilteredProducts(filtered);
-  }, [filterCriteria, allProducts]);
-
-  const handleFilterChange = (e: any) => {
-    setFilterCriteria(e.target.value);
-  };
-
+ 
   return (
     <div className='container min-h-screen'>
 
