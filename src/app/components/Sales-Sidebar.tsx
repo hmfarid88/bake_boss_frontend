@@ -48,10 +48,12 @@ export const SalesSidebar = () => {
                         <li><Link href="/sales-salereport"><TbReportSearch size={20} /> SALES REPORT</Link></li>
                         <li>
                             <details>
-                                <summary><MdOutlinePayments size={20} /> TRANS REPORT</summary>
+                                <summary><MdOutlinePayments size={20} /> PAYMENT REPORT</summary>
                                 <ul>
-                                    <li><a><Link href="/sales-paymentreport"> PAYMENT REPORT</Link></a></li>
-                                    <li><a><Link href="/sales-receivereport"> RECEIVE REPORT</Link></a></li>
+                                    <li><a><Link href="/sales-expense-report"> EXPENSE REPORT</Link></a></li>
+                                    <li><a><Link href="/sales-officepay-report"> OFFICE PAYMENT</Link></a></li>
+                                    <li><a><Link href="/sales-officerecv-report"> OFFICE RECEIVE</Link></a></li>
+                                    <li><a><Link href="/sales-supplierpay-report"> SUPPLIER PAYMENT</Link></a></li>
                                 </ul>
                             </details>
                         </li>
@@ -59,7 +61,7 @@ export const SalesSidebar = () => {
                             <details>
                                 <summary><PiNotebook size={20} /> LEDGER BOOK</summary>
                                 <ul>
-                                    <li><a><Link href="/sales-supplier-ledger">SUPPLIER LEDGER</Link></a></li>
+                                    {/* <li><a><Link href="/sales-supplier-ledger">SUPPLIER LEDGER</Link></a></li> */}
                                     <li><a><Link href="/sales-stock-ledger">STOCK LEDGER</Link></a></li>
                                     <li><a><Link href="/sales-stock-returned">RETURNED PRODUCT</Link></a></li>
                                 </ul>
