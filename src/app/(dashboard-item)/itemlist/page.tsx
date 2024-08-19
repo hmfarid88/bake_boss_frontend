@@ -15,7 +15,7 @@ type Product = {
     averageRate: number;
 };
 const Page: React.FC = () => {
-
+    const [pending, setPending] = useState(false);
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -27,6 +27,8 @@ const Page: React.FC = () => {
     const [filterCriteria, setFilterCriteria] = useState('');
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [allProducts, setAllProducts] = useState<Product[]>([]);
+
+    const [newItemName, setNewItemName] = useState("");
 
     useEffect(() => {
         fetch(`${apiBaseUrl}/api/getMaterials/grouped?username=${username}`)
@@ -91,6 +93,8 @@ const Page: React.FC = () => {
             })
             .catch(error => console.error('Error fetching item list:', error));
     };
+
+
     useEffect(() => {
         fetch(`${apiBaseUrl}/api/getMadeProducts?username=${username}`)
             .then(response => response.json())
@@ -224,7 +228,7 @@ const Page: React.FC = () => {
         <div className='container min-h-screen'>
             <div className="grid grid-cols-1 md:grid-cols-2">
                 <div className="flex flex-col w-full items-center justify-center pt-5">
-                <div className="overflow-x-auto">
+                    <div className="overflow-x-auto">
                         <div className="flex justify-between pl-7 pr-5">
                             <label className="input input-bordered flex max-w-xs  items-center gap-2">
                                 <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
@@ -234,7 +238,7 @@ const Page: React.FC = () => {
                             </label>
                             <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
                         </div>
-                      
+
                         <div ref={contentToPrint} className="flex-1 p-5">
                             <table className="table">
                                 <thead>
@@ -321,6 +325,7 @@ const Page: React.FC = () => {
                         <div className="modal sm:modal-middle" role="dialog" id="my_modal_itemlist">
                             <div className="modal-box">
                                 <h3 className="font-bold text-md uppercase">EDIT ITEM : {items[0]?.itemName}</h3>
+
                                 <table className="table">
                                     <thead>
                                         <tr>
@@ -334,7 +339,7 @@ const Page: React.FC = () => {
                                         {items.map((item, index) => (
                                             <tr key={index}>
                                                 <td>{index + 1}</td>
-                                                <td><input type='text' value={item.materialsName} onChange={(e) => setMaterialChange(index, e.target.value)} className='input-sm form-control border w-40' /> </td>
+                                                <td>{item.materialsName} </td>
                                                 <td><input type='number' onChange={(e) => handleQtyChange(index, e.target.value)} value={item.qty} className='input-sm form-control border w-24' /></td>
                                                 <td className="flex justify-between gap-3">
                                                     <button onClick={() => {

@@ -19,6 +19,8 @@ const Materials = () => {
     const [materialsRate, setMaterialsRate] = useState("");
     const [materialsQty, setMaterialsQty] = useState("");
 
+    const [newMaterialsName, setNewMaterial] = useState("");
+    const [oldMaterialsName, setOldMaterialName] = useState("");
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
     const dispatch = useAppDispatch();
@@ -80,7 +82,35 @@ const Materials = () => {
             setPending(false)
         }
     };
+    const handleMaterialNameUpdate = async (e: any) => {
+        e.preventDefault();
+        if (!oldMaterialsName || !newMaterialsName) {
+            toast.warning("Name is empty !");
+            return;
+        }
+        setPending(true);
+        try {
+            const response = await fetch(`${apiBaseUrl}/api/updateMaterialsName?username=${encodeURIComponent(username)}&oldMaterialsName=${encodeURIComponent(oldMaterialsName)}&newMaterialsName=${encodeURIComponent(newMaterialsName)}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
 
+            if (response.ok) {
+                toast.success("Materials updated successfully!");
+                setOldMaterialName("");
+                setNewMaterial("");
+            } else {
+                const data = await response.json();
+                toast.error(data.message || "Failed to update materials.");
+            }
+        } catch (error) {
+            toast.error("Something went wrong. Please try again!");
+        } finally {
+            setPending(false);
+        }
+    };
     const [supplierName, setSupplierName] = useState("");
     const handleSupplierItemSubmit = async (e: any) => {
         e.preventDefault();
@@ -286,14 +316,24 @@ const Materials = () => {
             </div>
             <div className="modal sm:modal-middle" role="dialog" id="my_modal_materials">
                 <div className="modal-box">
-                    <div className="flex w-full items-center justify-center p-2">
+                    <div className="flex flex-col w-full items-center justify-center p-2">
                         <label className="form-control w-full max-w-xs">
                             <div className="label">
                                 <span className="label-text-alt">ADD MATERIALS</span>
                             </div>
                             <div className="flex items-center justify-between">
-                                <input type="text" value={ingredientsName} name="productItem" onChange={(e: any) => setIngredientsName(e.target.value)} placeholder="Type here" className="input input-bordered w-3/4 max-w-xs" required />
+                                <input type="text" value={ingredientsName} name="productItem" onChange={(e: any) => setIngredientsName(e.target.value)} placeholder="Type here" className="input input-bordered w-3/4 max-w-xs" />
                                 <button onClick={handleIngredientSubmit} disabled={pending} className="btn btn-square btn-success">{pending ? "Adding..." : "ADD"}</button>
+                            </div>
+                        </label>
+                        <label className="form-control w-full max-w-xs">
+                            <div className="label mt-2">
+                                <span className="label-text-alt">CHANGE MATERIAL NAME</span>
+                            </div>
+                            <div className="flex flex-col gap-2">
+                                <Select className="text-black max-w-xs" onChange={(selectedOption: any) => setOldMaterialName(selectedOption.value)} options={materialsOption} />
+                                <input type="text" value={newMaterialsName} onChange={(e: any) => setNewMaterial(e.target.value)} placeholder="New Material" className="input input-bordered max-w-xs" />
+                                <button onClick={handleMaterialNameUpdate} disabled={pending} className='btn btn-success'>{pending ? "Changing..." : "CHANGE"}</button>
                             </div>
                         </label>
                     </div>
