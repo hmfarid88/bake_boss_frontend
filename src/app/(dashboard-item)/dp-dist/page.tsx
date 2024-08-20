@@ -74,7 +74,6 @@ const Page: React.FC = () => {
       const data = await response.json();
       const productToSale = {
         id: uid(),
-        date: data.date,
         category: data.category,
         productName: data.productName,
         costPrice: data.costPrice,
@@ -98,6 +97,7 @@ const Page: React.FC = () => {
   };
   const productInfo = saleProducts.map(product => ({
     ...product,
+    date:date,
     customer: retailer,
     invoiceNo: invoiceNo
   }));

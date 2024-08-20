@@ -208,7 +208,7 @@ const Materials = () => {
 
         <div className="flex w-full">
             <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-3">
-                <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-2">
+                <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-2 h-64">
                     <label className="form-control w-full max-w-xs">
                         <div className="label">
                             <span className="label-text-alt">STOCK DATE</span>

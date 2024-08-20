@@ -4,7 +4,6 @@ import swal from 'sweetalert';
 
 interface Product {
     id: string;
-    date: string;
     category: string;
     productName: string;
     costPrice: number;

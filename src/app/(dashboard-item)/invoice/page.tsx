@@ -70,7 +70,7 @@ const Invoice = () => {
     return (
         <div className="container min-h-[calc(100vh-228px)]">
             <div className="flex justify-end pr-10 pt-5 gap-3">
-                <Link href="/sale">  <button className='btn btn-ghost btn-square'><FcPlus size={36} /></button></Link>
+                <Link href="/dp-dist">  <button className='btn btn-ghost btn-square'><FcPlus size={36} /></button></Link>
                 <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
             </div>
             <div className="flex justify-center pb-5">

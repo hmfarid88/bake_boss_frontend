@@ -80,7 +80,7 @@ const RetailerPayment = () => {
                 <div className="label">
                   <span className="label-text">Payment Note</span>
                 </div>
-                <input type="text" value={retailerNote} onChange={(e)=>setRetailerNote(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+                <input type="text" name='retailerNote' autoComplete='retailerNote' value={retailerNote} onChange={(e)=>setRetailerNote(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
               </label>
             </div>
             <div className="flex">

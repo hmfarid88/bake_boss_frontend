@@ -78,10 +78,10 @@ const Page = () => {
 
   useEffect(() => {
     const filtered = allProducts.filter(product =>
-      product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-      product.category.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-      product.date.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-      product.invoiceNo.toLowerCase().includes(filterCriteria.toLowerCase())
+      (product.productName?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+      (product.category?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+      (product.date?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+      (product.invoiceNo?.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
     );
     setFilteredProducts(filtered);
   }, [filterCriteria, allProducts]);
@@ -110,7 +110,7 @@ const Page = () => {
       })
       .catch(error => console.error('Error fetching products:', error));
   }, [apiBaseUrl, username]);
-  
+
   return (
     <div className="container-2xl min-h-screen">
       <div className="flex w-full justify-end">
@@ -161,6 +161,9 @@ const Page = () => {
             <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
           </div>
           <div ref={contentToPrint} className="flex-1 p-5">
+            <div className="flex font-semibold text-lg items-cente justify-center w-full pb-5">
+              <h4>PRODUCT STOCK</h4>
+            </div>
             <table className="table uppercase">
               <thead>
                 <tr>

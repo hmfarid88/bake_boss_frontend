@@ -43,10 +43,10 @@ const Page = () => {
 
   useEffect(() => {
     const filtered = allProducts.filter(product =>
-      product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-      product.category.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-      product.date.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-      product.soldInvoice.toLowerCase().includes(filterCriteria.toLowerCase())
+      (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+      (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+      (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+      (product.soldInvoice.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
     );
     setFilteredProducts(filtered);
   }, [filterCriteria, allProducts]);
@@ -77,7 +77,7 @@ const Page = () => {
       <div className="flex w-full items-center justify-center">
         <div className="overflow-x-auto">
           <div ref={contentToPrint} className="flex-1 p-5">
-            <div className="flex flex-col gap-2 items-center"><h4 className="font-bold text-lg">SALES REPORT</h4><CurrentMonthYear /></div>
+            <div className="flex flex-col gap-2 items-center"><h4 className="font-bold">SALES REPORT</h4><CurrentMonthYear /></div>
             <table className="table mt-5">
               <thead>
                 <tr>

@@ -23,8 +23,7 @@ const CashBook = () => {
             return;
         }
         router.push(`/sales-cashbook?date=${date}`);
-        setDate('');
-    }
+     }
     return (
         <div className="flex flex-col gap-3 justify-center font-bold">
             <input type='date' className='input input-sm input-success' onChange={(e: any) => setDate(e.target.value)} max={maxDate} />

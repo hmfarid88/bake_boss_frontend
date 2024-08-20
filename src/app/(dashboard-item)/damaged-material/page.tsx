@@ -70,6 +70,7 @@ const Page = () => {
                         <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
                     </div>
                     <div ref={contentToPrint} className="flex-1 p-5">
+                    <div className="flex flex-col items-center pb-5"><h4 className="font-bold">DAMAGED MATERIALS</h4></div>
                         <table className="table">
                             <thead>
                                 <tr>

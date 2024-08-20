@@ -58,7 +58,7 @@ const OfficePayment = () => {
                 <div className="label">
                   <span className="label-text">Payment Name</span>
                 </div>
-                <input type="text" value={paymentName} onChange={(e) => setPaymentName(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+                <input type="text" name='paymentName' autoComplete='paymentName' value={paymentName} onChange={(e) => setPaymentName(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
               </label>
             </div>
             <div className="flex">
@@ -66,7 +66,7 @@ const OfficePayment = () => {
                 <div className="label">
                   <span className="label-text">Payment Note</span>
                 </div>
-                <input type="text" value={paymentNote} onChange={(e) => setPaymentNote(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+                <input type="text" name='paymentNote' autoComplete='paymentNote' value={paymentNote} onChange={(e) => setPaymentNote(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
               </label>
             </div>
             <div className="flex">

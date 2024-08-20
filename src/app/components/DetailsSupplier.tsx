@@ -43,8 +43,8 @@ const DetailsSupplier = () => {
 
     useEffect(() => {
         const filtered = allProducts.filter(product =>
-            product.date.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-            product.productName.toLowerCase().includes(filterCriteria.toLowerCase())
+            (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+            (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
         );
         setFilteredProducts(filtered);
     }, [filterCriteria, allProducts]);

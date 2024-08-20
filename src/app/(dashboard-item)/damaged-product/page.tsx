@@ -41,8 +41,8 @@ const Page = () => {
 
   useEffect(() => {
     const filtered = allProducts.filter(product =>
-      product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-      product.category.toLowerCase().includes(filterCriteria.toLowerCase())
+      (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+      (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
     );
     setFilteredProducts(filtered);
   }, [filterCriteria, allProducts]);
@@ -72,6 +72,7 @@ const Page = () => {
             <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
           </div>
           <div ref={contentToPrint} className="flex-1 p-5">
+          <div className="flex flex-col items-center pb-5"><h4 className="font-bold">DAMAGED PRODUCTS</h4></div>
             <table className="table">
               <thead>
                 <tr>

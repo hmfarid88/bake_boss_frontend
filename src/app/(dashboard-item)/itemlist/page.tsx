@@ -240,6 +240,7 @@ const Page: React.FC = () => {
                         </div>
 
                         <div ref={contentToPrint} className="flex-1 p-5">
+                        <div className="flex flex-col items-center pb-5"><h4 className="font-bold">ITEMS LIST</h4></div>
                             <table className="table">
                                 <thead>
                                     <tr>

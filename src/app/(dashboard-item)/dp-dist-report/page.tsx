@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAppSelector } from "@/app/store";
 import Print from "@/app/components/Print";
+import CurrentMonthYear from "@/app/components/CurrentMonthYear";
 
 type Product = {
   category: string;
@@ -37,9 +38,9 @@ const Page = () => {
 
   useEffect(() => {
     const filtered = allProducts.filter(product =>
-      product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-      product.category.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-      product.invoiceNo.toLowerCase().includes(filterCriteria.toLowerCase())
+      (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+      (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+      (product.invoiceNo.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
     );
     setFilteredProducts(filtered);
   }, [filterCriteria, allProducts]);
@@ -65,6 +66,7 @@ const Page = () => {
             <Print contentRef={contentToPrint} />
           </div>
           <div ref={contentToPrint} className="flex-1 p-5">
+          <div className="flex flex-col items-center pb-5"><h4 className="font-bold">DISTRIBUTION REPORT</h4><CurrentMonthYear /></div>
             <table className="table">
               <thead>
                 <tr>

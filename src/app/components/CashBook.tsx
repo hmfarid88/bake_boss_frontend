@@ -24,8 +24,7 @@ const CashBook = () => {
             return;
         }
         router.push(`/cashbook?date=${date}`);
-        setDate('');
-  
+       
     }
     return (
         <div className="flex flex-col gap-3 justify-center font-bold">

@@ -46,9 +46,9 @@ const Page = () => {
 
     useEffect(() => {
         const filtered = allProducts.filter(product =>
-            product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-            product.category.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-            product.date.toLowerCase().includes(filterCriteria.toLowerCase())
+            (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+            (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+            (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
         );
         setFilteredProducts(filtered);
     }, [filterCriteria, allProducts]);
@@ -105,8 +105,11 @@ const Page = () => {
 
     return (
         <div className="container-2xl">
-            <div className="flex flex-col w-full min-h-[calc(100vh-228px)] p-4 items-center justify-center">
-                <div className="flex">
+            <div className="flex flex-col w-full min-h-[calc(100vh-228px)] p-4 items-center">
+                <div className="flex font-semibold text-lg items-center">
+                    <h4>PENDING PRODUCT</h4>
+                </div>
+                <div className="flex pt-5">
                     <div className="overflow-x-auto">
                         <div className="flex justify-between pl-5 pr-5">
                             <label className="input input-bordered flex max-w-xs  items-center gap-2">

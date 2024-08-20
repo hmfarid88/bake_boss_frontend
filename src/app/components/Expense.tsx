@@ -45,7 +45,6 @@ const Expense = () => {
       toast.error("Invalid transaction !")
     } finally {
       setPending(false);
-      setExpenseName("");
       setExpenseNote("");
       setExpenseAmount("");
     }
@@ -58,7 +57,13 @@ const Expense = () => {
                 <div className="label">
                   <span className="label-text">Expense Name</span>
                 </div>
-                <input type="text" value={expenseName} onChange={(e) => setExpenseName(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+                <select className='select select-bordered'  onChange={(e:any)=>{setExpenseName(e.target.value)}}>
+                <option selected disabled>Select . . .</option>
+                    <option value="OFFICE COST">OFFICE COST</option>
+                    <option value="STAFF SALARY">STAFF SALARY</option>
+                    <option value="SHOP RENT">SHOP RENT</option>
+                </select>
+               
               </label>
             </div>
             <div className="flex">
@@ -66,7 +71,7 @@ const Expense = () => {
                 <div className="label">
                   <span className="label-text">Expense Note</span>
                 </div>
-                <input type="text" value={expenseNote} onChange={(e) => setExpenseNote(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+                <input type="text" name='note' autoComplete='note' value={expenseNote} onChange={(e) => setExpenseNote(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
               </label>
             </div>
             <div className="flex">

@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAppSelector } from "@/app/store";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
+import CurrentMonthYear from "@/app/components/CurrentMonthYear";
 
 type Product = {
     date: string;
@@ -39,8 +40,8 @@ const Page = () => {
 
     useEffect(() => {
         const filtered = allProducts.filter(product =>
-            product.receiveName.toLowerCase().includes(filterCriteria.toLowerCase()) ||
-            product.receiveNote.toLowerCase().includes(filterCriteria.toLowerCase())
+            (product.receiveName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+            (product.receiveNote.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
         );
         setFilteredProducts(filtered);
     }, [filterCriteria, allProducts]);
@@ -67,6 +68,7 @@ const Page = () => {
                         <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
                     </div>
                     <div ref={contentToPrint} className="flex-1 p-5">
+                    <div className="flex flex-col items-center pb-5"><h4 className="font-bold">OFFICE RECEIVE REPORT</h4><CurrentMonthYear /></div>
                         <table className="table">
                             <thead>
                                 <tr>

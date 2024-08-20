@@ -39,8 +39,8 @@ export const SalesSidebar = () => {
                             <details>
                                 <summary><RiSecurePaymentLine size={20} /> TRANSACTION</summary>
                                 <ul>
-                                    <li><a><Link href="/sales-payment">PAYMENT</Link></a></li>
-                                    <li><a><Link href="/sales-receive">RECEIVE</Link></a></li>
+                                    <li><Link href="/sales-payment">PAYMENT</Link></li>
+                                    <li><Link href="/sales-receive">RECEIVE</Link></li>
                                 </ul>
                             </details>
                         </li>
@@ -49,10 +49,10 @@ export const SalesSidebar = () => {
                             <details>
                                 <summary><MdOutlinePayments size={20} /> PAYMENT REPORT</summary>
                                 <ul>
-                                    <li><a><Link href="/sales-expense-report"> EXPENSE REPORT</Link></a></li>
-                                    <li><a><Link href="/sales-officepay-report"> OFFICE PAYMENT</Link></a></li>
-                                    <li><a><Link href="/sales-officerecv-report"> OFFICE RECEIVE</Link></a></li>
-                                    <li><a><Link href="/sales-supplierpay-report"> SUPPLIER PAYMENT</Link></a></li>
+                                    <li><Link href="/sales-expense-report"> EXPENSE REPORT</Link></li>
+                                    <li><Link href="/sales-officepay-report"> OFFICE PAYMENT</Link></li>
+                                    <li><Link href="/sales-officerecv-report"> OFFICE RECEIVE</Link></li>
+                                    <li><Link href="/sales-supplierpay-report"> SUPPLIER PAYMENT</Link></li>
                                 </ul>
                             </details>
                         </li>
@@ -60,9 +60,9 @@ export const SalesSidebar = () => {
                             <details>
                                 <summary><PiNotebook size={20} /> LEDGER BOOK</summary>
                                 <ul>
-                                    {/* <li><a><Link href="/sales-supplier-ledger">SUPPLIER LEDGER</Link></a></li> */}
-                                    <li><a><Link href="/sales-stock-ledger">STOCK LEDGER</Link></a></li>
-                                    <li><a><Link href="/sales-stock-returned">RETURNED PRODUCT</Link></a></li>
+                                    {/* <li><Link href="/sales-supplier-ledger">SUPPLIER LEDGER</Link></li> */}
+                                    <li><Link href="/sales-stock-ledger">STOCK LEDGER</Link></li>
+                                    <li><Link href="/sales-stock-returned">RETURNED PRODUCT</Link></li>
                                 </ul>
                             </details>
                         </li>

@@ -39,8 +39,8 @@ export const Sidebar = () => {
                             <details>
                                 <summary><HiOutlineShoppingBag size={20} /> DISTRIBUTION</summary>
                                 <ul>
-                                    <li><a><Link href="/dp-dist">DP DISTRIBUTION</Link></a></li>
-                                    <li><a><Link href="/rp-dist">RP DISTRIBUTION</Link></a></li>
+                                    <li><Link href="/dp-dist">DP DISTRIBUTION</Link></li>
+                                    <li><Link href="/rp-dist">RP DISTRIBUTION</Link></li>
                                 </ul>
                             </details>
                         </li>
@@ -48,8 +48,8 @@ export const Sidebar = () => {
                             <details>
                                 <summary><RiSecurePaymentLine size={20} /> TRANSACTION</summary>
                                 <ul>
-                                    <li><a><Link href="/payment">PAYMENT</Link></a></li>
-                                    <li><a><Link href="/receive">RECEIVE</Link></a></li>
+                                    <li><Link href="/payment">PAYMENT</Link></li>
+                                    <li><Link href="/receive">RECEIVE</Link></li>
                                 </ul>
                             </details>
                         </li>
@@ -57,11 +57,12 @@ export const Sidebar = () => {
                             <details>
                                 <summary><GoDatabase size={20} /> STOCK REPORT</summary>
                                 <ul>
-                                    <li><a><Link href="/itemlist">ITEMS LIST</Link></a></li>
-                                    <li><a><Link href="/materials">MATERIALS STOCK</Link></a></li>
-                                    <li><a><Link href="/stockreport">MADE PRODUCTS</Link></a></li>
-                                    <li><a><Link href="/damaged-product">DAMAGED PRODUCT</Link></a></li>
-                                    <li><a><Link href="/damaged-material">DAMAGED MATERIAL</Link></a></li>
+                                    <li><Link href="/itemlist">ITEMS LIST</Link></li>
+                                    <li><Link href="/materials">MATERIALS STOCK</Link></li>
+                                    <li><Link href="/stockreport">MADE PRODUCTS</Link></li>
+                                    <li><Link href="/damaged-product">DAMAGED PRODUCT</Link></li>
+                                    <li><Link href="/damaged-material">DAMAGED MATERIAL</Link></li>
+                                    <li><Link href="/sales-returned">SALES RETURNED</Link></li>
                                 </ul>
                             </details>
                         </li>
@@ -69,8 +70,8 @@ export const Sidebar = () => {
                             <details>
                                 <summary><TbReportSearch size={20} /> DIST REPORT</summary>
                                 <ul>
-                                    <li><a><Link href="/dp-dist-report">DP DISTRIBUTION</Link></a></li>
-                                    <li><a><Link href="/rp-dist-report">RP DISTRIBUTION</Link></a></li>
+                                    <li><Link href="/dp-dist-report">DP DISTRIBUTION</Link></li>
+                                    <li><Link href="/rp-dist-report">RP DISTRIBUTION</Link></li>
                                 </ul>
                             </details>
                             </li>
@@ -78,9 +79,9 @@ export const Sidebar = () => {
                             <details>
                                 <summary><MdOutlinePayments size={20} /> PAYMENT REPORT</summary>
                                 <ul>
-                                    <li><a><Link href="/expense-report"> EXPENSE REPORT</Link></a></li>
-                                    <li><a><Link href="/office-pay-report"> OFFICE PAYMENT</Link></a></li>
-                                    <li><a><Link href="/supplier-pay-report"> SUPPLIER PAYMENT</Link></a></li>
+                                    <li><Link href="/expense-report"> EXPENSE REPORT</Link></li>
+                                    <li><Link href="/office-pay-report"> OFFICE PAYMENT</Link></li>
+                                    <li><Link href="/supplier-pay-report"> SUPPLIER PAYMENT</Link></li>
                                 </ul>
                             </details>
                         </li>
@@ -88,8 +89,8 @@ export const Sidebar = () => {
                             <details>
                                 <summary><MdOutlinePayments size={20} /> RECEIVE REPORT</summary>
                                 <ul>
-                                <li><a><Link href="/office-receive-report"> OFFICE RECEIVE</Link></a></li>
-                                <li><a><Link href="/retailer-pay-report"> RETAILER PAYMENT</Link></a></li>
+                                <li><Link href="/office-receive-report"> OFFICE RECEIVE</Link></li>
+                                <li><Link href="/retailer-pay-report"> RETAILER PAYMENT</Link></li>
                                 </ul>
                             </details>
                         </li>
@@ -97,9 +98,9 @@ export const Sidebar = () => {
                             <details>
                                 <summary><PiNotebook size={20} /> LEDGER BOOK</summary>
                                 <ul>
-                                    <li><a><Link href="/supplier-ledger">SUPPLIER LEDGER</Link></a></li>
-                                    <li><a><Link href="/materials-ledger">MATERIALS LEDGER</Link></a></li>
-                                    <li><a><Link href="/stock-ledger">STOCK LEDGER</Link></a></li>
+                                    <li><Link href="/supplier-ledger">SUPPLIER LEDGER</Link></li>
+                                    <li><Link href="/materials-ledger">MATERIALS LEDGER</Link></li>
+                                    <li><Link href="/stock-ledger">MADE ITEM LEDGER</Link></li>
                                 </ul>
                             </details>
                         </li>

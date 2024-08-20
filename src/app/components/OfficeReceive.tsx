@@ -58,7 +58,7 @@ const OfficeReceive = () => {
                 <div className="label">
                   <span className="label-text">Receive Name</span>
                 </div>
-                <input type="text" value={receiveName} onChange={(e) => setReceiveName(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+                <input type="text" name='receiveName' autoComplete='receiveName' value={receiveName} onChange={(e) => setReceiveName(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
               </label>
             </div>
             <div className="flex">
@@ -66,7 +66,7 @@ const OfficeReceive = () => {
                 <div className="label">
                   <span className="label-text">Receive Note</span>
                 </div>
-                <input type="text" value={receiveNote} onChange={(e) => setReceiveNote(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
+                <input type="text" name='receiveNote' autoComplete='receiveNote' value={receiveNote} onChange={(e) => setReceiveNote(e.target.value)} placeholder="Type here" className="input input-bordered w-full max-w-xs" />
               </label>
             </div>
             <div className="flex">
