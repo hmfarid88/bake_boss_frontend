@@ -30,7 +30,6 @@ const Page: React.FC = () => {
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
     const saleProducts = useAppSelector((state) => state.salesProduct.products);
-    const addsaleProducts = useAppSelector((state) => state.additionalSale.products);
     const dispatch = useAppDispatch();
     const invoiceNo = uid();
 
