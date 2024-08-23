@@ -83,26 +83,26 @@ const Invoice = () => {
                 <div className='flex-1 max-w-[794px] h-auto border border-slate-700'>
                     <div ref={contentToPrint} className="flex-1 max-w-[794px] h-auto p-5 sm:p-10">
                         <div className="flex w-full justify-between">
-                            <h1><FcDataSheet className='font-bold' size={50} /></h1>
-                            <h1 className='tracking-widest font-black text-sm md:text-xl'>INVOICE</h1>
+                            <h1><FcDataSheet className='text-black' size={50} /></h1>
+                            <h1 className='tracking-widest text-black font-bold text-sm md:text-xl'>INVOICE</h1>
                         </div>
                         <div className="flex flex-col w-full justify-end items-end">
-                            <h1 className='uppercase font-black text-sm md:text-md'>{shopInfo?.shopName}</h1>
-                            <h4 className='flex font-sans font-black text-xs md:text-md capitalize'><IoLocationOutline className='mt-0.5 mr-1'/> {shopInfo?.address}</h4>
-                            <h4 className='flex font-sans font-black text-xs md:text-md'><FaPhoneVolume className='mt-0.5 mr-1' /> {shopInfo?.phoneNumber}</h4>
-                            <h4 className='flex font-sans font-black text-xs md:text-md'><AiOutlineMail className='mt-0.5 mr-1'/> {shopInfo?.email}</h4>
+                            <h1 className='uppercase text-black font-bold text-sm md:text-md'>{shopInfo?.shopName}</h1>
+                            <h4 className='flex font-sans text-black text-xs md:text-md capitalize'><IoLocationOutline className='mt-0.5 mr-1'/> {shopInfo?.address}</h4>
+                            <h4 className='flex font-sans text-black text-xs md:text-md'><FaPhoneVolume className='mt-0.5 mr-1' /> {shopInfo?.phoneNumber}</h4>
+                            <h4 className='flex font-sans text-black text-xs md:text-md'><AiOutlineMail className='mt-0.5 mr-1'/> {shopInfo?.email}</h4>
                         </div>
                         <div className="flex flex-col w-full pt-3">
-                            <div className="divider divider-neutral tracking-widest text-xs font-black mt-0 mb-1">Information</div>
+                            <div className="divider divider-neutral tracking-widest text-xs text-black mt-0 mb-1">Information</div>
                         </div>
                         <div className="flex w-full justify-between">
                             <div className="flex flex-col">
-                                <h2 className='capitalize font-black text-xs md:text-md'>Name: {invoiceData.customerInfo.customerName || "Customer"}</h2>
-                                <p className='capitalize text-xs font-black pt-1'>Sold By: {invoiceData.customerInfo.soldBy || "Shop"}</p>
+                                <h2 className='capitalize text-xs md:text-md text-black'>Name: {invoiceData.customerInfo.customerName || "Customer"}</h2>
+                                <p className='capitalize text-xs md:text-md text-black pt-1'>Sold By: {invoiceData.customerInfo.soldBy || "Shop"}</p>
                             </div>
                             <div className="flex flex-col items-end">
-                                <h4 className='font-black text-xs md:text-md'>Invoice No : {invoiceData.customerInfo.soldInvoice}</h4>
-                                <h4 className='font-black text-xs md:text-md pt-1'>Date : {invoiceData.salesStock[0].date}</h4>
+                                <h4 className='text-black text-xs md:text-md'>Invoice No : {invoiceData.customerInfo.soldInvoice}</h4>
+                                <h4 className='text-black text-xs md:text-md pt-1'>Date : {invoiceData.salesStock[0].date}</h4>
                             </div>
                         </div>
                         <div className="w-full pt-2">
@@ -115,7 +115,7 @@ const Invoice = () => {
                                         <th className='text-right pt-3 pr-0'>Total</th>
                                     </tr>
                                 </thead>
-                                <tbody className='text-xs md:text-md capitalize font-black'>
+                                <tbody className='text-xs md:text-md capitalize text-black'>
                                     {invoiceData.salesStock.map((products: any, index: any) => (
                                         <tr key={index}>
                                             <td className='text-left p-0'>{products.category} {products.productName}</td>
@@ -126,7 +126,7 @@ const Invoice = () => {
                                     ))}
                                 </tbody>
                                 <tfoot>
-                                    <tr className='text-md text-black'>
+                                    <tr className='text-xs md:text-md text-black'>
                                         <td></td>
                                         <td>Total</td>
                                         <td>{totalQty.toLocaleString('en-IN')}</td>
@@ -138,11 +138,11 @@ const Invoice = () => {
 
                         <div className="flex w-full justify-between">
                             <div className="flex flex-col w-1/2 justify-start pt-10">
-                                <div className="font-black text-xs md:text-sm mb-0">Signature --------</div>
+                                <div className="text-black text-xs md:text-sm mb-0">Signature --------</div>
                             </div>
                         </div>
                         <div className="flex text-black gap-2 pt-10">
-                            <FaRegHandshake size={20} />  <p className='text-xs font-black'>ধন্যবাদ, আবার আসবেন ।</p>
+                            <FaRegHandshake size={20} />  <p className='text-xs'>ধন্যবাদ, আবার আসবেন ।</p>
                         </div>
 
                     </div>
