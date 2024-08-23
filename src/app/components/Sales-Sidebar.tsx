@@ -35,6 +35,7 @@ export const SalesSidebar = () => {
                         <li><Link href="/sales-additional"><BsDatabaseAdd size={20} /> ADDITIONAL STOCK</Link></li>
                         <li><Link href="/product-return"><BsDatabaseDown size={20} /> PRODUCT RETURN</Link></li>
                         <li><Link href="/sales-shop"><MdOutlinePointOfSale size={20} />PRODUCT SALES</Link></li>
+                        <li><Link href="/sales-requisition"><PiNotebook size={20} />REQUISITION</Link></li>
                         <li>
                             <details>
                                 <summary><RiSecurePaymentLine size={20} /> TRANSACTION</summary>
@@ -63,6 +64,7 @@ export const SalesSidebar = () => {
                                     {/* <li><Link href="/sales-supplier-ledger">SUPPLIER LEDGER</Link></li> */}
                                     <li><Link href="/sales-stock-ledger">STOCK LEDGER</Link></li>
                                     <li><Link href="/sales-stock-returned">RETURNED PRODUCT</Link></li>
+                                    <li><Link href="/sales-requisition-report">REQUISITION REPORT</Link></li>
                                 </ul>
                             </details>
                         </li>

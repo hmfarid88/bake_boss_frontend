@@ -83,17 +83,17 @@ const Invoice = () => {
                 <div className='flex-1 max-w-[794px] h-auto border border-slate-700'>
                     <div ref={contentToPrint} className="flex-1 max-w-[794px] h-auto p-5 sm:p-10">
                         <div className="flex w-full justify-between">
-                            <h1><FcDataSheet size={50} /></h1>
-                            <h1 className='tracking-widest font-bold text-sm md:text-xl'>INVOICE</h1>
+                            <h1><FcDataSheet className='font-bold' size={50} /></h1>
+                            <h1 className='tracking-widest font-extrabold text-sm md:text-xl'>INVOICE</h1>
                         </div>
                         <div className="flex flex-col w-full justify-end items-end">
                             <h1 className='uppercase font-bold text-sm md:text-md'>{shopInfo?.shopName}</h1>
-                            <h4 className='flex font-sans text-xs md:text-md'><IoLocationOutline className='mt-0.5 mr-1'/> {shopInfo?.address}</h4>
-                            <h4 className='flex font-sans text-xs md:text-md'><FaPhoneVolume className='mt-0.5 mr-1' /> {shopInfo?.phoneNumber}</h4>
-                            <h4 className='flex font-sans text-xs md:text-md'><AiOutlineMail className='mt-0.5 mr-1'/> {shopInfo?.email}</h4>
+                            <h4 className='flex font-sans font-bold text-xs md:text-md'><IoLocationOutline className='mt-0.5 mr-1'/> {shopInfo?.address}</h4>
+                            <h4 className='flex font-sans font-bold text-xs md:text-md'><FaPhoneVolume className='mt-0.5 mr-1' /> {shopInfo?.phoneNumber}</h4>
+                            <h4 className='flex font-sans font-bold text-xs md:text-md'><AiOutlineMail className='mt-0.5 mr-1'/> {shopInfo?.email}</h4>
                         </div>
-                        <div className="flex flex-col w-full">
-                            <div className="divider divider-accent tracking-widest text-xs font-semibold mt-0 mb-1">INFORMATION</div>
+                        <div className="flex flex-col w-full pt-3">
+                            <div className="divider divider-accent tracking-widest text-xs font-bold mt-0 mb-1">INFORMATION</div>
                         </div>
                         <div className="flex w-full justify-between">
                             <div className="flex flex-col">
@@ -101,14 +101,14 @@ const Invoice = () => {
                                 <p className='uppercase text-xs font-bold pt-1'>SOLD BY: {invoiceData.customerInfo.soldBy || "Shop"}</p>
                             </div>
                             <div className="flex flex-col items-end">
-                                <h4 className='font-semibold text-xs md:text-md uppercase'>Invoice No : {invoiceData.customerInfo.soldInvoice}</h4>
-                                <h4 className='font-semibold text-xs md:text-md uppercase pt-1'>Date : {invoiceData.salesStock[0].date}</h4>
+                                <h4 className='font-bold text-xs md:text-md uppercase'>Invoice No : {invoiceData.customerInfo.soldInvoice}</h4>
+                                <h4 className='font-bold text-xs md:text-md uppercase pt-1'>Date : {invoiceData.salesStock[0].date}</h4>
                             </div>
                         </div>
                         <div className="w-full pt-2">
-                            <table className="table">
+                            <table className="table font-black">
                                 <thead>
-                                    <tr className='border-b-base-content text-xs md:text-md font-bold'>
+                                    <tr className='border-b-base-content text-xs md:text-md font-black'>
                                         <th className='text-left p-0'>DESCRIPTION</th>
                                         <th>VALUE</th>
                                         <th>QTY</th>
@@ -138,7 +138,7 @@ const Invoice = () => {
 
                         <div className="flex w-full justify-between">
                             <div className="flex flex-col w-1/2 justify-start pt-10">
-                                <div className="font-semibold tracking-widest text-xs md:text-sm mb-0">Signature --------</div>
+                                <div className="font-bold tracking-widest text-xs md:text-sm mb-0">Signature --------</div>
                             </div>
                         </div>
                         <div className="flex gap-2 pt-10">

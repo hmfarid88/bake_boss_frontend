@@ -77,7 +77,7 @@ const Invoice = () => {
                 <div className='flex-1 max-w-[794px] h-auto border border-slate-700'>
                 <div ref={contentToPrint} className="flex-1 max-w-[794px] h-auto p-5 sm:p-10">
                     <div className="flex w-full justify-between">
-                        <h1><FcDataSheet size={50} /></h1>
+                        <h1><FcDataSheet className='font-black' size={50} /></h1>
                         <h1 className='tracking-widest font-bold text-sm md:text-xl'>INVOICE</h1>
                     </div>
                     <div className="flex flex-col w-full justify-end items-end">
@@ -86,7 +86,7 @@ const Invoice = () => {
                             <h4 className='flex font-sans text-xs md:text-md'><FaPhoneVolume className='mt-0.5 mr-1' /> {shopInfo?.phoneNumber}</h4>
                             <h4 className='flex font-sans text-xs md:text-md'><AiOutlineMail className='mt-0.5 mr-1'/> {shopInfo?.email}</h4>
                         </div>
-                    <div className="flex flex-col w-full">
+                    <div className="flex flex-col w-full pt-3">
                         <div className="divider divider-accent tracking-widest text-xs font-semibold mt-0 mb-1">INFORMATION</div>
                     </div>
                     <div className="flex w-full justify-between">
@@ -109,7 +109,7 @@ const Invoice = () => {
                                     <th className='text-right pt-3 pr-0'>TOTAL</th>
                                 </tr>
                             </thead>
-                            <tbody className='text-xs md:text-md uppercase'>
+                            <tbody className='text-xs md:text-md uppercase font-black'>
                                 {invoiceData?.map((products, index) => (
                                     <tr key={index}>
                                         <td className='text-left p-0'>{products.category} {products.productName}</td>

@@ -309,7 +309,7 @@ const ProductStock = () => {
                         <div className="label">
                             <span className="label-text-alt">PRODUCT QTY</span>
                         </div>
-                        <input type="number" maxLength={5} name="pqty" value={productQty} placeholder="Type here" onChange={(e: any) => setProductQty(e.target.value.replace(/\D/g, ""))} className="border rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" />
+                        <input type="number" maxLength={5} name="pqty" value={productQty} placeholder="Type here" onChange={(e: any) => setProductQty(e.target.value)} className="border rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" />
                     </label>
                     <label className="form-control w-full max-w-xs pt-5">
                         <button onClick={handleProductStock} className="btn btn-accent btn-sm h-[40px] w-full max-w-xs" >Add Product</button>
