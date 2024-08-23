@@ -78,10 +78,10 @@ const Invoice = () => {
                 <div ref={contentToPrint} className="flex-1 max-w-[794px] h-auto p-5 sm:p-10">
                     <div className="flex w-full justify-between">
                         <h1><FcDataSheet className='font-black' size={50} /></h1>
-                        <h1 className='tracking-widest font-bold text-sm md:text-xl'>INVOICE</h1>
+                        <h1 className='tracking-widest font-black text-sm md:text-xl'>INVOICE</h1>
                     </div>
                     <div className="flex flex-col w-full justify-end items-end">
-                            <h1 className='uppercase font-bold text-sm md:text-md'>{shopInfo?.shopName}</h1>
+                            <h1 className='uppercase font-black text-sm md:text-md'>{shopInfo?.shopName}</h1>
                             <h4 className='flex font-sans text-xs md:text-md'><IoLocationOutline className='mt-0.5 mr-1'/> {shopInfo?.address}</h4>
                             <h4 className='flex font-sans text-xs md:text-md'><FaPhoneVolume className='mt-0.5 mr-1' /> {shopInfo?.phoneNumber}</h4>
                             <h4 className='flex font-sans text-xs md:text-md'><AiOutlineMail className='mt-0.5 mr-1'/> {shopInfo?.email}</h4>
@@ -91,7 +91,7 @@ const Invoice = () => {
                     </div>
                     <div className="flex w-full justify-between">
                         <div className="flex flex-col">
-                            <h2 className='uppercase font-bold text-xs md:text-md'>{invoiceData[0]?.customer}</h2>
+                            <h2 className='uppercase font-black text-xs md:text-md'>{invoiceData[0]?.customer}</h2>
 
                         </div>
                         <div className="flex flex-col items-end">
@@ -102,14 +102,14 @@ const Invoice = () => {
                     <div className="w-full pt-2">
                         <table className="table">
                             <thead>
-                                <tr className='border-b-base-content text-xs md:text-md font-bold'>
+                                <tr className='border-b-base-content text-xs md:text-md text-black'>
                                     <th className='text-left p-0'>DESCRIPTION</th>
                                     <th>VALUE</th>
-                                    <th>QTY</th>
+                                    <th>QTY(KG/PS)</th>
                                     <th className='text-right pt-3 pr-0'>TOTAL</th>
                                 </tr>
                             </thead>
-                            <tbody className='text-xs md:text-md uppercase font-black'>
+                            <tbody className='text-xs md:text-md capitalize'>
                                 {invoiceData?.map((products, index) => (
                                     <tr key={index}>
                                         <td className='text-left p-0'>{products.category} {products.productName}</td>
@@ -120,11 +120,11 @@ const Invoice = () => {
                                 ))}
                             </tbody>
                             <tfoot>
-                                <tr className='text-md font-bold'>
+                                <tr className='text-md text-black'>
                                     <td></td>
                                     <td>TOTAL</td>
-                                    <td>{totalQty.toLocaleString('en-IN')}</td>
-                                    <td className='text-end pr-0'>{subtotal.toLocaleString('en-IN')}.00</td>
+                                    <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
+                                    <td className='text-end pr-0'>{Number(subtotal.toFixed(2)).toLocaleString('en-IN')}</td>
                                 </tr>
                             </tfoot>
                         </table>
