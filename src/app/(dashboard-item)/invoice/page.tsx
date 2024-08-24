@@ -77,21 +77,19 @@ const Invoice = () => {
                 <div className='flex-1 max-w-[794px] h-auto border border-slate-700'>
                 <div ref={contentToPrint} className="flex-1 max-w-[794px] h-auto p-5 sm:p-10">
                     <div className="flex w-full justify-between">
-                        <h1><FcDataSheet className='font-black' size={50} /></h1>
-                        <h1 className='tracking-widest font-black text-sm md:text-xl'>INVOICE</h1>
+                        <h1><FcDataSheet className='text-black' size={50} /></h1>
+                        <h1 className='tracking-widest text-black font-bold text-sm md:text-xl'>INVOICE</h1>
                     </div>
                     <div className="flex flex-col w-full justify-end items-end">
-                            <h1 className='uppercase font-black text-sm md:text-md'>{shopInfo?.shopName}</h1>
+                            <h1 className='uppercase text-black text-sm md:text-md'>{shopInfo?.shopName}</h1>
                             <h4 className='flex font-sans text-xs md:text-md'><IoLocationOutline className='mt-0.5 mr-1'/> {shopInfo?.address}</h4>
                             <h4 className='flex font-sans text-xs md:text-md'><FaPhoneVolume className='mt-0.5 mr-1' /> {shopInfo?.phoneNumber}</h4>
                             <h4 className='flex font-sans text-xs md:text-md'><AiOutlineMail className='mt-0.5 mr-1'/> {shopInfo?.email}</h4>
                         </div>
-                    <div className="flex flex-col w-full pt-3">
-                        <div className="divider divider-accent tracking-widest text-xs font-semibold mt-0 mb-1">INFORMATION</div>
-                    </div>
+                   
                     <div className="flex w-full justify-between">
                         <div className="flex flex-col">
-                            <h2 className='uppercase font-black text-xs md:text-md'>{invoiceData[0]?.customer}</h2>
+                            <h2 className='uppercase text-black font-bold text-xs md:text-md'>{invoiceData[0]?.customer}</h2>
 
                         </div>
                         <div className="flex flex-col items-end">
@@ -103,7 +101,8 @@ const Invoice = () => {
                         <table className="table">
                             <thead>
                                 <tr className='border-b-base-content text-xs md:text-md text-black'>
-                                    <th className='text-left p-0'>DESCRIPTION</th>
+                                    <th className='text-left p-0'>SN</th>
+                                    <th>DESCRIPTION</th>
                                     <th>VALUE</th>
                                     <th>QTY(KG/PS)</th>
                                     <th className='text-right pt-3 pr-0'>TOTAL</th>
@@ -112,15 +111,17 @@ const Invoice = () => {
                             <tbody className='text-xs md:text-md capitalize'>
                                 {invoiceData?.map((products, index) => (
                                     <tr key={index}>
-                                        <td className='text-left p-0'>{products.category} {products.productName}</td>
-                                        <td>{products.dpRate.toLocaleString('en-IN')}.00</td>
-                                        <td>{products.productQty}</td>
-                                        <td className='text-right pr-0'>{(products.dpRate * products.productQty).toLocaleString('en-IN')}.00</td>
+                                        <td className='text-left p-0'>{index+1}</td>
+                                        <td>{products.category}, {products.productName}</td>
+                                        <td>{Number(products.dpRate.toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td>{Number(products.productQty.toFixed(2))}</td>
+                                        <td className='text-right pr-0'>{Number((products.dpRate * products.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
                                     </tr>
                                 ))}
                             </tbody>
                             <tfoot>
                                 <tr className='text-md text-black'>
+                                    <td></td>
                                     <td></td>
                                     <td>TOTAL</td>
                                     <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
