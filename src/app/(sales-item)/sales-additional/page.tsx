@@ -31,7 +31,7 @@ const Page = () => {
    
   const handleAdditionalSubmit = async (e: any) => {
     e.preventDefault();
-    if (!productName || !costPrice || !saleRate) {
+    if (!productName || !costPrice || !saleRate || !productQty) {
       toast.warning("All field is required");
       return;
     }

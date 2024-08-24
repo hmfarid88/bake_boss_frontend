@@ -1,11 +1,12 @@
 'use client'
 import React, { useState, useEffect, useRef } from "react";
-import { useAppSelector } from "@/app/store";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
+import { useRouter } from "next/navigation";
 
 
 const Page = () => {
+    const router = useRouter();
     const [maxDate, setMaxDate] = useState('');
     useEffect(() => {
         const today = new Date();
@@ -16,14 +17,15 @@ const Page = () => {
         setMaxDate(formattedDate);
     }, []);
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-    const uname = useAppSelector((state) => state.username.username);
-    const username = uname ? uname.username : 'Guest';
 
     const contentToPrint = useRef(null);
     const handlePrint = useReactToPrint({
         content: () => contentToPrint.current,
     });
-
+    const handleDetails = (e: any) => {
+        e.preventDefault();
+        router.push(`/details-requisition?username=${encodeURIComponent(allProducts[0])}`);
+    }
     const [allProducts, setAllProducts] = useState([]);
     useEffect(() => {
         fetch(`${apiBaseUrl}/api/sum-requisition-qty`)
@@ -33,7 +35,7 @@ const Page = () => {
 
             })
             .catch(error => console.error('Error fetching products:', error));
-    }, [apiBaseUrl, username]);
+    }, [apiBaseUrl]);
 
     const totalValue = allProducts.reduce((total, product) => {
         return total + product[1];
@@ -64,7 +66,7 @@ const Page = () => {
                                         <td>{index + 1}</td>
                                         <td className="uppercase">{product[0]}</td>
                                         <td>{Number(product[1]).toFixed(2)}</td>
-                                        <td><button className="btn btn-sm btn-success btn-outline">Details</button></td>
+                                        <td><button onClick={handleDetails} className="btn btn-sm btn-success btn-outline">Details</button></td>
                                     </tr>
                                 ))}
                             </tbody>
