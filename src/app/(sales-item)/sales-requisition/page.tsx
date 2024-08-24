@@ -31,16 +31,17 @@ const Page: React.FC = () => {
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
     const requiProducts = useAppSelector((state) => state.requisitionProduct.products);
+    const filteredProducts = requiProducts.filter((p) => p.username === username);
     const dispatch = useAppDispatch();
 
     useEffect(() => {
         calculateQtyTotal();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [requiProducts]);
+    }, [filteredProducts]);
 
 
     const calculateQtyTotal = () => {
-        const qtytotal = requiProducts.reduce((sum, p) => {
+        const qtytotal = filteredProducts.reduce((sum, p) => {
             return sum + (p.productQty);
         }, 0);
         setQtyTotal(qtytotal);
@@ -72,7 +73,7 @@ const Page: React.FC = () => {
 
     const handleFinalSubmit = async (e: any) => {
         e.preventDefault();
-        if (requiProducts.length === 0) {
+        if (filteredProducts.length === 0) {
             toast.warning("Sorry, Your product list is empty !")
             return;
         }
@@ -83,7 +84,7 @@ const Page: React.FC = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify(requiProducts),
+                body: JSON.stringify(filteredProducts),
             });
 
             if (!response.ok) {
@@ -91,7 +92,7 @@ const Page: React.FC = () => {
                 return;
             }
             toast.success("Requisition submitted successfully")
-            dispatch(deleteAllProducts());
+            dispatch(deleteAllProducts(username));
 
         } catch (error: any) {
             toast.error("An error occurred: " + error.message);
@@ -143,7 +144,7 @@ const Page: React.FC = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {requiProducts?.map((p, index) => (
+                                {filteredProducts?.map((p, index) => (
                                     <tr key={index}>
                                         <td>{index + 1}</td>
                                         <td>{p.date} </td>

@@ -36,6 +36,7 @@ const Page: React.FC = () => {
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
     const damageProducts = useAppSelector((state) => state.salesDamageProduct.products);
+    const filteredProducts = damageProducts.filter((p) => p.username === username);
     const dispatch = useAppDispatch();
 
     const invoiceNo = uid();
@@ -43,22 +44,22 @@ const Page: React.FC = () => {
     useEffect(() => {
         calculateTotal();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [damageProducts]);
+    }, [filteredProducts]);
 
     useEffect(() => {
         calculateQtyTotal();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [damageProducts]);
+    }, [filteredProducts]);
 
     const calculateTotal = () => {
-        const total = damageProducts.reduce((sum, p) => {
+        const total = filteredProducts.reduce((sum, p) => {
             return sum + (p.costPrice * p.productQty);
         }, 0);
         setTotal(total);
     };
 
     const calculateQtyTotal = () => {
-        const qtytotal = damageProducts.reduce((sum, p) => {
+        const qtytotal = filteredProducts.reduce((sum, p) => {
             return sum + (p.productQty);
         }, 0);
         setQtyTotal(qtytotal);
@@ -106,7 +107,7 @@ const Page: React.FC = () => {
             console.error('Error fetching product:', error);
         }
     };
-    const productInfo = damageProducts.map(product => ({
+    const productInfo = filteredProducts.map(product => ({
         ...product,
         soldInvoice: reason,
         invoiceNo: invoiceNo
@@ -138,7 +139,7 @@ const Page: React.FC = () => {
             }
             toast.success("Product returned successfully")
             setReason("");
-            dispatch(deleteAllProducts());
+            dispatch(deleteAllProducts(username));
 
         } catch (error: any) {
             toast.error("An error occurred: " + error.message);
@@ -189,7 +190,7 @@ const Page: React.FC = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {damageProducts?.map((p, index) => (
+                                {filteredProducts?.map((p, index) => (
                                     <tr key={index}>
                                         <td>{index + 1}</td>
                                         <td>{p.productName} </td>

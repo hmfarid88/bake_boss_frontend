@@ -23,7 +23,8 @@ export const requisitionProductSlice = createSlice({
     initialState,
     reducers: {
         addProducts: (state, action: PayloadAction<Product>) => {
-            const exist = state.products.find((pro) => pro.productName === action.payload.productName)
+            const exist = state.products.find((pro) => pro.productName === action.payload.productName &&
+                pro.username === action.payload.username);
             if (exist) {
                 swal("Oops!", "This Product is already exist!", "error");
             } else {
@@ -36,8 +37,10 @@ export const requisitionProductSlice = createSlice({
             const id = action.payload;
             state.products = state.products.filter((product) => product.id !== id);
         },
-        deleteAllProducts: (state) => {
-            state.products = [];
+        
+        deleteAllProducts: (state, action: PayloadAction<string>) => {
+            const username = action.payload;
+            state.products = state.products.filter((product) => product.username !== username);
         },
     }
 

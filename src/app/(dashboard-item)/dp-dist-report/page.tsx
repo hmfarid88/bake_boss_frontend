@@ -6,6 +6,7 @@ import CurrentMonthYear from "@/app/components/CurrentMonthYear";
 
 type Product = {
   date:string;
+  customer:string;
   category: string;
   productName: string;
   invoiceNo: string;
@@ -39,6 +40,7 @@ const Page = () => {
 
   useEffect(() => {
     const filtered = allProducts.filter(product =>
+      (product.customer.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
       (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
       (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
       (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
@@ -74,6 +76,7 @@ const Page = () => {
                 <tr>
                   <th>SN</th>
                   <th>DATE</th>
+                  <th>OUTLET</th>
                   <th>CATEGORY</th>
                   <th>PRODUCT NAME</th>
                   <th>INVOICE NO</th>
@@ -88,6 +91,7 @@ const Page = () => {
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>{product.date}</td>
+                    <td className="uppercase">{product.customer}</td>
                     <td>{product.category}</td>
                     <td>{product.productName}</td>
                     <td className="uppercase">{product.invoiceNo}</td>
@@ -100,7 +104,7 @@ const Page = () => {
               </tbody>
               <tfoot>
                 <tr className="font-semibold text-lg">
-                  <td colSpan={6}></td>
+                  <td colSpan={7}></td>
                   <td>TOTAL</td>
                   <td>{totalQty}</td>
                   <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>

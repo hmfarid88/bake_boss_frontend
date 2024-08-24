@@ -30,6 +30,7 @@ const Page: React.FC = () => {
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
     const saleProducts = useAppSelector((state) => state.salesProduct.products);
+    const filteredProducts = saleProducts.filter((p) => p.username === username);
     const dispatch = useAppDispatch();
     const invoiceNo = uid();
 
@@ -62,17 +63,17 @@ const Page: React.FC = () => {
     useEffect(() => {
         calculateTotal();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [saleProducts]);
+    }, [filteredProducts]);
 
    
     useEffect(() => {
         calculateQtyTotal();
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [saleProducts]);
+    }, [filteredProducts]);
 
    
     const calculateTotal = () => {
-        const total = saleProducts.reduce((sum, p) => {
+        const total = filteredProducts.reduce((sum, p) => {
             return sum + (p.saleRate * p.productQty);
         }, 0);
         setTotal(total);
@@ -80,7 +81,7 @@ const Page: React.FC = () => {
 
    
     const calculateQtyTotal = () => {
-        const qtytotal = saleProducts.reduce((sum, p) => {
+        const qtytotal = filteredProducts.reduce((sum, p) => {
             return sum + (p.productQty);
         }, 0);
         setQtyTotal(qtytotal);
@@ -127,7 +128,7 @@ const Page: React.FC = () => {
             console.error('Error fetching product:', error);
         }
     };
-    const productInfo = saleProducts.map(product => ({
+    const productInfo = filteredProducts.map(product => ({
         ...product,
         soldInvoice: invoiceNo
     }));
@@ -168,7 +169,7 @@ const Page: React.FC = () => {
             setCustomerName("");
             setPhoneNumber("");
             setSoldBy("");
-            dispatch(deleteAllProducts());
+            dispatch(deleteAllProducts(username));
             router.push(`/sales-invoice?soldInvoice=${invoiceNo}`);
 
         } catch (error: any) {
@@ -222,7 +223,7 @@ const Page: React.FC = () => {
                                 </tr>
                             </thead>
                             <tbody>
-                                {saleProducts?.map((p, index) => (
+                                {filteredProducts?.map((p, index) => (
                                     <tr key={index}>
                                         <td>{index + 1}</td>
                                         <td>{p.productName} </td>
