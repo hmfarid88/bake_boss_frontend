@@ -32,7 +32,6 @@ const Invoice = () => {
         phoneNumber: string,
         soldBy: string,
         soldInvoice: string,
-        category: string,
         productName: string,
         saleRate: number,
         productQty: number,
@@ -118,7 +117,7 @@ const Invoice = () => {
                                 <tbody className='text-xs md:text-md capitalize text-black'>
                                     {invoiceData.salesStock.map((products: any, index: any) => (
                                         <tr key={index}>
-                                            <td className='text-left p-0'>{products.category} {products.productName}</td>
+                                            <td className='text-left p-0'>{products.productName}</td>
                                             <td>{Number(products.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
                                             <td>{products.productQty}</td>
                                             <td className='text-right pr-0'>{Number((products.saleRate * products.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
