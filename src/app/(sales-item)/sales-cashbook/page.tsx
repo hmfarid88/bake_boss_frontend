@@ -22,17 +22,7 @@ interface Sale {
   productQty: number;
   saleRate: number;
 }
-// const formatDate = (dateString: string) => {
-//   const options: Intl.DateTimeFormatOptions = {
-//     year: 'numeric',
-//     month: '2-digit',
-//     day: '2-digit',
-//     hour: '2-digit',
-//     minute: '2-digit',
-//     second: '2-digit',
-//   };
-//   return new Date(dateString).toLocaleString(undefined, options);
-// };
+
 const CashBook = () => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const uname = useAppSelector((state) => state.username.username);
@@ -75,13 +65,22 @@ const CashBook = () => {
       .catch(error => console.error('Error fetching data:', error));
   }, [apiBaseUrl, date, username]);
 
+  const [saleTotal, setSaleTotal] = useState('');
+  useEffect(() => {
+    fetch(`${apiBaseUrl}/sales/cashbook/salesTotal?username=${username}&date=${date}`)
+      .then(response => response.json())
+      .then(data => {
+        setSaleTotal(data);
+      })
+      .catch(error => console.error('Error fetching data:', error));
+  }, [apiBaseUrl, username, date]);
+
   const [saledata, setSaleData] = useState([]);
   useEffect(() => {
     fetch(`${apiBaseUrl}/sales/cashbook/dateWiseSale?username=${username}&date=${date}&status=sold`)
       .then(response => response.json())
-      .then(data => { 
-        console.log('Fetched sales data:', data);
-        setSaleData(data) ;
+      .then(data => {
+        setSaleData(data);
       })
       .catch(error => console.error('Error fetching data:', error));
   }, [apiBaseUrl, username, date]);
@@ -98,7 +97,7 @@ const CashBook = () => {
       <div className="flex justify-between pl-5 pr-5">
         <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
       </div>
-      <div className="w-full card">
+      <div className="w-full card pb-5">
         <div ref={contentToPrint} className="flex w-full items-center justify-center pt-5">
           <div className="overflow-x-auto">
             <div className="flex w-full items-center justify-between p-5">
@@ -108,7 +107,7 @@ const CashBook = () => {
             </div>
             <div className="flex w-full gap-10">
               <div className="flex">
-                <table className="table">
+                <table className="table table-sm">
                   <thead>
                     <tr>
                       <th>DATE</th>
@@ -120,9 +119,9 @@ const CashBook = () => {
                     <tr>
                       <td>{date}</td>
                       <td>BALANCE B/D</td>
-                      <td>{(netSumAmount ?? 0).toLocaleString('en-IN')}</td>
+                      <td>{Number((netSumAmount+saleTotal) ?? 0).toLocaleString('en-IN')}</td>
                     </tr>
-                    {saledata?.map((sold:any, index) => (
+                    {saledata?.map((sold: any, index) => (
                       <tr key={index}>
                         <td>{sold[0]}</td>
                         <td className='uppercase'>{sold[1]}</td>
@@ -136,8 +135,8 @@ const CashBook = () => {
                         <td>{(receive.amount ?? 0).toLocaleString('en-IN')}</td>
                       </tr>
                     ))}
-                    
-                    <tr>
+
+                    <tr className='font-bold'>
                       <td colSpan={1}></td>
                       <td>TOTAL</td>
                       <td>{(totalDebit() + totalAdsale() + netSumAmount).toLocaleString('en-IN')}</td>
@@ -148,14 +147,13 @@ const CashBook = () => {
                     <tr>
                       <td></td>
                       <td>BALANCE B/D</td>
-                      <td>{((totalDebit()+ totalAdsale() + netSumAmount) - (totalCredit())).toLocaleString('en-IN')}</td>
+                      <td>{((totalDebit() + totalAdsale() + netSumAmount) - (totalCredit())).toLocaleString('en-IN')}</td>
                     </tr>
                   </tfoot>
                 </table>
               </div>
-              <div className="flex">
-                <table className="table">
-
+              <div>
+                <table className="table table-sm">
                   <thead>
                     <tr>
                       <th>DATE</th>
@@ -174,12 +172,12 @@ const CashBook = () => {
                     <tr>
                       <td>{date}</td>
                       <td>BALANCE C/D</td>
-                      <td>{((totalDebit()+totalAdsale() + netSumAmount) - (totalCredit())).toLocaleString('en-IN')}</td>
+                      <td>{((totalDebit() + totalAdsale() + netSumAmount) - (totalCredit())).toLocaleString('en-IN')}</td>
                     </tr>
-                    <tr>
+                    <tr className='font-bold'>
                       <td colSpan={1}></td>
                       <td>TOTAL</td>
-                      <td>{(totalCredit() + ((totalDebit()+totalAdsale() + netSumAmount) - (totalCredit()))).toLocaleString('en-IN')}</td>
+                      <td>{(totalCredit() + ((totalDebit() + totalAdsale() + netSumAmount) - (totalCredit()))).toLocaleString('en-IN')}</td>
                     </tr>
                   </tbody>
                   <tfoot>

@@ -34,11 +34,11 @@ const ShopInfo = () => {
                 toast.error("Product sale not submitted !");
                 return;
             } else {
-                toast.success("Info added successfully.")
                 setShopName("");
                 setPhoneNumber("");
                 setAddress("");
                 setEmail("")
+                toast.success("Info added successfully.")
             }
         } catch (error: any) {
             toast.error("An error occurred: " + error.message);

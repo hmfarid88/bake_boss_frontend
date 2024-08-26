@@ -52,7 +52,7 @@ const Page = () => {
     }, 0);
 
     return (
-        <div>
+        <div className="container min-h-screen">
             <div className="flex w-full justify-between">
                 <label className="input input-bordered flex max-w-xs  items-center gap-2">
                     <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
@@ -63,11 +63,12 @@ const Page = () => {
                 <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
             </div>
             <div className="overflow-x-auto">
-                <div className="flex justify-center uppercase p-3 font-bold">
-                    <h4>RETAILER NAME: {username}</h4>
+                <div className="flex flex-col justify-center items-center p-3 font-bold">
+                    <h4>Requisition List</h4>
+                    <h4 className="capitalize">Outlet Name: {username}</h4>
                 </div>
 
-                <div ref={contentToPrint} className="flex-1 p-5">
+                <div ref={contentToPrint} className="flex p-5">
                     <table className="table">
                         <thead>
                             <tr>
@@ -83,10 +84,10 @@ const Page = () => {
                             {filteredProducts?.map((product, index) => (
                                 <tr key={index}>
                                     <td>{index + 1}</td>
-                                    <td className="uppercase">{product.date}</td>
-                                    <td className="uppercase">{product.productName}</td>
+                                    <td>{product.date}</td>
+                                    <td className="capitalize">{product.productName}</td>
                                     <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                                    <td></td>
+                                    <td><button className="btn btn-warning btn-sm">Accept</button></td>
                                 </tr>
                             ))}
                         </tbody>

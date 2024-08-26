@@ -3,19 +3,23 @@ import React, { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from "@/app/store";
 import { addProducts, deleteAllProducts, deleteProduct } from "@/app/store/productSaleSlice";
+import { addProductMaterials, deleteAllMaterials, deleteMaterial } from "@/app/store/materialUseSlice";
 import Select from "react-select";
 import { uid } from 'uid';
-import { DatePicker } from 'react-date-picker';
-import { toast} from "react-toastify";
-import { FcCalendar } from "react-icons/fc";
+import { toast } from "react-toastify";
 import { RiDeleteBin6Line } from "react-icons/ri";
-type ValuePiece = Date | null;
-type Value = ValuePiece | [ValuePiece, ValuePiece];
 
+interface items {
+  itemName: string,
+  qty: number,
+  averageRate: number,
+  remainingQty: number,
+  materialsName: string
+}
 const Page: React.FC = () => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const router = useRouter();
-  const [date, setDate] = useState<Value>(new Date());
+
   const [pending, setPending] = useState(false);
   const [total, setTotal] = useState(0);
   const [qtyTotal, setQtyTotal] = useState(0);
@@ -25,13 +29,38 @@ const Page: React.FC = () => {
   const [selectedQty, setSelectedQty] = useState("");
   const numericProductQty: number = Number(selectedQty);
   const [retailer, setRetailer] = useState("");
+  const [productName, setProductName] = useState("");
 
   const uname = useAppSelector((state) => state.username.username);
   const username = uname ? uname.username : 'Guest';
   const saleProducts = useAppSelector((state) => state.productTosale.products);
+  const addedProductMaterials = useAppSelector((state) => state.materialUse.materials);
   const dispatch = useAppDispatch();
 
   const invoiceNo = uid();
+  const pid = uid();
+  const [maxDate, setMaxDate] = useState('');
+  useEffect(() => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setMaxDate(formattedDate);
+  }, []);
+
+  // const [items, setItems] = useState<items[]>([]);
+  // console.log("items: "+items)
+  // useEffect(() => {
+  //   fetch(`${apiBaseUrl}/api/getItemList?username=${username}&itemName=${productName}`)
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       setItems(data);
+  //     })
+  //     .catch(error => {
+  //       // toast.error("Failed to fetch items.");
+  //     });
+  // }, [apiBaseUrl, productName, username]);
 
   useEffect(() => {
     calculateTotal();
@@ -59,21 +88,105 @@ const Page: React.FC = () => {
 
   const handleDeleteProduct = (id: any) => {
     dispatch(deleteProduct(id));
+    dispatch(deleteMaterial(id));
   };
-  const handleProductSubmit = async (e: any) => {
+
+  // const handleMaterialsSubmit = async () => {
+  //   try {
+  //     const updatedItems = items.map(item => ({
+  //       ...item,
+  //       remainingQty: (item.remainingQty - (item.qty * numericProductQty)),
+  //       madeItem: item.itemName,
+  //       status: 'used',
+  //       date: maxDate,
+  //       materialsRate: item.averageRate,
+  //       username: username,
+  //       materialsName: item.materialsName,
+  //       averageRate: item.averageRate,
+  //       materialsQty: item.qty * numericProductQty,
+  //       id: pid
+  //     }));
+  //     updatedItems.forEach(item => {
+  //       dispatch(addProductMaterials(item));
+  //     });
+  //   } catch (error) {
+  //     toast.error('Failed to update items.');
+  //   }
+  // };
+
+  // const handleProductSubmit = async (e: any) => {
+  //   e.preventDefault();
+  //   if (!selectedProid || !selectedQty) {
+  //     toast.error("Field is empty!")
+  //     return;
+  //   }
+  //   try {
+  //     const response = await fetch(`${apiBaseUrl}/api/getSingleProduct?productId=${selectedProid}`);
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! status: ${response.status}`);
+  //     }
+  //     const data = await response.json();
+
+  //     const productToSale = {
+  //       id: pid,
+  //       category: data.category,
+  //       productName: data.productName,
+  //       costPrice: data.costPrice,
+  //       dpRate: data.dpRate,
+  //       rpRate: data.rpRate,
+  //       customerPrice: data.customerPrice,
+  //       productQty: numericProductQty,
+  //       remainingQty: data.remainingQty,
+  //       status: 'sold',
+  //       username: username
+  //     };
+  //     const response2 = await fetch(`${apiBaseUrl}/api/getItemList?username=${username}&itemName=${(data.productName)}`);
+  //     if (!response2.ok) {
+  //       throw new Error(`HTTP error! status: ${response2.status}`);
+  //     }
+  //     const data2 = await response2.json();
+  //     const updatedItems = data2.map(item => ({
+  //       ...item,
+  //       remainingQty: (item.remainingQty - (item.qty * numericProductQty)),
+  //       madeItem: item.itemName,
+  //       status: 'used',
+  //       date: maxDate,
+  //       materialsRate: item.averageRate,
+  //       username: username,
+  //       materialsName: item.materialsName,
+  //       averageRate: item.averageRate,
+  //       materialsQty: item.qty * numericProductQty,
+  //       id: pid
+  //     }));
+  //     updatedItems.forEach(item => {
+  //       dispatch(addProductMaterials(item));
+  //     });
+  //     dispatch(addProducts(productToSale));
+  //     setSelectedQty("");
+  //   } catch (error) {
+  //     console.error('Error fetching product:', error);
+  //   }
+  // };
+
+  const handleProductSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!selectedProid || !selectedQty) {
-      toast.error("Field is empty!")
+      toast.error("Field is empty!");
       return;
     }
+
     try {
       const response = await fetch(`${apiBaseUrl}/api/getSingleProduct?productId=${selectedProid}`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
+
+      const numericProductQty = Number(selectedQty);
+
       const productToSale = {
-        id: uid(),
+        id: pid,
         category: data.category,
         productName: data.productName,
         costPrice: data.costPrice,
@@ -83,24 +196,87 @@ const Page: React.FC = () => {
         productQty: numericProductQty,
         remainingQty: data.remainingQty,
         status: 'sold',
-        username: username
+        username: username,
       };
-      if (data.remainingQty < numericProductQty) {
-        toast.error("Sorry, not enough qty!");
-        return;
+
+      const response2 = await fetch(`${apiBaseUrl}/api/getItemList?username=${username}&itemName=${data.productName}`);
+      if (!response2.ok) {
+        throw new Error(`HTTP error! status: ${response2.status}`);
       }
+      const data2 = await response2.json();
+
+      const updatedItems = data2.map((item: any) => ({
+        ...item,
+        remainingQty: item.remainingQty - (item.qty * numericProductQty),
+        madeItem: item.itemName,
+        status: 'used',
+        date: maxDate,
+        materialsRate: item.averageRate,
+        username: username,
+        materialsName: item.materialsName,
+        averageRate: item.averageRate,
+        materialsQty: item.qty * numericProductQty,
+        id: pid,
+      }));
+
+      dispatch(addProductMaterials(updatedItems)); // Batch dispatch if possible
       dispatch(addProducts(productToSale));
       setSelectedQty("");
+
     } catch (error) {
       console.error('Error fetching product:', error);
+      toast.error("An error occurred while processing the request.");
     }
   };
+
   const productInfo = saleProducts.map(product => ({
     ...product,
-    date:date,
+    date: maxDate,
     customer: retailer,
     invoiceNo: invoiceNo
   }));
+
+  // const handleFinalSubmit = async (e: any) => {
+  //   e.preventDefault();
+  //   if (!retailer) {
+  //     toast.error("Please, select any retailer!");
+  //     return;
+  //   }
+  //   if (productInfo.length === 0) {
+  //     toast.error("Your product list is empty!");
+  //     return;
+  //   }
+  //   setPending(true);
+  //   try {
+  //     const response = await fetch(`${apiBaseUrl}/api/productDistribution`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(productInfo),
+  //     });
+
+  //     if (!response.ok) {
+  //       toast.error("Product sale not submitted !");
+  //       return;
+  //     }
+  //     fetch(`${apiBaseUrl}/api/updateMaterialsStock`, {
+  //       method: 'POST',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify(addedProductMaterials),
+  //     });
+  //     dispatch(deleteAllProducts());
+  //     router.push(`/invoice?invoiceNo=${invoiceNo}`);
+
+  //   } catch (error: any) {
+  //     toast.error("An error occurred: " + error.message);
+  //   } finally {
+  //     setRetailer("");
+  //     setPending(false);
+  //   }
+  // };
 
   const handleFinalSubmit = async (e: any) => {
     e.preventDefault();
@@ -121,21 +297,36 @@ const Page: React.FC = () => {
         },
         body: JSON.stringify(productInfo),
       });
-
+  
       if (!response.ok) {
-        toast.error("Product sale not submitted !");
+        toast.error("Product sale not submitted!");
         return;
       }
-      setRetailer("");
+  
+      const materialsResponse = await fetch(`${apiBaseUrl}/api/updateMaterialsStock`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(addedProductMaterials),
+      });
+  
+      if (!materialsResponse.ok) {
+        toast.error("Materials stock update failed!");
+        return;
+      }
+  
       dispatch(deleteAllProducts());
+      dispatch(deleteAllMaterials());
       router.push(`/invoice?invoiceNo=${invoiceNo}`);
-
     } catch (error: any) {
       toast.error("An error occurred: " + error.message);
     } finally {
+      setRetailer("");
       setPending(false);
     }
   };
+  
 
   useEffect(() => {
     fetch(`${apiBaseUrl}/api/getProductStock?username=${username}`)
@@ -143,7 +334,7 @@ const Page: React.FC = () => {
       .then(data => {
         const transformedData = data.map((item: any) => ({
           value: item.productId,
-          label: item.productName + ", " + item.remainingQty
+          label: item.productName
         }));
         setProductOption(transformedData);
       })
@@ -168,7 +359,7 @@ const Page: React.FC = () => {
     <div className='container-2xl min-h-screen'>
       <div className="flex flex-col">
         <div className="flex justify-start font-bold pt-5 px-10 pb-0">
-          <p>DATE : <DatePicker calendarIcon={FcCalendar} className="rounded-md max-w-xs z-20" clearIcon={null} maxDate={new Date()} minDate={new Date()} format='y-MM-dd' onChange={setDate} value={date} /></p>
+          <p>Date : {maxDate}</p>
         </div>
         <div className="flex flex-col w-full">
           <div className="divider divider-accent tracking-widest font-bold p-5">DISTRIBUTION</div>

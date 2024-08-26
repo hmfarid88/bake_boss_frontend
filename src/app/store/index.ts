@@ -9,6 +9,7 @@ import damageProductReducer from "../store/damageProducts";
 import salesDamageProductReducer from "../store/salesDamageProduct";
 import damageMaterialReducer from "../store/damageMaterials";
 import requisitionProductReducer from "../store/requisitionSlice";
+import materialUseReducer from "../store/materialUseSlice";
 
 import {
   persistReducer,
@@ -34,7 +35,8 @@ const rootReducer = combineReducers({
   damageProduct:damageProductReducer,
   salesDamageProduct:salesDamageProductReducer,
   damageMaterials:damageMaterialReducer,
-  requisitionProduct:requisitionProductReducer
+  requisitionProduct:requisitionProductReducer,
+  materialUse:materialUseReducer
  
 });
 

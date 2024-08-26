@@ -1,6 +1,6 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import { FcCalendar} from 'react-icons/fc'
+import { FcCalendar } from 'react-icons/fc'
 import { toast } from 'react-toastify';
 import { useAppSelector } from "@/app/store";
 import { uid } from 'uid';
@@ -28,11 +28,11 @@ const Page = () => {
     const formattedDate = `${year}-${month}-${day}`;
     setMaxDate(formattedDate);
   }, []);
-   
+
   const handleAdditionalSubmit = async (e: any) => {
     e.preventDefault();
     if (!productName || !costPrice || !saleRate || !productQty) {
-      toast.warning("All field is required");
+      toast.warning("All fields are required");
       return;
     }
     setPending(true);
@@ -49,11 +49,11 @@ const Page = () => {
         toast.error("Sorry, product not added!");
         return;
       } else {
-        toast.success("Product added successfully.")
         setProductName("");
         setCostPrice("");
         setSaleRate("");
         setProductQty("");
+        toast.success("Product added successfully.")
       }
     } catch (error: any) {
       toast.error("An error occurred: " + error.message);
@@ -61,7 +61,7 @@ const Page = () => {
       setPending(false);
     }
   }
- 
+
   return (
     <div className='container min-h-screen'>
 

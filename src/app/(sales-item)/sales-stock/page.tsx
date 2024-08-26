@@ -120,17 +120,17 @@ const Page = () => {
         <div>
           <div className="modal sm:modal-middle" role="dialog" id="my_modal_3">
             <div className="modal-box">
-              <h3 className="font-bold text-sm">ADD PRODUCT RATE</h3>
+              <h3 className="font-bold text-sm text-center">ADD PRODUCT RATE</h3>
               <div className="flex flex-col gap-3 w-full items-center justify-center p-2">
-                <label className="form-control w-full max-w-xs">
+                <label className="form-control w-full max-w-xs pt-5">
                   <div className="label">
-                    <span className="label-text-alt">Select Product</span>
+                    <span className="label-text-alt">SELECT PRODUCT</span>
                   </div>
                   <Select className="text-black" name="psupplier" onChange={(selectedOption: any) => setProductName(selectedOption.value)} options={productOption} />
                 </label>
                 <label className="form-control w-full max-w-xs">
                   <div className="label">
-                    <span className="label-text-alt">Sale Rate</span>
+                    <span className="label-text-alt">SALE RATE</span>
                   </div>
                   <input type="number" value={productValue} onChange={(e: any) => setProductValue(e.target.value)} placeholder="Type here" className="border rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" />
                 </label>
@@ -164,7 +164,7 @@ const Page = () => {
             <div className="flex font-semibold text-lg items-cente justify-center w-full pb-5">
               <h4>PRODUCT STOCK</h4>
             </div>
-            <table className="table uppercase">
+            <table className="table">
               <thead>
                 <tr>
                   <th>SN</th>
@@ -183,12 +183,12 @@ const Page = () => {
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>{product.date}</td>
-                    <td>{product.invoiceNo}</td>
-                    <td>{product.category}</td>
-                    <td>{product.productName}</td>
-                    <td>{product.costPrice}</td>
-                    <td>{product.saleRate}</td>
-                    <td>{product.remainingQty.toLocaleString('en-IN')}</td>
+                    <td className="uppercase">{product.invoiceNo}</td>
+                    <td className="capitalize">{product.category}</td>
+                    <td className="capitalize">{product.productName}</td>
+                    <td>{Number((product.costPrice).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number((product.saleRate).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number((product.remainingQty).toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number((product.saleRate * product.remainingQty).toFixed(2)).toLocaleString('en-IN')}</td>
                   </tr>
                 ))}
@@ -197,7 +197,7 @@ const Page = () => {
                 <tr className="font-semibold text-lg">
                   <td colSpan={6}></td>
                   <td>TOTAL</td>
-                  <td>{totalQty.toLocaleString('en-IN')}</td>
+                  <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
                   <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
                 </tr>
               </tfoot>

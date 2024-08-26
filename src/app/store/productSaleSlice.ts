@@ -14,6 +14,7 @@ interface Product {
     status: string,
     username: string
 }
+
 interface ProductSaleState {
     products: Product[];
 }
@@ -26,7 +27,7 @@ export const productSaleSlice = createSlice({
     name: "productTosale",
     initialState,
     reducers: {
-        showProducts: (state) => state,
+
         addProducts: (state, action: PayloadAction<Product>) => {
             const exist = state.products.find((pro) => pro.productName === action.payload.productName)
             if (exist) {
@@ -36,17 +37,18 @@ export const productSaleSlice = createSlice({
             }
 
         },
-
-        deleteProduct: (state, action) => {
+        deleteProduct: (state, action: PayloadAction<string>) => {
             const id = action.payload;
             state.products = state.products.filter((product) => product.id !== id);
         },
+
+
         deleteAllProducts: (state) => {
             state.products = [];
         },
     }
 
 })
-export const { showProducts, addProducts, deleteProduct, deleteAllProducts } = productSaleSlice.actions;
+export const { addProducts, deleteProduct, deleteAllProducts } = productSaleSlice.actions;
 
 export default productSaleSlice.reducer;

@@ -4,7 +4,7 @@ import { RiDeleteBin6Line } from "react-icons/ri";
 import Select from "react-select";
 import { uid } from "uid";
 import { useAppDispatch, useAppSelector } from "@/app/store";
-import { addProducts, addProductMaterials, deleteProduct, deleteAllProducts } from "@/app/store/productSlice";
+import { addProducts, deleteProduct, deleteAllProducts } from "@/app/store/productSlice";
 import { toast } from 'react-toastify';
 import { FcPlus } from 'react-icons/fc';
 
@@ -17,7 +17,6 @@ const ProductStock = () => {
     const username = uname ? uname.username : 'Guest';
 
     const products = useAppSelector((state) => state.products.products);
-    const addedProductMaterials = useAppSelector((state) => state.products.materials);
 
     const [maxDate, setMaxDate] = useState('');
     useEffect(() => {
@@ -32,8 +31,6 @@ const ProductStock = () => {
     const [stockDate, setStockDate] = useState("");
     const [category, setCategory] = useState("");
     const [productName, setProductName] = useState("");
-    const [productQty, setProductQty] = useState("");
-    const numericProductQty: number = Number(productQty);
 
     interface items {
         itemName: string,
@@ -162,31 +159,10 @@ const ProductStock = () => {
 
     };
     const pid = uid();
-    const handleMaterialsSubmit = async () => {
-        try {
-            const updatedItems = items.map(item => ({
-                ...item,
-                remainingQty: (item.remainingQty - (item.qty * numericProductQty)),
-                madeItem: item.itemName,
-                status: 'used',
-                date: maxDate,
-                materialsRate: item.averageRate,
-                username: username,
-                materialsName: item.materialsName,
-                averageRate: item.averageRate,
-                materialsQty: item.qty * numericProductQty,
-                id: pid
-            }));
-            updatedItems.forEach(item => {
-                dispatch(addProductMaterials(item));
-            });
-        } catch (error) {
-            toast.error('Failed to update items.');
-        }
-    };
+
     const handleProductStock = (e: any) => {
         e.preventDefault();
-        if (!stockDate || !category || !productName || !productQty) {
+        if (!stockDate || !category || !productName) {
             toast.warning("Item is empty !");
             return;
         } else if (calculateCost() <= 0) {
@@ -196,10 +172,8 @@ const ProductStock = () => {
             toast.warning('DP Rate & RP Rate not added !');
             return;
         }
-        const product = { id: pid, date: stockDate, category, productName, costPrice: calculateCost().toFixed(2), dpRate: calculateDp().toFixed(2), rpRate: calculateRp().toFixed(2), productQty, username, status: 'stored' }
+        const product = { id: pid, date: stockDate, category, productName, costPrice: calculateCost().toFixed(2), dpRate: calculateDp().toFixed(2), rpRate: calculateRp().toFixed(2), productQty: '0', username, status: 'stored' }
         dispatch(addProducts(product));
-        handleMaterialsSubmit();
-        setProductQty("");
 
     }
     const handleDeleteProduct = (id: any) => {
@@ -226,13 +200,6 @@ const ProductStock = () => {
                 const error = await response.json();
                 toast.error(error.message);
             } else {
-                const response = await fetch(`${apiBaseUrl}/api/updateMaterialsStock`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(addedProductMaterials),
-                });
                 dispatch(deleteAllProducts());
                 toast.success("Product added successfully !");
             }
@@ -281,7 +248,7 @@ const ProductStock = () => {
     return (
         <div className="flex w-full">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
-                <div className="grid grid-cols-1 gap-2 h-64">
+                <div className="grid grid-cols-1 h-80">
                     <label className="form-control w-full max-w-xs">
                         <div className="label">
                             <span className="label-text-alt">STOCK DATE</span>
@@ -305,12 +272,6 @@ const ProductStock = () => {
                         <p className="text-xs pt-2">Cost: {calculateCost().toFixed(2)} | Dp: {calculateDp().toFixed(2)} | Rp: {calculateRp().toFixed(2)}</p>
                     </label>
 
-                    <label className="form-control w-full max-w-xs">
-                        <div className="label">
-                            <span className="label-text-alt">PRODUCT QTY</span>
-                        </div>
-                        <input type="number" maxLength={5} name="pqty" value={productQty} placeholder="Type here" onChange={(e: any) => setProductQty(e.target.value)} className="border rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" />
-                    </label>
                     <label className="form-control w-full max-w-xs pt-5">
                         <button onClick={handleProductStock} className="btn btn-accent btn-sm h-[40px] w-full max-w-xs" >Add Product</button>
                     </label>
@@ -328,7 +289,6 @@ const ProductStock = () => {
                                     <th>Cost</th>
                                     <th>DP</th>
                                     <th>RP</th>
-                                    <th>Qty</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -342,7 +302,6 @@ const ProductStock = () => {
                                         <td>{item.costPrice}</td>
                                         <td>{item.dpRate}</td>
                                         <td>{item.rpRate}</td>
-                                        <td>{item.productQty}</td>
                                         <td>
                                             <button onClick={() => {
                                                 handleDeleteProduct(item.id);

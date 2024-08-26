@@ -4,7 +4,10 @@ import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
 import { useRouter } from "next/navigation";
 
-
+type info={
+    username:string;
+    totalQuantity:number;
+}
 const Page = () => {
     const router = useRouter();
     const [maxDate, setMaxDate] = useState('');
@@ -24,9 +27,9 @@ const Page = () => {
     });
     const handleDetails = (e: any) => {
         e.preventDefault();
-        router.push(`/details-requisition?username=${encodeURIComponent(allProducts[0])}`);
+        router.push(`/details-requisition?username=${encodeURIComponent(allProducts[0].username)}`);
     }
-    const [allProducts, setAllProducts] = useState([]);
+    const [allProducts, setAllProducts] = useState<info[]>([]);
     useEffect(() => {
         fetch(`${apiBaseUrl}/api/sum-requisition-qty`)
             .then(response => response.json())
@@ -38,7 +41,7 @@ const Page = () => {
     }, [apiBaseUrl]);
 
     const totalValue = allProducts.reduce((total, product) => {
-        return total + product[1];
+        return total + product.totalQuantity;
     }, 0);
 
 
@@ -64,8 +67,8 @@ const Page = () => {
                                 {allProducts?.map((product, index) => (
                                     <tr key={index}>
                                         <td>{index + 1}</td>
-                                        <td className="uppercase">{product[0]}</td>
-                                        <td>{Number(product[1]).toFixed(2)}</td>
+                                        <td className="uppercase">{product.username}</td>
+                                        <td>{Number(product.totalQuantity).toFixed(2)}</td>
                                         <td><button onClick={handleDetails} className="btn btn-sm btn-success btn-outline">Details</button></td>
                                     </tr>
                                 ))}

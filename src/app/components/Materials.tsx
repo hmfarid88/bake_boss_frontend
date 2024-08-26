@@ -208,7 +208,7 @@ const Materials = () => {
 
         <div className="flex w-full">
             <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-3">
-                <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-2 h-64">
+                <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-2 h-72">
                     <label className="form-control w-full max-w-xs">
                         <div className="label">
                             <span className="label-text-alt">STOCK DATE</span>
@@ -249,7 +249,7 @@ const Materials = () => {
                         <input type="number" name="item" value={materialsQty} onChange={(e: any) => setMaterialsQty(e.target.value)} placeholder="Type here" className="border rounded-md p-2 w-full max-w-xs h-[40px] bg-white text-black" required />
                     </label>
 
-                    <label className="form-control w-full max-w-xs pt-7">
+                    <label className="form-control w-full max-w-xs pt-3">
                         <button onClick={handleAddMaterials} className="btn btn-accent btn-sm h-[40px] w-full max-w-xs" >Add Material</button>
                     </label>
                 </div>
@@ -286,7 +286,7 @@ const Materials = () => {
                                 ))}
                             </tbody>
                         </table>
-                        <div className="flex items-center justify-center pt-10">
+                        <div className="flex items-center justify-center pt-7">
                             <button onClick={handleFinalMaterialsSubmit} className="btn btn-success btn-outline btn-sm max-w-xs" disabled={pending} >{pending ? "Submitting..." : "Add All Items"}</button>
                         </div>
                     </div>
@@ -326,6 +326,9 @@ const Materials = () => {
                                 <button onClick={handleIngredientSubmit} disabled={pending} className="btn btn-square btn-success">{pending ? "Adding..." : "ADD"}</button>
                             </div>
                         </label>
+                        <div className="flex flex-col w-full">
+                            <div className="divider divider-accent tracking-widest font-bold p-5">EDIT NAME</div>
+                        </div>
                         <label className="form-control w-full max-w-xs">
                             <div className="label mt-2">
                                 <span className="label-text-alt">CHANGE MATERIAL NAME</span>

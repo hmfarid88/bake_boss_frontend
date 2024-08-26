@@ -48,7 +48,7 @@ const Page: React.FC = () => {
     const [customerName, setCustomerName] = useState("");
     const [phoneNumber, setPhoneNumber] = useState("");
     const [soldBy, setSoldBy] = useState("");
-           
+
     const [maxDate, setMaxDate] = useState('');
     useEffect(() => {
         const today = new Date();
@@ -65,13 +65,13 @@ const Page: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filteredProducts]);
 
-   
+
     useEffect(() => {
         calculateQtyTotal();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filteredProducts]);
 
-   
+
     const calculateTotal = () => {
         const total = filteredProducts.reduce((sum, p) => {
             return sum + (p.saleRate * p.productQty);
@@ -79,7 +79,7 @@ const Page: React.FC = () => {
         setTotal(total);
     };
 
-   
+
     const calculateQtyTotal = () => {
         const qtytotal = filteredProducts.reduce((sum, p) => {
             return sum + (p.productQty);
@@ -87,11 +87,11 @@ const Page: React.FC = () => {
         setQtyTotal(qtytotal);
     };
 
-       const handleDeleteProduct = (id: any) => {
+    const handleDeleteProduct = (id: any) => {
         dispatch(deleteProduct(id));
     };
 
-   
+
     const handleProductSubmit = async (e: any) => {
         e.preventDefault();
         if (!selectedProid || !selectedQty) {
@@ -106,10 +106,10 @@ const Page: React.FC = () => {
             }
             const data = await response.json();
             const productData = data[0];
-            if (productData.remainingQty < numericProductQty) {
-                toast.error("Sorry, not enough qty!");
-                return;
-            }
+            // if (productData.remainingQty < numericProductQty) {
+            //     toast.error("Sorry, not enough qty!");
+            //     return;
+            // }
             const saleData = {
                 id: uid(),
                 date: maxDate,
@@ -135,10 +135,6 @@ const Page: React.FC = () => {
 
     const handleFinalSubmit = async (e: any) => {
         e.preventDefault();
-        if (!customerName) {
-            toast.error("Customer field is empty!");
-            return;
-        }
         if (productInfo.length === 0) {
             toast.error("Your product list is empty!");
             return;
@@ -200,7 +196,7 @@ const Page: React.FC = () => {
                 <div className="flex justify-between font-bold pt-5 px-10 pb-0">
                     <p>DATE : <DatePicker calendarIcon={FcCalendar} className="rounded-md max-w-xs z-20" clearIcon={null} maxDate={new Date()} minDate={new Date()} format='y-MM-dd' onChange={setDate} value={date} /></p>
                 </div>
-              
+
                 <div className="flex flex-col w-full">
                     <div className="divider divider-accent tracking-widest font-bold p-5">SALES AREA</div>
                 </div>

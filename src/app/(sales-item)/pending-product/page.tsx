@@ -140,11 +140,10 @@ const Page = () => {
                                             <td>{index + 1}</td>
                                             <td>{product.date}</td>
                                             <td className="uppercase">{product.invoiceNo}</td>
-                                            <td>{product.category}</td>
-                                            <td>{product.productName}</td>
-                                            <td>{product.dpRate}</td>
-
-                                            <td>{product.productQty.toLocaleString('en-IN')}</td>
+                                            <td className="capitalize">{product.category}</td>
+                                            <td className="capitalize">{product.productName}</td>
+                                            <td>{Number(product.dpRate.toFixed(2)).toLocaleString('en-IN')}</td>
+                                            <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
                                             <td>{Number((product.dpRate * product.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
                                         </tr>
                                     ))}
@@ -153,7 +152,7 @@ const Page = () => {
                                     <tr className="font-semibold text-lg">
                                         <td colSpan={5}></td>
                                         <td>TOTAL</td>
-                                        <td>{totalQty.toLocaleString('en-IN')}</td>
+                                        <td>{Number((totalQty).toFixed(2)).toLocaleString('en-IN')}</td>
                                         <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
                                     </tr>
                                 </tfoot>
