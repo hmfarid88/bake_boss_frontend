@@ -21,7 +21,7 @@ const OfficeReceive = () => {
     
     const handleReceiveSubmit = async (e: any) => {
       e.preventDefault();
-      if (!receiveName ||!receiveNote ||!receiveAmount) {
+      if (!receiveName ||!receiveAmount) {
         toast.warning("Item is empty !");
         return;
       }

@@ -21,7 +21,7 @@ const OfficePayment = () => {
 
   const handlePaymentSubmit = async (e: any) => {
     e.preventDefault();
-    if (!paymentName ||! paymentNote || !paymentAmount) {
+    if (!paymentName || !paymentAmount) {
       toast.warning("Item is empty !");
       return;
     }

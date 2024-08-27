@@ -90,7 +90,7 @@ const CashBook = () => {
             </div>
             <div className="flex w-full gap-10">
               <div className="flex">
-                <table className="table">
+                <table className="table table-sm">
                   <thead>
                     <tr>
                       <th>DATE</th>
@@ -107,7 +107,7 @@ const CashBook = () => {
                     {receives?.map((receive, index) => (
                       <tr key={index}>
                         <td>{receive.date}</td>
-                        <td className='uppercase'>{receive.name}, {receive.note}</td>
+                        <td className='capitalize'>{receive.name}, {receive.note}</td>
                         <td>{(receive.amount ?? 0).toLocaleString('en-IN')}</td>
                       </tr>
                     ))}
@@ -127,8 +127,8 @@ const CashBook = () => {
                   </tfoot>
                 </table>
               </div>
-              <div className="flex">
-                <table className="table">
+              <div>
+                <table className="table table-sm">
 
                   <thead>
                     <tr>
@@ -141,7 +141,7 @@ const CashBook = () => {
                     {payments.map((payment, index) => (
                       <tr key={index}>
                         <td>{payment.date}</td>
-                        <td className='uppercase'>{payment.name}, {payment.note}</td>
+                        <td className='capitalize'>{payment.name} {payment.note}</td>
                         <td>{(payment.amount ?? 0).toLocaleString('en-IN')}</td>
                       </tr>
                     ))}

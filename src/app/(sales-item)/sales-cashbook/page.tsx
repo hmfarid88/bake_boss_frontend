@@ -124,14 +124,14 @@ const CashBook = () => {
                     {saledata?.map((sold: any, index) => (
                       <tr key={index}>
                         <td>{sold[0]}</td>
-                        <td className='uppercase'>{sold[1]}</td>
+                        <td className='capitalize'>{sold[1]}</td>
                         <td>{(sold[2]).toLocaleString('en-IN')}</td>
                       </tr>
                     ))}
                     {receives?.map((receive, index) => (
                       <tr key={index}>
                         <td>{receive.date}</td>
-                        <td className='uppercase'>{receive.name}, {receive.note}</td>
+                        <td className='capitalize'>{receive.name}, {receive.note}</td>
                         <td>{(receive.amount ?? 0).toLocaleString('en-IN')}</td>
                       </tr>
                     ))}
@@ -165,7 +165,7 @@ const CashBook = () => {
                     {payments.map((payment, index) => (
                       <tr key={index}>
                         <td>{payment.date}</td>
-                        <td className='uppercase'>{payment.name}, {payment.note}</td>
+                        <td className='capitalize'>{payment.name} {payment.note}</td>
                         <td>{(payment.amount ?? 0).toLocaleString('en-IN')}</td>
                       </tr>
                     ))}
