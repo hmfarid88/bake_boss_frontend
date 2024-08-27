@@ -88,7 +88,7 @@ const Page = () => {
                   <th>OUTLET</th>
                   <th>CATEGORY</th>
                   <th>PRODUCT NAME</th>
-                  <th>INVOICE NO</th>
+                  <th>REASON</th>
                   <th>SALE PRICE</th>
                   <th>QUANTITY</th>
                   <th>SUB TOTAL</th>
@@ -96,7 +96,7 @@ const Page = () => {
               </thead>
               <tbody>
                 {filteredProducts?.map((product, index) => (
-                  <tr className="uppercase" key={index}>
+                  <tr className="capitalize" key={index}>
                     <td>{index + 1}</td>
                     <td>{product.date}</td>
                     <td>{product.username}</td>

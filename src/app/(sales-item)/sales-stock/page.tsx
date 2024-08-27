@@ -132,7 +132,7 @@ const Page = () => {
                   <div className="label">
                     <span className="label-text-alt">SALE RATE</span>
                   </div>
-                  <input type="number" value={productValue} onChange={(e: any) => setProductValue(e.target.value)} placeholder="Type here" className="border rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" />
+                  <input type="number" value={productValue} onChange={(e: any) => setProductValue(e.target.value)} placeholder="Type here" className="input-bordered rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" />
                 </label>
                 <label className="form-control w-full max-w-xs">
                   <button onClick={handleProductRateSubmit} disabled={pending} className="btn btn-outline btn-success">{pending ? "Adding..." : "ADD"}</button>
@@ -151,7 +151,7 @@ const Page = () => {
         </div>
 
         <div className="overflow-x-auto">
-          <div className="flex justify-between pl-5 pr-5">
+          <div className="flex justify-between pl-5 pr-5 pt-1">
             <label className="input input-bordered flex max-w-xs  items-center gap-2">
               <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-4 w-4 opacity-70">

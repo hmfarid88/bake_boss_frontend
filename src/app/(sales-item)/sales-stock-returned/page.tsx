@@ -85,7 +85,7 @@ const Page = () => {
                   <th>DATE</th>
                   <th>CATEGORY</th>
                   <th>PRODUCT NAME</th>
-                  <th>INVOICE NO</th>
+                  <th>REASON</th>
                   <th>COST PRICE</th>
                   <th>SALE PRICE</th>
                   <th>QUANTITY</th>
@@ -97,9 +97,9 @@ const Page = () => {
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>{product.date}</td>
-                    <td>{product.category}</td>
-                    <td>{product.productName}</td>
-                    <td className="uppercase">{product.soldInvoice}</td>
+                    <td className="capitalize">{product.category}</td>
+                    <td className="capitalize">{product.productName}</td>
+                    <td className="capitalize">{product.soldInvoice}</td>
                     <td>{Number(product.costPrice.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{product.productQty.toLocaleString('en-IN')}</td>
