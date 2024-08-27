@@ -139,7 +139,7 @@ const CashBook = () => {
                     <tr className='font-bold'>
                       <td colSpan={1}></td>
                       <td>TOTAL</td>
-                      <td>{(totalDebit() + totalAdsale() + netSumAmount).toLocaleString('en-IN')}</td>
+                      <td>{Number(totalDebit() + totalAdsale() + netSumAmount + saleTotal).toLocaleString('en-IN')}</td>
                     </tr>
 
                   </tbody>
@@ -147,7 +147,7 @@ const CashBook = () => {
                     <tr>
                       <td></td>
                       <td>BALANCE B/D</td>
-                      <td>{((totalDebit() + totalAdsale() + netSumAmount) - (totalCredit())).toLocaleString('en-IN')}</td>
+                      <td>{(Number(totalDebit() + totalAdsale() + netSumAmount + saleTotal) - (totalCredit())).toLocaleString('en-IN')}</td>
                     </tr>
                   </tfoot>
                 </table>
@@ -172,12 +172,12 @@ const CashBook = () => {
                     <tr>
                       <td>{date}</td>
                       <td>BALANCE C/D</td>
-                      <td>{((totalDebit() + totalAdsale() + netSumAmount) - (totalCredit())).toLocaleString('en-IN')}</td>
+                      <td>{(Number(totalDebit() + totalAdsale() + netSumAmount + saleTotal) - (totalCredit())).toLocaleString('en-IN')}</td>
                     </tr>
                     <tr className='font-bold'>
                       <td colSpan={1}></td>
                       <td>TOTAL</td>
-                      <td>{(totalCredit() + ((totalDebit() + totalAdsale() + netSumAmount) - (totalCredit()))).toLocaleString('en-IN')}</td>
+                      <td>{(totalCredit() + (Number(totalDebit() + totalAdsale() + netSumAmount + saleTotal) - (totalCredit()))).toLocaleString('en-IN')}</td>
                     </tr>
                   </tbody>
                   <tfoot>
