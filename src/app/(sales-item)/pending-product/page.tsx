@@ -121,7 +121,7 @@ const Page = () => {
                             <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
                         </div>
                         <div ref={contentToPrint} className="flex-1 p-5">
-                            <table className="table">
+                            <table className="table text-center">
                                 <thead>
                                     <tr>
                                         <th>SN</th>

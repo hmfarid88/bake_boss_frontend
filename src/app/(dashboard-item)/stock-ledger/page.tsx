@@ -9,10 +9,12 @@ type Product = {
   date: string;
   category: string;
   productName: string;
+  status: string;
   dpRate: number;
   rpRate: number;
   costPrice: number;
   productQty: number;
+  remainingQty: number;
 
 };
 
@@ -54,14 +56,7 @@ const Page = () => {
     setFilterCriteria(e.target.value);
   };
 
-  const totalQty = filteredProducts.reduce((total, product) => {
-    return total + product.productQty;
-  }, 0);
-
-  const totalValue = filteredProducts.reduce((total, product) => {
-    return total + product.productQty * product.costPrice;
-  }, 0);
-
+ 
   return (
     <div className="container-2xl">
       <div className="flex w-full min-h-[calc(100vh-228px)] p-4 items-center justify-center">
@@ -77,7 +72,7 @@ const Page = () => {
           </div>
           <div ref={contentToPrint} className="flex-1 p-5">
           <div className="flex flex-col items-center pb-5"><h4 className="font-bold">MADE ITEM LEDGER</h4><CurrentMonthYear /></div>
-            <table className="table">
+            <table className="table table-sm text-center">
               <thead>
                 <tr>
                   <th>SN</th>
@@ -87,34 +82,29 @@ const Page = () => {
                   <th>DP PRICE</th>
                   <th>RP PRICE</th>
                   <th>COST PRICE</th>
+                  <th>STATUS</th>
                   <th>QTY</th>
-                  <th>SUB TOTAL</th>
+                  <th>REMAINING QTY</th>
 
                 </tr>
               </thead>
               <tbody>
                 {filteredProducts?.map((product, index) => (
-                  <tr key={index}>
+                  <tr key={index} className="capitalize">
                     <td>{index + 1}</td>
                     <td>{product.date}</td>
                     <td>{product.category}</td>
                     <td>{product.productName}</td>
-                    <td>{product.dpRate}</td>
-                    <td>{product.rpRate}</td>
+                    <td>{Number(product.dpRate.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number(product.rpRate.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.costPrice.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{product.productQty.toLocaleString('en-IN')}</td>
-                    <td>{Number((product.productQty * product.costPrice).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{product.status}</td>
+                    <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number(product.remainingQty.toFixed(2)).toLocaleString('en-IN')}</td>
                   </tr>
                 ))}
               </tbody>
-              <tfoot>
-                <tr className="font-semibold text-lg">
-                  <td colSpan={6}></td>
-                  <td>TOTAL</td>
-                  <td>{totalQty.toLocaleString('en-IN')}</td>
-                  <td>{totalValue.toLocaleString('en-IN')}</td>
-                </tr>
-              </tfoot>
+             
             </table>
           </div>
         </div>

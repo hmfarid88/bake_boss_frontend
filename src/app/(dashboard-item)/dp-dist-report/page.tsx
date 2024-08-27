@@ -71,7 +71,7 @@ const Page = () => {
           </div>
           <div ref={contentToPrint} className="flex-1 p-5">
           <div className="flex flex-col items-center pb-5"><h4 className="font-bold">DISTRIBUTION REPORT</h4><CurrentMonthYear /></div>
-            <table className="table">
+            <table className="table table-sm text-center">
               <thead>
                 <tr>
                   <th>SN</th>
@@ -92,8 +92,8 @@ const Page = () => {
                     <td>{index + 1}</td>
                     <td>{product.date}</td>
                     <td className="uppercase">{product.customer}</td>
-                    <td>{product.category}</td>
-                    <td>{product.productName}</td>
+                    <td className="capitalize">{product.category}</td>
+                    <td className="capitalize">{product.productName}</td>
                     <td className="uppercase">{product.invoiceNo}</td>
                     <td>{Number(product.costPrice.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.dpRate.toFixed(2)).toLocaleString('en-IN')}</td>

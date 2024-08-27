@@ -46,7 +46,8 @@ const Page = () => {
         const filtered = allProducts.filter(product =>
             (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-            (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
+            (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+            (product.status.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
 
         );
         setFilteredProducts(filtered);
@@ -56,16 +57,7 @@ const Page = () => {
         setFilterCriteria(e.target.value);
     };
 
-    const totalQty = filteredProducts.reduce((total, product) => {
-        return total + product.productQty;
-    }, 0);
-
-    const totalRmQty = filteredProducts.reduce((total, product) => {
-        return total + product.remainingQty;
-    }, 0);
-
-
-    return (
+     return (
         <div className="container-2xl min-h-screen">
             <div className="flex w-full p-4 items-center justify-center">
                 <div className="overflow-x-auto">
@@ -80,7 +72,7 @@ const Page = () => {
                     </div>
                     <div ref={contentToPrint} className="flex-1 p-5">
                        <div className="flex flex-col items-center justify-center p-3"><h4 className="font-semibold">STOCK LEDGER</h4><CurrentMonthYear/></div> 
-                        <table className="table uppercase">
+                        <table className="table table-sm capitalize text-center">
                             <thead>
                                 <tr>
                                     <th>SN</th>
@@ -88,6 +80,7 @@ const Page = () => {
                                     <th>CATEGORY</th>
                                     <th>PRODUCT NAME</th>
                                     <th>PURCHASE PRICE</th>
+                                    <th>STATUS</th>
                                     <th>ENTRY QTY</th>
                                     <th>REMAINING QTY</th>
                                 </tr>
@@ -100,20 +93,14 @@ const Page = () => {
                                         <td>{product.category}</td>
                                         <td>{product.productName}</td>
                                         <td>{product.costPrice.toFixed(2)}</td>
+                                        <td>{product.status}</td>
                                         <td>{product.productQty.toFixed(2)}</td>
                                         <td>{product.remainingQty.toFixed(2)}</td>
 
                                     </tr>
                                 ))}
                             </tbody>
-                            <tfoot>
-                                <tr className="font-semibold text-lg">
-                                    <td colSpan={4}></td>
-                                    <td>TOTAL</td>
-                                    <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                                    <td>{Number(totalRmQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                                </tr>
-                            </tfoot>
+                          
                         </table>
                     </div>
                 </div>

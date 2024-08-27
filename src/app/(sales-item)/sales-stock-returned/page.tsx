@@ -78,7 +78,7 @@ const Page = () => {
         <div className="overflow-x-auto">
           <div ref={contentToPrint} className="flex-1 p-5">
             <div className="flex flex-col gap-2 items-center"><h4 className="font-bold text-lg">RETURNED PRODUCT</h4><CurrentMonthYear /></div>
-            <table className="table mt-5">
+            <table className="table mt-5 text-center">
               <thead>
                 <tr>
                   <th>SN</th>

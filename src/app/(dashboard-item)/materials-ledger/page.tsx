@@ -12,9 +12,10 @@ type Product = {
   supplierInvoice: string;
   materialsRate: number;
   materialsQty: number;
+  remainingQty: number;
+  status: string
 
 };
-
 
 const Page = () => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -44,8 +45,8 @@ const Page = () => {
     const filtered = allProducts.filter(product =>
       (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
       (product.materialsName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-      (product.supplierName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-      (product.supplierInvoice.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
+      (product.status.toLowerCase().includes(filterCriteria.toLowerCase()) || '') 
+     
     );
     setFilteredProducts(filtered);
   }, [filterCriteria, allProducts]);
@@ -54,19 +55,11 @@ const Page = () => {
     setFilterCriteria(e.target.value);
   };
 
-  const totalQty = filteredProducts.reduce((total, product) => {
-    return total + product.materialsQty;
-  }, 0);
-
-  const totalValue = filteredProducts.reduce((total, product) => {
-    return total + product.materialsQty*product.materialsRate;
-  }, 0);
-
   return (
     <div className="container-2xl">
       <div className="flex w-full min-h-[calc(100vh-228px)] p-4 items-center justify-center">
         <div className="overflow-x-auto">
-          <div className="flex justify-between pl-5 pr-5">
+          <div className="flex justify-between pl-5 pr-5 pt-1">
             <label className="input input-bordered flex max-w-xs  items-center gap-2">
               <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-4 w-4 opacity-70">
@@ -76,43 +69,33 @@ const Page = () => {
             <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
           </div>
           <div ref={contentToPrint} className="flex-1 p-5">
-          <div className="flex flex-col items-center pb-5"><h4 className="font-bold">MATERIALS LEDGER</h4><CurrentMonthYear /></div>
-            <table className="table">
+            <div className="flex flex-col items-center pb-5"><h4 className="font-bold">MATERIALS LEDGER</h4><CurrentMonthYear /></div>
+            <table className="table text-center">
               <thead>
                 <tr>
                   <th>SN</th>
                   <th>DATE</th>
-                  <th>PRODUCT NAME</th>
-                  <th>SUPPLIER NAME</th>
-                  <th>SUPPLIER INVOICE</th>
+                  <th>MATERIALS NAME</th>
                   <th>COST PRICE</th>
+                  <th>STATUS</th>
                   <th>QTY</th>
-                  <th>SUB TOTAL</th>
-
+                  <th>REMAINING QTY</th>
                 </tr>
               </thead>
               <tbody>
                 {filteredProducts?.map((product, index) => (
-                  <tr key={index}>
+                  <tr key={index} className="capitalize">
                     <td>{index + 1}</td>
                     <td>{product.date}</td>
                     <td>{product.materialsName}</td>
-                    <td>{product.supplierName}</td>
-                    <td>{product.supplierInvoice}</td>
                     <td>{Number(product.materialsRate.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{product.status}</td>
                     <td>{Number(product.materialsQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{Number((product.materialsRate*product.materialsQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number(product.remainingQty.toFixed(2)).toLocaleString('en-IN')}</td>
                   </tr>
                 ))}
               </tbody>
-              <tfoot>
-                <tr className="font-semibold text-lg">
-                  <td colSpan={5}></td>
-                  <td>TOTAL</td>
-                  <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                  <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
-                </tr>
-              </tfoot>
+
             </table>
           </div>
         </div>

@@ -69,7 +69,7 @@ const Page = () => {
                 </div>
 
                 <div ref={contentToPrint} className="flex p-5">
-                    <table className="table">
+                    <table className="table table-sm text-center">
                         <thead>
                             <tr>
                                 <th>SN</th>
@@ -82,10 +82,10 @@ const Page = () => {
                         </thead>
                         <tbody>
                             {filteredProducts?.map((product, index) => (
-                                <tr key={index}>
+                                <tr key={index} className="capitalize">
                                     <td>{index + 1}</td>
                                     <td>{product.date}</td>
-                                    <td className="capitalize">{product.productName}</td>
+                                    <td>{product.productName}</td>
                                     <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
                                     <td><button className="btn btn-warning btn-sm">Accept</button></td>
                                 </tr>

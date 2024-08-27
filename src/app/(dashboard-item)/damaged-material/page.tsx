@@ -71,7 +71,7 @@ const Page = () => {
                     </div>
                     <div ref={contentToPrint} className="flex-1 p-5">
                     <div className="flex flex-col items-center pb-5"><h4 className="font-bold">DAMAGED MATERIALS</h4></div>
-                        <table className="table">
+                        <table className="table table-sm text-center">
                             <thead>
                                 <tr>
                                     <th>SN</th>
@@ -84,7 +84,7 @@ const Page = () => {
                             </thead>
                             <tbody>
                                 {filteredProducts?.map((product, index) => (
-                                    <tr key={index}>
+                                    <tr key={index} className="capitalize">
                                         <td>{index + 1}</td>
                                         <td>{product.date}</td>
                                         <td>{product.materialsName}</td>
