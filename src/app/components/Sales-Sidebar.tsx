@@ -45,7 +45,7 @@ export const SalesSidebar = () => {
                                 </ul>
                             </details>
                         </li>
-                        <li><Link href="/sales-salereport"><TbReportSearch size={20} /> SALES REPORT</Link></li>
+                        <li><Link href="/sales-sales-today"><TbReportSearch size={20} /> SALES REPORT</Link></li>
                         <li>
                             <details>
                                 <summary><MdOutlinePayments size={20} /> PAYMENT REPORT</summary>

@@ -11,7 +11,6 @@ type Product = {
     productName: string;
     soldInvoice: string;
     saleRate: number;
-    costPrice: number;
     productQty: number;
 };
 
@@ -88,7 +87,6 @@ const Page = () => {
                                     <th>CATEGORY</th>
                                     <th>PRODUCT NAME</th>
                                     <th>INVOICE NO</th>
-                                    <th>COST PRICE</th>
                                     <th>SALE PRICE</th>
                                     <th>QUANTITY</th>
                                     <th>SUB TOTAL</th>
@@ -99,10 +97,9 @@ const Page = () => {
                                     <tr key={index}>
                                         <td>{index + 1}</td>
                                         <td>{product.date}</td>
-                                        <td>{product.category}</td>
-                                        <td>{product.productName}</td>
+                                        <td className="capitalize">{product.category}</td>
+                                        <td className="capitalize">{product.productName}</td>
                                         <td className="uppercase">{product.soldInvoice}</td>
-                                        <td>{Number(product.costPrice.toFixed(2)).toLocaleString('en-IN')}</td>
                                         <td>{Number(product.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
                                         <td>{product.productQty.toLocaleString('en-IN')}</td>
                                         <td>{Number((product.saleRate * product.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
@@ -111,7 +108,7 @@ const Page = () => {
                             </tbody>
                             <tfoot>
                                 <tr className="font-semibold text-lg">
-                                    <td colSpan={6}></td>
+                                    <td colSpan={5}></td>
                                     <td>TOTAL</td>
                                     <td>{totalQty}</td>
                                     <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>

@@ -4,7 +4,7 @@ import { useAppSelector } from "@/app/store";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
 import DateToDate from "@/app/components/DateToDate";
-import CurrentMonthYear from "@/app/components/CurrentMonthYear";
+import Link from "next/link";
 
 type Product = {
   date: string;
@@ -30,7 +30,7 @@ const Page = () => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/sales/getOutletSale?username=${username}`)
+    fetch(`${apiBaseUrl}/sales/sales/today?username=${username}`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);
@@ -60,7 +60,7 @@ const Page = () => {
   return (
     <div className="container-2xl min-h-[calc(100vh-228px)]">
       <div className="flex w-full justify-between p-5">
-        <DateToDate />
+        <DateToDate /><div className="pt-7"><Link className="btn btn-success" href='/sales-salereport'>This Month Sale</Link></div>
         <div className="pt-7">
         <label className="input input-bordered flex max-w-xs  items-center gap-2">
           <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
@@ -76,7 +76,7 @@ const Page = () => {
       <div className="flex w-full items-center justify-center">
         <div className="overflow-x-auto">
           <div ref={contentToPrint} className="flex-1 p-5">
-            <div className="flex flex-col gap-2 items-center"><h4 className="font-bold">SALES REPORT</h4><CurrentMonthYear /></div>
+            <div className="flex flex-col gap-2 items-center"><h4 className="font-bold">SALES REPORT (TODAY)</h4></div>
             <table className="table mt-5">
               <thead>
                 <tr>

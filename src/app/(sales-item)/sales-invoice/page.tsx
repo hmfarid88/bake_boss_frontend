@@ -85,7 +85,7 @@ const Invoice = () => {
                             <h1><FcDataSheet className='text-black' size={50} /></h1>
                             <h1 className='tracking-widest text-black font-bold text-sm md:text-xl'>INVOICE</h1>
                         </div>
-                        <div className="flex flex-col w-full justify-end items-end">
+                        <div className="flex flex-col w-full justify-start items-start pt-3">
                             <h1 className='uppercase text-black font-bold text-sm md:text-md'>{shopInfo?.shopName}</h1>
                             <h4 className='flex font-sans text-black text-xs md:text-md capitalize'><IoLocationOutline className='mt-0.5 mr-1'/> {shopInfo?.address}</h4>
                             <h4 className='flex font-sans text-black text-xs md:text-md'><FaPhoneVolume className='mt-0.5 mr-1' /> {shopInfo?.phoneNumber}</h4>
