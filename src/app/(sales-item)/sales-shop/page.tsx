@@ -22,8 +22,6 @@ const Page: React.FC = () => {
     const [pending, setPending] = useState(false);
     const [total, setTotal] = useState(0);
     const [qtyTotal, setQtyTotal] = useState(0);
-    const [addtotal, setAddTotal] = useState(0);
-    const [addqtyTotal, setAddQtyTotal] = useState(0);
     const [received, setReceived] = useState('');
     const [returnAmount, setReturnAmount] = useState(0);
 
@@ -106,10 +104,10 @@ const Page: React.FC = () => {
             }
             const data = await response.json();
             const productData = data[0];
-            // if (productData.remainingQty < numericProductQty) {
-            //     toast.error("Sorry, not enough qty!");
-            //     return;
-            // }
+            if (productData.remainingQty < numericProductQty) {
+                toast.error("Sorry, not enough qty!");
+                return;
+            }
             const saleData = {
                 id: uid(),
                 date: maxDate,

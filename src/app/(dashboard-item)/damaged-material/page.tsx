@@ -60,7 +60,7 @@ const Page = () => {
         <div className="container-2xl">
             <div className="flex w-full min-h-[calc(100vh-228px)] p-4 items-center justify-center">
                 <div className="overflow-x-auto">
-                    <div className="flex justify-between pl-5 pr-5">
+                    <div className="flex justify-between pl-5 pr-5 pt-1">
                         <label className="input input-bordered flex max-w-xs  items-center gap-2">
                             <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-4 w-4 opacity-70">

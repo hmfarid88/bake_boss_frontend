@@ -9,13 +9,7 @@ import { uid } from 'uid';
 import { toast } from "react-toastify";
 import { RiDeleteBin6Line } from "react-icons/ri";
 
-interface items {
-  itemName: string,
-  qty: number,
-  averageRate: number,
-  remainingQty: number,
-  materialsName: string
-}
+
 const Page: React.FC = () => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const router = useRouter();
@@ -49,19 +43,6 @@ const Page: React.FC = () => {
     setMaxDate(formattedDate);
   }, []);
 
-  // const [items, setItems] = useState<items[]>([]);
-  // console.log("items: "+items)
-  // useEffect(() => {
-  //   fetch(`${apiBaseUrl}/api/getItemList?username=${username}&itemName=${productName}`)
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       setItems(data);
-  //     })
-  //     .catch(error => {
-  //       // toast.error("Failed to fetch items.");
-  //     });
-  // }, [apiBaseUrl, productName, username]);
-
   useEffect(() => {
     calculateTotal();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -91,83 +72,7 @@ const Page: React.FC = () => {
     dispatch(deleteMaterial(id));
   };
 
-  // const handleMaterialsSubmit = async () => {
-  //   try {
-  //     const updatedItems = items.map(item => ({
-  //       ...item,
-  //       remainingQty: (item.remainingQty - (item.qty * numericProductQty)),
-  //       madeItem: item.itemName,
-  //       status: 'used',
-  //       date: maxDate,
-  //       materialsRate: item.averageRate,
-  //       username: username,
-  //       materialsName: item.materialsName,
-  //       averageRate: item.averageRate,
-  //       materialsQty: item.qty * numericProductQty,
-  //       id: pid
-  //     }));
-  //     updatedItems.forEach(item => {
-  //       dispatch(addProductMaterials(item));
-  //     });
-  //   } catch (error) {
-  //     toast.error('Failed to update items.');
-  //   }
-  // };
-
-  // const handleProductSubmit = async (e: any) => {
-  //   e.preventDefault();
-  //   if (!selectedProid || !selectedQty) {
-  //     toast.error("Field is empty!")
-  //     return;
-  //   }
-  //   try {
-  //     const response = await fetch(`${apiBaseUrl}/api/getSingleProduct?productId=${selectedProid}`);
-  //     if (!response.ok) {
-  //       throw new Error(`HTTP error! status: ${response.status}`);
-  //     }
-  //     const data = await response.json();
-
-  //     const productToSale = {
-  //       id: pid,
-  //       category: data.category,
-  //       productName: data.productName,
-  //       costPrice: data.costPrice,
-  //       dpRate: data.dpRate,
-  //       rpRate: data.rpRate,
-  //       customerPrice: data.customerPrice,
-  //       productQty: numericProductQty,
-  //       remainingQty: data.remainingQty,
-  //       status: 'sold',
-  //       username: username
-  //     };
-  //     const response2 = await fetch(`${apiBaseUrl}/api/getItemList?username=${username}&itemName=${(data.productName)}`);
-  //     if (!response2.ok) {
-  //       throw new Error(`HTTP error! status: ${response2.status}`);
-  //     }
-  //     const data2 = await response2.json();
-  //     const updatedItems = data2.map(item => ({
-  //       ...item,
-  //       remainingQty: (item.remainingQty - (item.qty * numericProductQty)),
-  //       madeItem: item.itemName,
-  //       status: 'used',
-  //       date: maxDate,
-  //       materialsRate: item.averageRate,
-  //       username: username,
-  //       materialsName: item.materialsName,
-  //       averageRate: item.averageRate,
-  //       materialsQty: item.qty * numericProductQty,
-  //       id: pid
-  //     }));
-  //     updatedItems.forEach(item => {
-  //       dispatch(addProductMaterials(item));
-  //     });
-  //     dispatch(addProducts(productToSale));
-  //     setSelectedQty("");
-  //   } catch (error) {
-  //     console.error('Error fetching product:', error);
-  //   }
-  // };
-
+  
   const handleProductSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -219,7 +124,7 @@ const Page: React.FC = () => {
         id: pid,
       }));
 
-      dispatch(addProductMaterials(updatedItems)); // Batch dispatch if possible
+      dispatch(addProductMaterials(updatedItems));
       dispatch(addProducts(productToSale));
       setSelectedQty("");
 
@@ -235,48 +140,6 @@ const Page: React.FC = () => {
     customer: retailer,
     invoiceNo: invoiceNo
   }));
-
-  // const handleFinalSubmit = async (e: any) => {
-  //   e.preventDefault();
-  //   if (!retailer) {
-  //     toast.error("Please, select any retailer!");
-  //     return;
-  //   }
-  //   if (productInfo.length === 0) {
-  //     toast.error("Your product list is empty!");
-  //     return;
-  //   }
-  //   setPending(true);
-  //   try {
-  //     const response = await fetch(`${apiBaseUrl}/api/productDistribution`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(productInfo),
-  //     });
-
-  //     if (!response.ok) {
-  //       toast.error("Product sale not submitted !");
-  //       return;
-  //     }
-  //     fetch(`${apiBaseUrl}/api/updateMaterialsStock`, {
-  //       method: 'POST',
-  //       headers: {
-  //         'Content-Type': 'application/json',
-  //       },
-  //       body: JSON.stringify(addedProductMaterials),
-  //     });
-  //     dispatch(deleteAllProducts());
-  //     router.push(`/invoice?invoiceNo=${invoiceNo}`);
-
-  //   } catch (error: any) {
-  //     toast.error("An error occurred: " + error.message);
-  //   } finally {
-  //     setRetailer("");
-  //     setPending(false);
-  //   }
-  // };
 
   const handleFinalSubmit = async (e: any) => {
     e.preventDefault();

@@ -3,6 +3,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
 import { useSearchParams } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/app/store";
+import { addMaterials, deleteMaterials, deleteAllMaterials } from "@/app/store/requisitionMaterials";
+import { uid } from "uid";
+import { toast } from "react-toastify";
 
 type Product = {
     date: string;
@@ -13,10 +17,9 @@ type Product = {
 
 const Page = () => {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-
     const searchParams = useSearchParams();
     const username = searchParams.get('username');
-
+    const dispatch = useAppDispatch();
     const contentToPrint = useRef(null);
     const handlePrint = useReactToPrint({
         content: () => contentToPrint.current,
@@ -51,9 +54,33 @@ const Page = () => {
         return total + product.productQty;
     }, 0);
 
+    const handleProductSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+        try {
+            const response = await fetch(`${apiBaseUrl}/api/categoryAndProduct-details?productName=${allProducts[0].productName}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            const numericProductQty = Number(allProducts[0].productQty);
+
+            const requisitionProduct = {
+                id: uid(),
+                category: data.category,
+                productName: data.productName,
+                materialsName: data.materialsName,
+                qty: data.qty*numericProductQty,
+               
+            };
+            dispatch(addMaterials(requisitionProduct));
+           
+        } catch (error) {
+          toast.error("An error occurred while processing the request.");
+        }
+    };
     return (
         <div className="container min-h-screen">
-            <div className="flex w-full justify-between">
+            <div className="flex justify-between p-3">
                 <label className="input input-bordered flex max-w-xs  items-center gap-2">
                     <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-4 w-4 opacity-70">
@@ -87,7 +114,7 @@ const Page = () => {
                                     <td>{product.date}</td>
                                     <td>{product.productName}</td>
                                     <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                                    <td><button className="btn btn-warning btn-sm">Accept</button></td>
+                                    <td><button onClick={handleProductSubmit} className="btn btn-warning btn-sm">Accept</button></td>
                                 </tr>
                             ))}
                         </tbody>
