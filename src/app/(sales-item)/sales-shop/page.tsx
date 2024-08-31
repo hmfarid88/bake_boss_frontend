@@ -8,7 +8,7 @@ import Select from "react-select";
 import { uid } from 'uid';
 import { DatePicker } from 'react-date-picker';
 import { toast, ToastContainer } from "react-toastify";
-import { FcCalendar, FcManager, FcPhone, FcPlus, FcViewDetails } from "react-icons/fc";
+import { FcCalendar, FcManager, FcPhone, FcViewDetails } from "react-icons/fc";
 import { FaHandHoldingUsd } from "react-icons/fa";
 import { MdAttachMoney } from "react-icons/md";
 import { RiDeleteBin6Line, RiHandCoinLine } from "react-icons/ri";

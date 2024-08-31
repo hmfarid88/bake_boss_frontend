@@ -70,7 +70,7 @@ const Page = () => {
           </div>
           <div ref={contentToPrint} className="flex-1 p-5">
             <div className="flex flex-col items-center pb-5"><h4 className="font-bold">MATERIALS LEDGER</h4><CurrentMonthYear /></div>
-            <table className="table text-center">
+            <table className="table table-sm text-center">
               <thead>
                 <tr>
                   <th>SN</th>

@@ -4,11 +4,15 @@ import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
 import { useSearchParams } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/app/store";
-import { addMaterials, deleteMaterials, deleteAllMaterials } from "@/app/store/requisitionMaterials";
+import { addMaterials } from "@/app/store/requisitionMaterials";
+import { selectMaterialsQtyList } from "@/app/store/materialSummarySlice";
 import { uid } from "uid";
 import { toast } from "react-toastify";
+import Link from "next/link";
+import { PiNotebook } from "react-icons/pi";
 
 type Product = {
+    reqId: number;
     date: string;
     productName: string;
     productQty: number;
@@ -27,7 +31,7 @@ const Page = () => {
     const [filterCriteria, setFilterCriteria] = useState('');
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [allProducts, setAllProducts] = useState<Product[]>([]);
-
+    const groupedMaterials = useAppSelector(selectMaterialsQtyList);
     useEffect(() => {
         fetch(`${apiBaseUrl}/api/getRequisition?username=${username}`)
             .then(response => response.json())
@@ -36,7 +40,7 @@ const Page = () => {
                 setFilteredProducts(data);
             })
             .catch(error => console.error('Error fetching products:', error));
-    }, [apiBaseUrl, username]);
+    }, [apiBaseUrl, username, allProducts]);
 
     useEffect(() => {
         const filtered = allProducts.filter(product =>
@@ -54,30 +58,34 @@ const Page = () => {
         return total + product.productQty;
     }, 0);
 
-    const handleProductSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
+    const handleProductSubmit = async (productName: string, reqId: number) => {
         try {
-            const response = await fetch(`${apiBaseUrl}/api/categoryAndProduct-details?productName=${allProducts[0].productName}`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+            const response = await fetch(`${apiBaseUrl}/api/categoryAndProduct-details?productName=${productName}`);
+            if (response.ok) {
+                const data = await response.json();
+                data.forEach((product: any) => {
+                    const numericProductQty = Number(allProducts[0].productQty);
+                    const requisitionProduct = {
+                        id: uid(),
+                        category: product.category,
+                        productName: product.productName,
+                        materialsName: product.materialsName,
+                        qty: product.qty * numericProductQty,
+                    };
+                    dispatch(addMaterials(requisitionProduct));
+                });
+                fetch(`${apiBaseUrl}/api/accept?reqId=${reqId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                });
             }
-            const data = await response.json();
-            const numericProductQty = Number(allProducts[0].productQty);
-
-            const requisitionProduct = {
-                id: uid(),
-                category: data.category,
-                productName: data.productName,
-                materialsName: data.materialsName,
-                qty: data.qty*numericProductQty,
-               
-            };
-            dispatch(addMaterials(requisitionProduct));
-           
         } catch (error) {
-          toast.error("An error occurred while processing the request.");
+            toast.error("An error occurred while processing the request.");
         }
     };
+
     return (
         <div className="container min-h-screen">
             <div className="flex justify-between p-3">
@@ -87,48 +95,52 @@ const Page = () => {
                         <path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" />
                     </svg>
                 </label>
-                <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
+                <div className="flex gap-5">
+                    <Link href="requisition-materials" className="btn btn-sm btn-ghost mt-2"><PiNotebook size={18} />FIND MATERIALS</Link>
+                    <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
+                </div>
             </div>
-            <div className="overflow-x-auto">
+            <div ref={contentToPrint} className="overflow-x-auto">
                 <div className="flex flex-col justify-center items-center p-3 font-bold">
                     <h4>Requisition List</h4>
                     <h4 className="capitalize">Outlet Name: {username}</h4>
                 </div>
+                <div className="flex items-center justify-center">
+                    <div className="flex p-3">
+                        <table className="table table-sm text-center">
+                            <thead>
+                                <tr>
+                                    <th>SN</th>
+                                    <th>DATE</th>
+                                    <th>PRODUCT NAME</th>
+                                    <th>QTY</th>
+                                    <th>ACTION</th>
 
-                <div ref={contentToPrint} className="flex p-5">
-                    <table className="table table-sm text-center">
-                        <thead>
-                            <tr>
-                                <th>SN</th>
-                                <th>DATE</th>
-                                <th>PRODUCT NAME</th>
-                                <th>QTY</th>
-                                <th>ACTION</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {filteredProducts?.map((product, index) => (
-                                <tr key={index} className="capitalize">
-                                    <td>{index + 1}</td>
-                                    <td>{product.date}</td>
-                                    <td>{product.productName}</td>
-                                    <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                                    <td><button onClick={handleProductSubmit} className="btn btn-warning btn-sm">Accept</button></td>
                                 </tr>
-                            ))}
-                        </tbody>
-                        <tfoot>
-                            <tr className="font-bold">
-                                <td colSpan={2}></td>
-                                <td>TOTAL</td>
-                                <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                            </tr>
-                        </tfoot>
-                    </table>
+                            </thead>
+                            <tbody>
+                                {filteredProducts?.map((product, index) => (
+                                    <tr key={index} className="capitalize">
+                                        <td>{index + 1}</td>
+                                        <td>{product.date}</td>
+                                        <td>{product.productName}</td>
+                                        <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td><button onClick={() => handleProductSubmit(product.productName, product.reqId)} className="btn btn-success btn-sm" >Accept</button></td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                            <tfoot>
+                                <tr className="font-bold">
+                                    <td colSpan={2}></td>
+                                    <td>TOTAL</td>
+                                    <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+
+                    </div>
                 </div>
             </div>
-
         </div>
     )
 }

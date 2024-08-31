@@ -23,7 +23,7 @@ export const productSlice = createSlice({
     reducers: {
        
         addMaterials: (state, action: PayloadAction<Product>) => {
-            const exist = state.products.find((pro) => pro.materialsName === action.payload.materialsName)
+            const exist = state.products.find((pro) => pro.productName === action.payload.productName && pro.materialsName === action.payload.materialsName)
             if (exist) {
                 swal("Oops!", "This ingredient is already exist!", "error");
             } else {

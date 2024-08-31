@@ -34,7 +34,7 @@ export const SalesSidebar = () => {
                         <li><Link href="/sales-stock"><BsDatabaseCheck size={20} /> PRODUCT STOCK</Link></li>
                         <li><Link href="/sales-additional"><BsDatabaseAdd size={20} /> ADDITIONAL STOCK</Link></li>
                         <li><Link href="/product-return"><BsDatabaseDown size={20} /> PRODUCT RETURN</Link></li>
-                        <li><Link href="/sales-shop"><MdOutlinePointOfSale size={20} />PRODUCT SALES</Link></li>
+                        <li><Link href="/sales-shop" className='text-accent'><MdOutlinePointOfSale size={20} />PRODUCT SALES</Link></li>
                         <li><Link href="/sales-requisition"><PiNotebook size={20} />REQUISITION</Link></li>
                         <li>
                             <details>

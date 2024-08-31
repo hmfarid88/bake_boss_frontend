@@ -3,6 +3,9 @@ import React, { useState, useEffect, useRef } from "react";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { PiNotebook } from "react-icons/pi";
+import CurrentDate from "@/app/components/CurrentDate";
 
 type info={
     username:string;
@@ -48,12 +51,13 @@ const Page = () => {
     return (
         <div className="container-2xl">
             <div className="flex w-full min-h-[calc(100vh-228px)] p-4 items-center justify-center">
-                <div className="overflow-x-auto">
-                    <div className="flex justify-end pl-5 pr-5">
+                <div className="flex flex-col w-full">
+                    <div className="flex w-full justify-between pl-2 pr-2">
+                        <Link href="requisition-materials" className="btn btn-sm btn-ghost"><PiNotebook size={18}/>FIND MATERIALS</Link>
                         <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
                     </div>
                     <div ref={contentToPrint} className="flex-1 p-5">
-                        <div className="flex flex-col items-center pb-5"><h4 className="font-bold">REQUISITION LIST</h4>{maxDate}</div>
+                        <div className="flex flex-col items-center gap-3 pb-5"><h4 className="font-bold">REQUISITION LIST</h4><CurrentDate/></div>
                         <table className="table">
                             <thead>
                                 <tr>
