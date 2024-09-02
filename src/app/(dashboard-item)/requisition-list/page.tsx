@@ -81,7 +81,7 @@ const Page = () => {
                                 <tr className="font-semibold text-lg">
                                     <td colSpan={1}></td>
                                     <td>TOTAL</td>
-                                    <td>{totalValue}</td>
+                                    <td>{totalValue.toFixed(2)}</td>
                                 </tr>
                             </tfoot>
                         </table>

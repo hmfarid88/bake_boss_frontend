@@ -31,7 +31,7 @@ const Page = () => {
     const [filterCriteria, setFilterCriteria] = useState('');
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [allProducts, setAllProducts] = useState<Product[]>([]);
-    const groupedMaterials = useAppSelector(selectMaterialsQtyList);
+    // const groupedMaterials = useAppSelector(selectMaterialsQtyList);
     useEffect(() => {
         fetch(`${apiBaseUrl}/api/getRequisition?username=${username}`)
             .then(response => response.json())
