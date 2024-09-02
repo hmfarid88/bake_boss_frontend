@@ -3,9 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
 import { useSearchParams } from "next/navigation";
-import { useAppDispatch, useAppSelector } from "@/app/store";
+import { useAppDispatch } from "@/app/store";
 import { addMaterials } from "@/app/store/requisitionMaterials";
-import { selectMaterialsQtyList } from "@/app/store/materialSummarySlice";
 import { uid } from "uid";
 import { toast } from "react-toastify";
 import Link from "next/link";
@@ -15,6 +14,7 @@ type Product = {
     reqId: number;
     date: string;
     productName: string;
+    materialsName:string;
     productQty: number;
 
 };
@@ -31,7 +31,7 @@ const Page = () => {
     const [filterCriteria, setFilterCriteria] = useState('');
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [allProducts, setAllProducts] = useState<Product[]>([]);
-    // const groupedMaterials = useAppSelector(selectMaterialsQtyList);
+
     useEffect(() => {
         fetch(`${apiBaseUrl}/api/getRequisition?username=${username}`)
             .then(response => response.json())
