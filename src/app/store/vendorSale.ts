@@ -1,5 +1,4 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit'
-import swal from 'sweetalert';
 
 interface Product {
     id: string;
@@ -22,8 +21,8 @@ const initialState: SalesProduct = {
     products: [],
 };
 
-export const salesProductSaleSlice = createSlice({
-    name: "salesProduct",
+export const vendorSaleSlice = createSlice({
+    name: "vendorSalesProduct",
     initialState,
     reducers: {
         showProducts: (state) => state,
@@ -48,6 +47,6 @@ export const salesProductSaleSlice = createSlice({
     }
 
 })
-export const { showProducts, addProducts, deleteProduct, deleteAllProducts } = salesProductSaleSlice.actions;
+export const { showProducts, addProducts, deleteProduct, deleteAllProducts } = vendorSaleSlice.actions;
 
-export default salesProductSaleSlice.reducer;
+export default vendorSaleSlice.reducer;

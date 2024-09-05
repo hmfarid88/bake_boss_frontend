@@ -132,7 +132,7 @@ const Page = () => {
                   <div className="label">
                     <span className="label-text-alt">SALE RATE</span>
                   </div>
-                  <input type="number" value={productValue} onChange={(e: any) => setProductValue(e.target.value)} placeholder="Type here" className="input-bordered rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" />
+                  <input type="number" value={productValue} onChange={(e: any) => setProductValue(e.target.value)} placeholder="Type here" className="input-bordered border rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" />
                 </label>
                 <label className="form-control w-full max-w-xs">
                   <button onClick={handleProductRateSubmit} disabled={pending} className="btn btn-outline btn-success">{pending ? "Adding..." : "ADD"}</button>

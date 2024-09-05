@@ -53,6 +53,7 @@ const Page = () => {
     setStartDate("");
     setEndDate("");
   }
+  
   useEffect(() => {
     fetch(`${apiBaseUrl}/supplierBalance/supplier/balance?username=${username}`)
       .then(response => response.json())

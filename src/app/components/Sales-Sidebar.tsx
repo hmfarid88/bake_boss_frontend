@@ -34,7 +34,8 @@ export const SalesSidebar = () => {
                         <li><Link href="/sales-stock"><BsDatabaseCheck size={20} /> PRODUCT STOCK</Link></li>
                         <li><Link href="/sales-additional"><BsDatabaseAdd size={20} /> ADDITIONAL STOCK</Link></li>
                         <li><Link href="/product-return"><BsDatabaseDown size={20} /> PRODUCT RETURN</Link></li>
-                        <li><Link href="/sales-shop" className='text-success'><MdOutlinePointOfSale size={20} />PRODUCT SALES</Link></li>
+                        <li><Link href="/sales-shop" className='text-success'><MdOutlinePointOfSale size={20} />CUSTOMER SALE</Link></li>
+                        <li><Link href="/vendor-sale"><MdOutlinePointOfSale size={20} />VENDOR SALE</Link></li>
                         <li><Link href="/sales-requisition"><PiNotebook size={20} />REQUISITION</Link></li>
                         <li>
                             <details>
@@ -45,7 +46,15 @@ export const SalesSidebar = () => {
                                 </ul>
                             </details>
                         </li>
-                        <li><Link href="/sales-sales-today"><TbReportSearch size={20} /> SALES REPORT</Link></li>
+                        <li>
+                            <details>
+                                <summary><TbReportSearch size={20} /> SALES REPORT</summary>
+                                <ul>
+                                    <li><Link href="/sales-sales-today">CUSTOMER SALE</Link></li>
+                                    <li><Link href="/vendor-sale-report">VENDOR SALE</Link></li>
+                                </ul>
+                            </details>
+                            </li>
                         <li>
                             <details>
                                 <summary><MdOutlinePayments size={20} /> PAYMENT REPORT</summary>

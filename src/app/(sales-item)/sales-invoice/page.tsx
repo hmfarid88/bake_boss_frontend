@@ -2,9 +2,8 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { useAppSelector } from "@/app/store";
 import { useReactToPrint } from 'react-to-print';
-import { FcPrint, FcPlus, FcDataSheet } from "react-icons/fc";
+import { FcPrint, FcDataSheet } from "react-icons/fc";
 import { FaRegHandshake } from "react-icons/fa6";
-import Link from 'next/link';
 import Loading from '@/app/loading';
 import { useSearchParams } from 'next/navigation';
 import { IoLocationOutline } from "react-icons/io5";
@@ -37,11 +36,11 @@ const Invoice = () => {
         productQty: number,
 
     }
-    interface shopData{
-        shopName:string,
-        phoneNumber:string,
-        address:string,
-        email:string
+    interface shopData {
+        shopName: string,
+        phoneNumber: string,
+        address: string,
+        email: string
     }
     const [shopInfo, setShopInfo] = useState<shopData>();
     useEffect(() => {
@@ -75,7 +74,6 @@ const Invoice = () => {
     return (
         <div className="container min-h-[calc(100vh-228px)]">
             <div className="flex justify-end pr-10 pt-5 gap-3">
-                <Link href="/sales-shop">  <button className='btn btn-ghost btn-square'><FcPlus size={36} /></button></Link>
                 <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
             </div>
             <div className="flex justify-center pb-5">
@@ -87,9 +85,9 @@ const Invoice = () => {
                         </div>
                         <div className="flex flex-col w-full justify-start items-start pt-3">
                             <h1 className='uppercase text-black font-bold text-sm md:text-md'>{shopInfo?.shopName}</h1>
-                            <h4 className='flex font-sans text-black text-xs md:text-md capitalize'><IoLocationOutline className='mt-0.5 mr-1'/> {shopInfo?.address}</h4>
+                            <h4 className='flex font-sans text-black text-xs md:text-md capitalize'><IoLocationOutline className='mt-0.5 mr-1' /> {shopInfo?.address}</h4>
                             <h4 className='flex font-sans text-black text-xs md:text-md'><FaPhoneVolume className='mt-0.5 mr-1' /> {shopInfo?.phoneNumber}</h4>
-                            <h4 className='flex font-sans text-black text-xs md:text-md'><AiOutlineMail className='mt-0.5 mr-1'/> {shopInfo?.email}</h4>
+                            <h4 className='flex font-sans text-black text-xs md:text-md'><AiOutlineMail className='mt-0.5 mr-1' /> {shopInfo?.email}</h4>
                         </div>
                         <div className="flex flex-col w-full pt-3">
                             <div className="divider divider-neutral tracking-widest text-xs text-black mt-0 mb-1">Information</div>
