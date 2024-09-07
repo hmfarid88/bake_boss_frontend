@@ -21,9 +21,8 @@ const Page: React.FC = () => {
   const [productOption, setProductOption] = useState([]);
   const [selectedProid, setSelectedProid] = useState("");
   const [selectedQty, setSelectedQty] = useState("");
-  const numericProductQty: number = Number(selectedQty);
+ 
   const [retailer, setRetailer] = useState("");
-  const [productName, setProductName] = useState("");
 
   const uname = useAppSelector((state) => state.username.username);
   const username = uname ? uname.username : 'Guest';

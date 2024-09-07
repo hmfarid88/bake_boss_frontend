@@ -232,19 +232,23 @@ const ProductStock = () => {
     const [itemOption, setItemOption] = useState([]);
     useEffect(() => {
 
-        fetch(`${apiBaseUrl}/api/getMadeProducts`)
-            .then(response => response.json())
-            .then(data => {
-                const transformedData = data.map((madeItem: any) => ({
-                    value: madeItem,
-                    label: madeItem
-                }));
-                setItemOption(transformedData);
+        const fetchMadeProducts = () => {
+            fetch(`${apiBaseUrl}/api/getMadeProducts`)
+                .then(response => response.json())
+                .then(data => {
+                    const transformedData = data.map((madeItem: any) => ({
+                        value: madeItem,
+                        label: madeItem
+                    }));
+                    setItemOption(transformedData);
+                })
+                .catch(error => console.error('Error fetching products:', error));
+        };
 
-            })
-            .catch(error => console.error('Error fetching products:', error));
-
+        // Fetch data initially
+        fetchMadeProducts();
     }, [apiBaseUrl, newItemName]);
+
     return (
         <div className="flex w-full">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-2 w-full">
