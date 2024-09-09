@@ -36,7 +36,7 @@ export const SalesSidebar = () => {
                         <li><Link href="/product-return"><BsDatabaseDown size={20} /> PRODUCT RETURN</Link></li>
                         <li><Link href="/sales-shop" className='text-success'><MdOutlinePointOfSale size={20} />CUSTOMER SALE</Link></li>
                         <li><Link href="/vendor-sale"><MdOutlinePointOfSale size={20} />VENDOR SALE</Link></li>
-                        <li><Link href="/sales-requisition"><PiNotebook size={20} />REQUISITION</Link></li>
+                        {/* <li><Link href="/sales-requisition"><PiNotebook size={20} />REQUISITION</Link></li> */}
                         <li>
                             <details>
                                 <summary><RiSecurePaymentLine size={20} /> TRANSACTION</summary>
@@ -54,7 +54,7 @@ export const SalesSidebar = () => {
                                     <li><Link href="/vendor-sale-report">VENDOR SALE</Link></li>
                                 </ul>
                             </details>
-                            </li>
+                        </li>
                         <li>
                             <details>
                                 <summary><MdOutlinePayments size={20} /> PAYMENT REPORT</summary>
@@ -70,10 +70,10 @@ export const SalesSidebar = () => {
                             <details>
                                 <summary><PiNotebook size={20} /> LEDGER BOOK</summary>
                                 <ul>
-                                    {/* <li><Link href="/sales-supplier-ledger">SUPPLIER LEDGER</Link></li> */}
                                     <li><Link href="/sales-stock-ledger">STOCK LEDGER</Link></li>
+                                    <li><Link href="/sales-entry-ledger">ENTRY LEDGER</Link></li>
                                     <li><Link href="/sales-stock-returned">RETURNED PRODUCT</Link></li>
-                                    <li><Link href="/sales-requisition-report">REQUISITION REPORT</Link></li>
+                                    {/* <li><Link href="/sales-requisition-report">REQUISITION REPORT</Link></li> */}
                                 </ul>
                             </details>
                         </li>
@@ -89,10 +89,10 @@ export const SalesSidebar = () => {
                         </li>
                         <li>
                             <details>
-                                <summary><a className='flex gap-2'><PiNotebook size={20}/>FIND INVOICE </a></summary>
+                                <summary><a className='flex gap-2'><PiNotebook size={20} />FIND INVOICE </a></summary>
                                 <ul>
                                     <li>
-                                        <Invoice/>
+                                        <Invoice />
                                     </li>
                                 </ul>
                             </details>

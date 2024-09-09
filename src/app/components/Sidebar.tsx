@@ -64,7 +64,7 @@ export const Sidebar = () => {
                                     <li><Link href="/damaged-product">DAMAGED PRODUCT</Link></li>
                                     <li><Link href="/damaged-material">DAMAGED MATERIAL</Link></li>
                                     <li><Link href="/sales-returned">SALES RETURNED</Link></li>
-                                    <li><Link href="/requisition-list">OUTLET REQUISITION</Link></li>
+                                    {/* <li><Link href="/requisition-list">OUTLET REQUISITION</Link></li> */}
                                    
                                 </ul>
                             </details>
@@ -103,6 +103,7 @@ export const Sidebar = () => {
                                 <ul>
                                     <li><Link href="/supplier-ledger">SUPPLIER LEDGER</Link></li>
                                     <li><Link href="/materials-ledger">MATERIALS LEDGER</Link></li>
+                                    <li><Link href="/used-materials">USED MATERIALS</Link></li>
                                     <li><Link href="/stock-ledger">MADE ITEM LEDGER</Link></li>
                                 </ul>
                             </details>
