@@ -144,7 +144,7 @@ const CashBook = () => {
 
                   </tbody>
                   <tfoot>
-                    <tr>
+                    <tr className='font-bold'>
                       <td></td>
                       <td>BALANCE B/D</td>
                       <td>{(Number(totalDebit() + totalAdsale() + netSumAmount + saleTotal) - (totalCredit())).toLocaleString('en-IN')}</td>
@@ -169,7 +169,12 @@ const CashBook = () => {
                         <td>{(payment.amount ?? 0).toLocaleString('en-IN')}</td>
                       </tr>
                     ))}
-                    <tr>
+                    <tr className='font-bold'>
+                      <td>{date}</td>
+                      <td>TOTAL CREDIT</td>
+                      <td>{Number (totalCredit()).toLocaleString('en-IN')}</td>
+                    </tr>
+                    <tr className='font-bold'>
                       <td>{date}</td>
                       <td>BALANCE C/D</td>
                       <td>{(Number(totalDebit() + totalAdsale() + netSumAmount + saleTotal) - (totalCredit())).toLocaleString('en-IN')}</td>
