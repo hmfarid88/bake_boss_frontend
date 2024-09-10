@@ -34,6 +34,7 @@ const Page = () => {
 
   const [productName, setProductName] = useState("");
   const [productValue, setProductValue] = useState("");
+  const [qtyPerKg, setQtyPerKg] = useState("");
 
   const handleProductRateSubmit = async (e: any) => {
     e.preventDefault();
@@ -48,7 +49,7 @@ const Page = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ productName, saleRate: productValue, username }),
+        body: JSON.stringify({ productName, saleRate: productValue, qty:qtyPerKg, username }),
       });
 
       if (response.ok) {
@@ -62,6 +63,7 @@ const Page = () => {
     } finally {
       setPending(false);
       setProductValue("");
+      setQtyPerKg("");
     }
   };
 
@@ -113,7 +115,7 @@ const Page = () => {
 
   return (
     <div className="container-2xl min-h-screen">
-      <div className="flex w-full justify-end">
+      <div className="flex w-full justify-end pr-5">
         <a href="#my_modal_3" className="btn btn-circle btn-ghost"><FcPlus size={35} /></a>
       </div>
       <div className="flex w-full p-4 items-center justify-center">
@@ -133,6 +135,12 @@ const Page = () => {
                     <span className="label-text-alt">SALE RATE</span>
                   </div>
                   <input type="number" value={productValue} onChange={(e: any) => setProductValue(e.target.value)} placeholder="Type here" className="input-bordered border rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" />
+                </label>
+                <label className="form-control w-full max-w-xs">
+                  <div className="label">
+                    <span className="label-text-alt">QTY PER KG</span>
+                  </div>
+                  <input type="number" value={qtyPerKg} onChange={(e: any) => setQtyPerKg(e.target.value)} placeholder="Type here" className="input-bordered border rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" />
                 </label>
                 <label className="form-control w-full max-w-xs">
                   <button onClick={handleProductRateSubmit} disabled={pending} className="btn btn-outline btn-success">{pending ? "Adding..." : "ADD"}</button>

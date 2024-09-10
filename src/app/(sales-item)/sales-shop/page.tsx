@@ -131,6 +131,47 @@ const Page: React.FC = () => {
         soldInvoice: invoiceNo
     }));
 
+    const handleUnitProductSubmit = async (e: any) => {
+        e.preventDefault();
+        if (!selectedProid) {
+            toast.error("Field is empty!")
+            return;
+        }
+
+        try {
+            const response = await fetch(`${apiBaseUrl}/sales/getSingleProduct?productId=${selectedProid}&username=${username}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            const data = await response.json();
+            const productData = data[0];
+            if (productData.remainingQty < numericProductQty) {
+                toast.warning("Sorry, not enough qty !");
+                return;
+            }
+            if (!productData.qty) {
+                toast.warning("Sorry, qty not seted !");
+                return;
+            }
+            const saleData = {
+                id: uid(),
+                date: maxDate,
+                category: productData.category,
+                productName: productData.productName,
+                costPrice: productData.costPrice,
+                remainingQty: (productData.remainingQty -1/productData.qty),
+                saleRate: productData.saleRate,
+                productQty: 1/productData.qty,
+                status: 'sold',
+                username: username
+            };
+            dispatch(addProducts(saleData));
+            setSelectedQty("");
+        } catch (error) {
+            console.error('Error fetching product:', error);
+        }
+    };
+   
     const handleFinalSubmit = async (e: any) => {
         e.preventDefault();
         if (productInfo.length === 0) {
@@ -180,7 +221,7 @@ const Page: React.FC = () => {
             .then(data => {
                 const transformedData = data.map((item: any) => ({
                     value: item.productId,
-                    label: item.productName + ", " + item.remainingQty
+                    label: `${item.productName}, ${Number(item.remainingQty).toFixed(2)}`
                 }));
                 setProductOption(transformedData);
             })
@@ -202,6 +243,7 @@ const Page: React.FC = () => {
                     <Select className="text-black h-[38px] w-64 md:w-96" autoFocus={true} onChange={(selectedOption: any) => setSelectedProid(selectedOption.value)} options={productOption} />
                     <input type="number" className="w-[100px] h-[38px] p-2 bg-white text-black border rounded-md" placeholder="Qty" value={selectedQty} onChange={(e) => setSelectedQty(e.target.value)} />
                     <button onClick={handleProductSubmit} className='btn btn-outline btn-success btn-sm h-[38px]'>ADD</button>
+                    <button onClick={handleUnitProductSubmit} className='btn btn-outline btn-info btn-sm h-[38px]'>UNIT</button>
                 </div>
                 <div className="flex items-center justify-center w-full p-5">
                     <div className="overflow-x-auto max-h-96">
@@ -237,9 +279,9 @@ const Page: React.FC = () => {
                                 <tr>
                                     <td></td>
                                     <td></td>
-                                    <td className="text-lg font-semibold">TOTAL</td>
-                                    <td className="text-lg font-semibold">{qtyTotal} PS</td>
-                                    <td className="text-lg font-semibold">{Number(total.toFixed(2)).toLocaleString('en-IN')} TK</td>
+                                    <td className="text-lg font-semibold">Total</td>
+                                    <td className="text-lg font-semibold">{qtyTotal}</td>
+                                    <td className="text-lg font-semibold">{Number(total.toFixed(2)).toLocaleString('en-IN')} Tk</td>
                                     <td></td>
                                 </tr>
                             </tfoot>
@@ -263,7 +305,7 @@ const Page: React.FC = () => {
                                 </label>
                                 <label className="input input-bordered flex w-full max-w-xs items-center gap-2">
                                     <FcViewDetails size={20} />
-                                    <input type="text" className="grow" value={soldBy} onChange={(e: any) => setSoldBy(e.target.value)} placeholder="Sold By" />
+                                    <input type="text" name="soldby" autoComplete="soldby" className="grow" value={soldBy} onChange={(e: any) => setSoldBy(e.target.value)} placeholder="Sold By" />
                                 </label>
 
                             </div>

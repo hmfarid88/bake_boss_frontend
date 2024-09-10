@@ -41,7 +41,7 @@ export const Sidebar = () => {
                                 <ul>
                                     <li><Link href="/dp-dist">DP DISTRIBUTION</Link></li>
                                     <li><Link href="/rp-dist">RP DISTRIBUTION</Link></li>
-                                    <li><Link href="/production-dist">PRODUCTION DIST</Link></li>
+                                    
                                 </ul>
                             </details>
                         </li>
@@ -64,6 +64,7 @@ export const Sidebar = () => {
                                     <li><Link href="/damaged-product">DAMAGED PRODUCT</Link></li>
                                     <li><Link href="/damaged-material">DAMAGED MATERIAL</Link></li>
                                     <li><Link href="/sales-returned">SALES RETURNED</Link></li>
+                                    <li><Link href="/production-stock">PRODUCTION STOCK</Link></li>
                                     {/* <li><Link href="/requisition-list">OUTLET REQUISITION</Link></li> */}
                                    
                                 </ul>

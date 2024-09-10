@@ -13,6 +13,7 @@ import materialUseReducer from "../store/materialUseSlice";
 import requisitionMaterialsReducer from "../store/requisitionMaterials";
 import vendorSaleReducer from "../store/vendorSale";
 import reItemMakingReducer from "../store/reItemMakingSlice";
+import productionStockReducer from "../store/productionStockSlice";
 
 import {
   persistReducer,
@@ -43,7 +44,8 @@ const rootReducer = combineReducers({
   materialUse:materialUseReducer,
   requisitionMaterials:requisitionMaterialsReducer,
   vendorSalesProduct:vendorSaleReducer,
-  reItemMaterialUse:reItemMakingReducer
+  reItemMaterialUse:reItemMakingReducer,
+  productionStock:productionStockReducer
  
 });
 
