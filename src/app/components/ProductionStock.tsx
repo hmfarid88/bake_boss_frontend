@@ -12,6 +12,7 @@ const ProductionStock = () => {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     const [pending, setPending] = useState(false);
     const [materialDate, setMaterialDate] = useState("");
+    const [category, setCategory] = useState("");
     const [materialsName, setMaterialsName] = useState("");
     const [materialsQty, setMaterialsQty] = useState("");
 
@@ -31,14 +32,14 @@ const ProductionStock = () => {
     }, []);
 
     const invoiceNo = uid();
-    
+
     const handleAddMaterials = (e: any) => {
         e.preventDefault();
-        if (!materialDate || !materialsName || !materialsQty) {
+        if (!materialDate ||!category ||!materialsName ||!materialsQty) {
             toast.warning("Item is empty !");
             return;
         }
-        const materialsItem = { id: uid(), date: materialDate, materialsName, materialsQty, username, status: 'stored' };
+        const materialsItem = { id: uid(), date: materialDate, category, materialsName, materialsQty, username, status: 'stored' };
         dispatch(addMaterials(materialsItem))
         setMaterialsQty('');
     };
@@ -98,18 +99,41 @@ const ProductionStock = () => {
             .catch(error => console.error('Error fetching products:', error));
 
     }, [apiBaseUrl, username]);
+    const [categoryOption, setCategoryOption] = useState([]);
+    useEffect(() => {
 
+        fetch(`${apiBaseUrl}/api/getCategoryName?username=${username}`)
+            .then(response => response.json())
+            .then(data => {
+                const transformedData = data.map((item: any) => ({
+                    id: item.id,
+                    value: item.categoryName,
+                    label: item.categoryName
+                }));
+                setCategoryOption(transformedData);
+
+            })
+            .catch(error => console.error('Error fetching products:', error));
+
+    }, [apiBaseUrl, username]);
 
     return (
 
         <div className="flex w-full">
             <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-3">
-                <div className="grid grid-cols-1 w-full gap-2 h-72">
+                <div className="grid grid-cols-1 w-full gap-2 h-96">
                     <label className="form-control w-full max-w-xs">
                         <div className="label">
                             <span className="label-text-alt">STOCK DATE</span>
                         </div>
                         <input type="date" name="date" onChange={(e: any) => setMaterialDate(e.target.value)} max={maxDate} value={materialDate} className="border rounded-md p-2 mt-1.5 bg-white text-black  w-full max-w-xs h-[40px]" />
+                    </label>
+
+                    <label className="form-control w-full max-w-xs">
+                        <div className="label">
+                            <span className="label-text-alt">CATEGORY</span>
+                        </div>
+                        <Select className="text-black" name="catagory" onChange={(selectedOption: any) => setCategory(selectedOption.value)} options={categoryOption} />
                     </label>
 
                     <label className="form-control w-full max-w-xs">
@@ -138,7 +162,8 @@ const ProductionStock = () => {
                                 <tr className="font-bold">
                                     <th>SN</th>
                                     <th>DATE</th>
-                                    <th>MATERIALS NAME</th>
+                                    <th>CATEGORY</th>
+                                    <th>MATERIALS</th>
                                     <th>QTY</th>
                                     <th>ACTION</th>
                                 </tr>
@@ -148,6 +173,7 @@ const ProductionStock = () => {
                                     <tr key={index}>
                                         <td>{index + 1}</td>
                                         <td>{item.date}</td>
+                                        <td>{item.category}</td>
                                         <td>{item.materialsName}</td>
                                         <td>{item.materialsQty}</td>
                                         <td>

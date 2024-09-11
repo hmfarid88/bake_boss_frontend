@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 
 type Product = {
     date: string;
+    category: string;
     materialsName: string;
     status: string;
     materialsQty: number;
@@ -46,6 +47,7 @@ const Page = () => {
     useEffect(() => {
         const filtered = allProducts.filter(product =>
             (product.materialsName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+            (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.status.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
 
@@ -81,6 +83,7 @@ const Page = () => {
                                     <tr>
                                         <th>SN</th>
                                         <th>DATE</th>
+                                        <th>CATEGORY</th>
                                         <th>MATERIALS NAME</th>
                                         <th>STATUS</th>
                                         <th>QUANTITY</th>
@@ -92,6 +95,7 @@ const Page = () => {
                                         <tr key={index}>
                                             <td>{index + 1}</td>
                                             <td>{product.date}</td>
+                                            <td className="capitalize">{product.category}</td>
                                             <td className="capitalize">{product.materialsName}</td>
                                             <td className="capitalize">{product.status}</td>
                                             <td>{Number((product.materialsQty).toFixed(2)).toLocaleString('en-IN')}</td>

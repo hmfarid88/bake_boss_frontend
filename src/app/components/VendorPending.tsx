@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 type Product = {
     productQty: number;
     soldInvoice: string;
+    username: string;
 };
 
 const VendorPending = () => {
@@ -75,6 +76,7 @@ const VendorPending = () => {
                     <thead>
                         <tr>
                             <th>SN</th>
+                            <th>VENDOR FROM</th>
                             <th>INVOICE NO</th>
                             <th>QTY (KG/PS)</th>
                         </tr>
@@ -83,6 +85,7 @@ const VendorPending = () => {
                         {filteredProducts?.map((product, index) => (
                             <tr key={index}>
                                 <td>{index + 1}</td>
+                                <td className="uppercase">{product.username}</td>
                                 <td className="uppercase">{product.soldInvoice}</td>
                                 <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
                                 <td><button onClick={() => handleDetails(product.soldInvoice)} className="btn btn-success btn-sm">Details</button></td>
@@ -91,7 +94,7 @@ const VendorPending = () => {
                     </tbody>
                     <tfoot>
                         <tr className="font-semibold text-lg">
-                            <td colSpan={1}></td>
+                            <td colSpan={2}></td>
                             <td>TOTAL</td>
                             <td>{Number((totalQty).toFixed(2)).toLocaleString('en-IN')}</td>
                         </tr>

@@ -4,6 +4,7 @@ import { useAppSelector } from "@/app/store";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
 import CurrentMonthYear from "@/app/components/CurrentMonthYear";
+import DateToDate from "@/app/components/DateToDate";
 
 type Product = {
   date: string;
@@ -59,7 +60,8 @@ const Page = () => {
  
   return (
     <div className="container-2xl">
-      <div className="flex w-full min-h-[calc(100vh-228px)] p-4 items-center justify-center">
+      <div className="flex flex-col w-full min-h-[calc(100vh-228px)] p-4 items-center justify-center">
+        <div className="flex p-5"><DateToDate routePath="/datewise-stock-ledger"/></div>
         <div className="overflow-x-auto">
           <div className="flex justify-between pl-5 pr-5 pt-1">
             <label className="input input-bordered flex max-w-xs  items-center gap-2">

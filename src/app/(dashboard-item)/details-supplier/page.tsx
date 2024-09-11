@@ -13,9 +13,7 @@ const Page = () => {
                     </div>
                     <input type="radio" name="my_tabs_2" role="tab" className="tab" aria-label="PAYMENT DETAILS" />
                     <div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
-                        <div className="flex w-full">
-                            <DetailsSupplierPay />
-                        </div>
+                        <DetailsSupplierPay />
                     </div>
 
                 </div>

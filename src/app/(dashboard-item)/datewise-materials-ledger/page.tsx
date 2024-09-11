@@ -3,8 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAppSelector } from "@/app/store";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
-import CurrentMonthYear from "@/app/components/CurrentMonthYear";
-import DateToDate from "@/app/components/DateToDate";
+import { useSearchParams } from "next/navigation";
 
 type Product = {
   date: string;
@@ -23,6 +22,10 @@ const Page = () => {
   const uname = useAppSelector((state) => state.username.username);
   const username = uname ? uname.username : 'Guest';
 
+  const searchParams = useSearchParams();
+  const startDate = searchParams.get('startDate');
+  const endDate = searchParams.get('endDate');
+
   const contentToPrint = useRef(null);
   const handlePrint = useReactToPrint({
     content: () => contentToPrint.current,
@@ -32,14 +35,14 @@ const Page = () => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/api/getAllMaterials?username=${username}`)
+    fetch(`${apiBaseUrl}/api/datewiseMaterialsLedger?username=${username}&startDate=${startDate}&endDate=${endDate}`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);
         setFilteredProducts(data);
       })
       .catch(error => console.error('Error fetching products:', error));
-  }, [apiBaseUrl, username]);
+  }, [apiBaseUrl, username, startDate, endDate]);
 
 
   useEffect(() => {
@@ -60,8 +63,7 @@ const Page = () => {
 
   return (
     <div className="container-2xl">
-      <div className="flex flex-col w-full min-h-[calc(100vh-228px)] p-4 items-center justify-center">
-        <div className="flex p-5"><DateToDate routePath="/datewise-materials-ledger"/></div>
+      <div className="flex w-full min-h-[calc(100vh-228px)] p-4 items-center justify-center">
         
         <div className="overflow-x-auto">
           <div className="flex justify-between pl-5 pr-5 pt-1">
@@ -74,7 +76,7 @@ const Page = () => {
             <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
           </div>
           <div ref={contentToPrint} className="flex-1 p-5">
-            <div className="flex flex-col items-center pb-5"><h4 className="font-bold">MATERIALS LEDGER</h4><CurrentMonthYear /></div>
+            <div className="flex flex-col items-center pb-5"><h4 className="font-bold">MATERIALS LEDGER</h4>Date: {startDate} TO {endDate}</div>
             <table className="table table-sm text-center">
               <thead>
                 <tr>

@@ -100,7 +100,7 @@ const CashBook = () => {
       <div className="w-full card pb-5">
         <div ref={contentToPrint} className="flex w-full items-center justify-center pt-5">
           <div className="overflow-x-auto">
-            <div className="flex w-full items-center justify-between p-5">
+            <div className="flex w-full font-bold items-center justify-between p-5">
               <h4>DEBIT</h4>
               <h4>CASH BOOK ({date})</h4>
               <h4>CREDIT</h4>

@@ -150,7 +150,7 @@ const Page: React.FC = () => {
                 return;
             }
             if (!productData.qty) {
-                toast.warning("Sorry, qty not seted !");
+                toast.warning("Sorry, quantity not seted !");
                 return;
             }
             const saleData = {

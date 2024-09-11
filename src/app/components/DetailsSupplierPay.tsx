@@ -68,7 +68,7 @@ const DetailsSupplierPay = () => {
                 <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
             </div>
             <div className="overflow-x-auto">
-                <div className="flex justify-center uppercase p-3 font-bold">
+                <div className="flex justify-center uppercase p-2 font-bold">
                     <h4>SUPPLIER NAME: {supplierName}</h4>
                 </div>
                 <div className="flex justify-center uppercase font-bold">
@@ -89,8 +89,8 @@ const DetailsSupplierPay = () => {
                             {filteredProducts?.map((product, index) => (
                                 <tr key={index}>
                                     <td>{index + 1}</td>
-                                    <td className="uppercase">{product.date}</td>
-                                    <td className="uppercase">{product.note}</td>
+                                    <td>{product.date}</td>
+                                    <td className="capitalize">{product.note}</td>
                                     <td>{Number(product.amount.toFixed(2)).toLocaleString('en-IN')}</td>
 
                                 </tr>

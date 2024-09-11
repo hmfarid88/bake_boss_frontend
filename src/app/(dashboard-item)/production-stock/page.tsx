@@ -8,6 +8,7 @@ import DateToDate from "@/app/components/DateToDate";
 
 type Product = {
   date: string;
+  category: string;
   materialsName: string;
   remainingQty: number;
 
@@ -41,6 +42,7 @@ const Page = () => {
   useEffect(() => {
     const filtered = allProducts.filter(product =>
       (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+      (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
       (product.materialsName.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
     );
     setFilteredProducts(filtered);
@@ -77,6 +79,7 @@ const Page = () => {
                 <tr>
                   <th>SN</th>
                   <th>DATE</th>
+                  <th>CATEGORY</th>
                   <th>MATERIALS NAME</th>
                   <th>QUANTITY</th>
                 </tr>
@@ -86,6 +89,7 @@ const Page = () => {
                   <tr key={index} className="capitalize">
                     <td>{index + 1}</td>
                     <td>{product.date}</td>
+                    <td>{product.category}</td>
                     <td>{product.materialsName}</td>
                     <td>{product.remainingQty.toLocaleString('en-IN')}</td>
                   </tr>
@@ -93,7 +97,7 @@ const Page = () => {
               </tbody>
               <tfoot>
                 <tr className="font-semibold text-lg">
-                  <td colSpan={2}></td>
+                  <td colSpan={3}></td>
                   <td>TOTAL</td>
                   <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
                 </tr>

@@ -3,25 +3,30 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAppSelector } from "@/app/store";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
-import CurrentMonthYear from "@/app/components/CurrentMonthYear";
-import DateToDate from "@/app/components/DateToDate";
+import { useSearchParams } from "next/navigation";
 
 type Product = {
   date: string;
-  materialsName: string;
-  supplierName: string;
-  supplierInvoice: string;
-  materialsRate: number;
-  materialsQty: number;
+  category: string;
+  productName: string;
+  status: string;
+  dpRate: number;
+  rpRate: number;
+  costPrice: number;
+  productQty: number;
   remainingQty: number;
-  status: string
 
 };
+
 
 const Page = () => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const uname = useAppSelector((state) => state.username.username);
   const username = uname ? uname.username : 'Guest';
+
+  const searchParams = useSearchParams();
+  const startDate = searchParams.get('startDate');
+  const endDate = searchParams.get('endDate');
 
   const contentToPrint = useRef(null);
   const handlePrint = useReactToPrint({
@@ -32,24 +37,21 @@ const Page = () => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/api/getAllMaterials?username=${username}`)
+    fetch(`${apiBaseUrl}/api/datewise-stock-ledger?username=${username}&startDate=${startDate}&endDate=${endDate}`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);
         setFilteredProducts(data);
       })
       .catch(error => console.error('Error fetching products:', error));
-  }, [apiBaseUrl, username]);
+  }, [apiBaseUrl, username, startDate, endDate]);
 
 
   useEffect(() => {
     const filtered = allProducts.filter(product =>
-      (product.date?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-      (product.materialsName?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-      (product.supplierName?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-      (product.supplierInvoice?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-      (product.status?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') 
-     
+      (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+      (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+      (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
     );
     setFilteredProducts(filtered);
   }, [filterCriteria, allProducts]);
@@ -58,11 +60,11 @@ const Page = () => {
     setFilterCriteria(e.target.value);
   };
 
+ 
   return (
     <div className="container-2xl">
-      <div className="flex flex-col w-full min-h-[calc(100vh-228px)] p-4 items-center justify-center">
-        <div className="flex p-5"><DateToDate routePath="/datewise-materials-ledger"/></div>
-        
+      <div className="flex w-full min-h-[calc(100vh-228px)] p-4 items-center justify-center">
+       
         <div className="overflow-x-auto">
           <div className="flex justify-between pl-5 pr-5 pt-1">
             <label className="input input-bordered flex max-w-xs  items-center gap-2">
@@ -74,19 +76,21 @@ const Page = () => {
             <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
           </div>
           <div ref={contentToPrint} className="flex-1 p-5">
-            <div className="flex flex-col items-center pb-5"><h4 className="font-bold">MATERIALS LEDGER</h4><CurrentMonthYear /></div>
+          <div className="flex flex-col items-center pb-5"><h4 className="font-bold">MADE ITEM LEDGER</h4>Date: {startDate} TO {endDate}</div>
             <table className="table table-sm text-center">
               <thead>
                 <tr>
                   <th>SN</th>
                   <th>DATE</th>
-                  <th>MATERIALS NAME</th>
-                  <th>SUPPLIER NAME</th>
-                  <th>INVOICE NO</th>
+                  <th>CATEGORY</th>
+                  <th>PRODUCT NAME</th>
+                  <th>DP PRICE</th>
+                  <th>RP PRICE</th>
                   <th>COST PRICE</th>
                   <th>STATUS</th>
                   <th>QTY</th>
                   <th>REMAINING QTY</th>
+
                 </tr>
               </thead>
               <tbody>
@@ -94,17 +98,18 @@ const Page = () => {
                   <tr key={index} className="capitalize">
                     <td>{index + 1}</td>
                     <td>{product.date}</td>
-                    <td>{product.materialsName}</td>
-                    <td>{product.supplierName}</td>
-                    <td>{product.supplierInvoice}</td>
-                    <td>{Number(product.materialsRate.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{product.category}</td>
+                    <td>{product.productName}</td>
+                    <td>{Number(product.dpRate.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number(product.rpRate.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number(product.costPrice.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{product.status}</td>
-                    <td>{Number(product.materialsQty.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.remainingQty.toFixed(2)).toLocaleString('en-IN')}</td>
                   </tr>
                 ))}
               </tbody>
-
+             
             </table>
           </div>
         </div>

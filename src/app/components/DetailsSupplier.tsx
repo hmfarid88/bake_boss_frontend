@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 
 type Product = {
     date: string;
+    supplierInvoice: string;
     productName: string;
     totalQty: number;
     totalValue: number;
@@ -43,8 +44,9 @@ const DetailsSupplier = () => {
 
     useEffect(() => {
         const filtered = allProducts.filter(product =>
-            (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-            (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
+            (product.date?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+            (product.supplierInvoice?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+            (product.productName?.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
         );
         setFilteredProducts(filtered);
     }, [filterCriteria, allProducts]);
@@ -72,7 +74,7 @@ const DetailsSupplier = () => {
                 <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
             </div>
             <div className="overflow-x-auto">
-                <div className="flex justify-center uppercase p-3 font-bold">
+                <div className="flex justify-center uppercase p-2 font-bold">
                     <h4>SUPPLIER NAME: {supplierName}</h4>
                 </div>
                 <div className="flex justify-center uppercase font-bold">
@@ -85,6 +87,7 @@ const DetailsSupplier = () => {
                             <tr>
                                 <th>SN</th>
                                 <th>DATE</th>
+                                <th>INVOICE NO</th>
                                 <th>PRODUCT NAME</th>
                                 <th>QTY</th>
                                 <th>VALUE</th>
@@ -95,8 +98,9 @@ const DetailsSupplier = () => {
                             {filteredProducts?.map((product, index) => (
                                 <tr key={index}>
                                     <td>{index + 1}</td>
-                                    <td className="uppercase">{product.date}</td>
-                                    <td className="uppercase">{product.productName}</td>
+                                    <td>{product.date}</td>
+                                    <td className="uppercase">{product.supplierInvoice}</td>
+                                    <td className="capitalize">{product.productName}</td>
                                     <td>{Number(product.totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
                                     <td>{Number((product.totalValue).toFixed(2)).toLocaleString('en-IN')}</td>
                                 </tr>
@@ -104,7 +108,7 @@ const DetailsSupplier = () => {
                         </tbody>
                         <tfoot>
                             <tr className="font-bold">
-                                <td colSpan={2}></td>
+                                <td colSpan={3}></td>
                                 <td>TOTAL</td>
                                 <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
                                 <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
