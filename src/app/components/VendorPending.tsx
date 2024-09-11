@@ -7,9 +7,10 @@ import { useRouter } from "next/navigation";
 
 
 type Product = {
-    productQty: number;
-    soldInvoice: string;
     username: string;
+    soldInvoice: string;
+    productQty: number;
+
 };
 
 const VendorPending = () => {
