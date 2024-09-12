@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from "@/app/store";
 import { addProducts, deleteAllProducts, deleteProduct } from "@/app/store/salesProductSaleSlice";
@@ -32,6 +32,14 @@ const Page: React.FC = () => {
     const dispatch = useAppDispatch();
     const invoiceNo = uid();
 
+    const inputRef = useRef<HTMLInputElement>(null);
+    const handleProductSelect = (selectedOption: any) => {
+        setSelectedProid(selectedOption.value);
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    };
+
     const handleReceivedChange = (e: any) => {
         const receivedValue = e.target.value;
         setReceived(receivedValue);
@@ -57,38 +65,39 @@ const Page: React.FC = () => {
         setMaxDate(formattedDate);
     }, []);
 
-
     useEffect(() => {
-        calculateTotal();
+        calculateTotals();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [filteredProducts]);
-
-
-    useEffect(() => {
-        calculateQtyTotal();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [filteredProducts]);
-
-
-    const calculateTotal = () => {
-        const total = filteredProducts.reduce((sum, p) => {
-            return sum + (p.saleRate * p.productQty);
-        }, 0);
+    const calculateTotals = () => {
+        const { total, qtyTotal } = filteredProducts.reduce(
+            (acc, p) => ({
+                total: acc.total + p.saleRate * p.productQty,
+                qtyTotal: acc.qtyTotal + p.productQty,
+            }),
+            { total: 0, qtyTotal: 0 }
+        );
         setTotal(total);
+        setQtyTotal(qtyTotal);
     };
 
-
-    const calculateQtyTotal = () => {
-        const qtytotal = filteredProducts.reduce((sum, p) => {
-            return sum + (p.productQty);
-        }, 0);
-        setQtyTotal(qtytotal);
-    };
 
     const handleDeleteProduct = (id: any) => {
         dispatch(deleteProduct(id));
     };
 
+    const fetchProductData = async (productId: string) => {
+        try {
+            const response = await fetch(`${apiBaseUrl}/sales/getSingleProduct?productId=${productId}&username=${username}`);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Error fetching product:', error);
+            return null;
+        }
+    };
 
     const handleProductSubmit = async (e: any) => {
         e.preventDefault();
@@ -96,35 +105,27 @@ const Page: React.FC = () => {
             toast.error("Field is empty!")
             return;
         }
-
-        try {
-            const response = await fetch(`${apiBaseUrl}/sales/getSingleProduct?productId=${selectedProid}&username=${username}`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            const productData = data[0];
-            if (productData.remainingQty < numericProductQty) {
-                toast.error("Sorry, not enough qty!");
-                return;
-            }
-            const saleData = {
-                id: uid(),
-                date: maxDate,
-                category: productData.category,
-                productName: productData.productName,
-                costPrice: productData.costPrice,
-                remainingQty: (productData.remainingQty - numericProductQty),
-                saleRate: productData.saleRate,
-                productQty: numericProductQty,
-                status: 'sold',
-                username: username
-            };
-            dispatch(addProducts(saleData));
-            setSelectedQty("");
-        } catch (error) {
-            console.error('Error fetching product:', error);
+        const data = await fetchProductData(selectedProid);
+        if (!data) return;
+        const productData = data[0];
+        if (productData.remainingQty < numericProductQty) {
+            toast.error("Sorry, not enough qty!");
+            return;
         }
+        const saleData = {
+            id: uid(),
+            date: maxDate,
+            category: productData.category,
+            productName: productData.productName,
+            costPrice: productData.costPrice,
+            remainingQty: (productData.remainingQty - numericProductQty),
+            saleRate: productData.saleRate,
+            productQty: numericProductQty,
+            status: 'sold',
+            username: username
+        };
+        dispatch(addProducts(saleData));
+        setSelectedQty("");
     };
     const productInfo = filteredProducts.map(product => ({
         ...product,
@@ -137,13 +138,8 @@ const Page: React.FC = () => {
             toast.error("Field is empty!")
             return;
         }
-
-        try {
-            const response = await fetch(`${apiBaseUrl}/sales/getSingleProduct?productId=${selectedProid}&username=${username}`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
+        const data = await fetchProductData(selectedProid);
+        if (!data) return;
             const productData = data[0];
             if (productData.remainingQty < numericProductQty) {
                 toast.warning("Sorry, not enough qty !");
@@ -159,19 +155,17 @@ const Page: React.FC = () => {
                 category: productData.category,
                 productName: productData.productName,
                 costPrice: productData.costPrice,
-                remainingQty: (productData.remainingQty -1/productData.qty),
+                remainingQty: (productData.remainingQty - 1 / productData.qty),
                 saleRate: productData.saleRate,
-                productQty: 1/productData.qty,
+                productQty: 1 / productData.qty,
                 status: 'sold',
                 username: username
             };
             dispatch(addProducts(saleData));
             setSelectedQty("");
-        } catch (error) {
-            console.error('Error fetching product:', error);
-        }
+       
     };
-   
+
     const handleFinalSubmit = async (e: any) => {
         e.preventDefault();
         if (productInfo.length === 0) {
@@ -240,8 +234,8 @@ const Page: React.FC = () => {
                     <div className="divider divider-accent tracking-widest font-bold p-5">SALES AREA</div>
                 </div>
                 <div className="flex items-center justify-center gap-2 z-10">
-                    <Select className="text-black h-[38px] w-64 md:w-96" autoFocus={true} onChange={(selectedOption: any) => setSelectedProid(selectedOption.value)} options={productOption} />
-                    <input type="number" className="w-[100px] h-[38px] p-2 bg-white text-black border rounded-md" placeholder="Qty" value={selectedQty} onChange={(e) => setSelectedQty(e.target.value)} />
+                    <Select className="text-black h-[38px] w-64 md:w-96" autoFocus={true} onChange={handleProductSelect} options={productOption} />
+                    <input type="number" className="w-[100px] h-[38px] p-2 bg-white text-black border rounded-md" ref={inputRef} placeholder="Qty" value={selectedQty} onChange={(e) => setSelectedQty(e.target.value)} />
                     <button onClick={handleProductSubmit} className='btn btn-outline btn-success btn-sm h-[38px]'>ADD</button>
                     <button onClick={handleUnitProductSubmit} className='btn btn-outline btn-info btn-sm h-[38px]'>UNIT</button>
                 </div>
@@ -264,7 +258,7 @@ const Page: React.FC = () => {
                                         <td>{index + 1}</td>
                                         <td>{p.productName} </td>
                                         <td>{Number(p.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
-                                        <td>{p.productQty}</td>
+                                        <td>{Number(p.productQty.toFixed(2))}</td>
                                         <td>{Number((p.saleRate * p.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
                                         <td className="flex justify-between gap-3">
                                             <button onClick={() => {
@@ -280,7 +274,7 @@ const Page: React.FC = () => {
                                     <td></td>
                                     <td></td>
                                     <td className="text-lg font-semibold">Total</td>
-                                    <td className="text-lg font-semibold">{qtyTotal}</td>
+                                    <td className="text-lg font-semibold">{Number(qtyTotal).toFixed(2)}</td>
                                     <td className="text-lg font-semibold">{Number(total.toFixed(2)).toLocaleString('en-IN')} Tk</td>
                                     <td></td>
                                 </tr>

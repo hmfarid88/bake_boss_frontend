@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from "@/app/store";
 import { addProducts, deleteAllProducts, deleteProduct } from "@/app/store/productSaleSlice";
@@ -30,6 +30,13 @@ const Page: React.FC = () => {
   const addedProductMaterials = useAppSelector((state) => state.materialUse.materials);
   const dispatch = useAppDispatch();
 
+  const inputRef = useRef<HTMLInputElement>(null); 
+  const handleProductSelect = (selectedOption: any) => {
+      setSelectedProid(selectedOption.value); 
+      if (inputRef.current) {
+          inputRef.current.focus();
+      }
+  };
   const invoiceNo = uid();
   const pid = uid();
   const [maxDate, setMaxDate] = useState('');
@@ -227,8 +234,8 @@ const Page: React.FC = () => {
           <div className="divider divider-accent tracking-widest font-bold p-5">DISTRIBUTION</div>
         </div>
         <div className="flex items-center justify-center gap-2 z-10">
-          <Select className="text-black h-[38px] w-64 md:w-96" autoFocus={true} onChange={(selectedOption: any) => setSelectedProid(selectedOption.value)} options={productOption} />
-          <input type="number" className="w-[100px] h-[38px] p-2 bg-white text-black border rounded-md" placeholder="Qty" value={selectedQty} onChange={(e) => setSelectedQty(e.target.value)} />
+          <Select className="text-black h-[38px] w-64 md:w-96" autoFocus={true} onChange={handleProductSelect} options={productOption} />
+          <input type="number" className="w-[100px] h-[38px] p-2 bg-white text-black border rounded-md" placeholder="Qty" ref={inputRef} value={selectedQty} onChange={(e) => setSelectedQty(e.target.value)} />
           <button onClick={handleProductSubmit} className='btn btn-outline btn-success btn-sm h-[38px]'>ADD</button>
         </div>
         <div className="flex items-center justify-center w-full p-5">

@@ -77,7 +77,7 @@ const Page = () => {
       .catch(error => console.error('Error fetching products:', error));
   }, [apiBaseUrl, username, productValue]);
 
-
+  
   useEffect(() => {
     const filtered = allProducts.filter(product =>
       (product.productName?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||

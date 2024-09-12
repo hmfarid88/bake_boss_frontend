@@ -102,6 +102,7 @@ export const Sidebar = () => {
                             <details>
                                 <summary><PiNotebook size={20} /> LEDGER BOOK</summary>
                                 <ul>
+                                    <li><Link href="/purchase-ledger">PURCHASE LEDGER</Link></li>
                                     <li><Link href="/supplier-ledger">SUPPLIER LEDGER</Link></li>
                                     <li><Link href="/materials-ledger">MATERIALS LEDGER</Link></li>
                                     <li><Link href="/used-materials">USED MATERIALS</Link></li>
