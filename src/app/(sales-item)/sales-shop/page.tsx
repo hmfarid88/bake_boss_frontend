@@ -12,6 +12,7 @@ import { FcCalendar, FcManager, FcPhone, FcViewDetails } from "react-icons/fc";
 import { FaHandHoldingUsd } from "react-icons/fa";
 import { MdAttachMoney } from "react-icons/md";
 import { RiDeleteBin6Line, RiHandCoinLine } from "react-icons/ri";
+
 type ValuePiece = Date | null;
 type Value = ValuePiece | [ValuePiece, ValuePiece];
 
@@ -24,6 +25,7 @@ const Page: React.FC = () => {
     const [qtyTotal, setQtyTotal] = useState(0);
     const [received, setReceived] = useState('');
     const [returnAmount, setReturnAmount] = useState(0);
+
 
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
@@ -140,34 +142,35 @@ const Page: React.FC = () => {
         }
         const data = await fetchProductData(selectedProid);
         if (!data) return;
-            const productData = data[0];
-            if (productData.remainingQty < numericProductQty) {
-                toast.warning("Sorry, not enough qty !");
-                return;
-            }
-            if (!productData.qty) {
-                toast.warning("Sorry, quantity not seted !");
-                return;
-            }
-            const saleData = {
-                id: uid(),
-                date: maxDate,
-                category: productData.category,
-                productName: productData.productName,
-                costPrice: productData.costPrice,
-                remainingQty: (productData.remainingQty - 1 / productData.qty),
-                saleRate: productData.saleRate,
-                productQty: 1 / productData.qty,
-                status: 'sold',
-                username: username
-            };
-            dispatch(addProducts(saleData));
-            setSelectedQty("");
-       
+        const productData = data[0];
+        if (productData.remainingQty < numericProductQty) {
+            toast.warning("Sorry, not enough qty !");
+            return;
+        }
+        if (!productData.qty) {
+            toast.warning("Sorry, quantity not seted !");
+            return;
+        }
+        const saleData = {
+            id: uid(),
+            date: maxDate,
+            category: productData.category,
+            productName: productData.productName,
+            costPrice: productData.costPrice,
+            remainingQty: (productData.remainingQty - 1 / productData.qty),
+            saleRate: productData.saleRate,
+            productQty: 1 / productData.qty,
+            status: 'sold',
+            username: username
+        };
+        dispatch(addProducts(saleData));
+        setSelectedQty("");
+
     };
 
     const handleFinalSubmit = async (e: any) => {
         e.preventDefault();
+
         if (productInfo.length === 0) {
             toast.error("Your product list is empty!");
             return;
@@ -195,6 +198,7 @@ const Page: React.FC = () => {
                 toast.error("Product sale not submitted !");
                 return;
             }
+
             setCustomerName("");
             setPhoneNumber("");
             setSoldBy("");
@@ -207,6 +211,7 @@ const Page: React.FC = () => {
             setPending(false);
         }
     };
+
 
     const [productOption, setProductOption] = useState([]);
     useEffect(() => {
@@ -329,6 +334,7 @@ const Page: React.FC = () => {
                     </div>
                 </div>
             </div>
+
             <ToastContainer autoClose={1000} theme="dark" />
         </div>
     )

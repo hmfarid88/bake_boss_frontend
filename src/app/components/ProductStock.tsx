@@ -118,7 +118,7 @@ const ProductStock = () => {
                 setNewItemName("");
             } else {
                 const data = await response.json();
-                toast.error(data.message || "Failed to update materials.");
+                toast.error(data.message || "Failed to update item.");
             }
         } catch (error) {
             toast.error("Something went wrong. Please try again!");
@@ -126,6 +126,33 @@ const ProductStock = () => {
             setPending(false);
         }
     };
+    const handleItemNameDelete = async (e: any) => {
+        e.preventDefault();
+        if (!oldItemName) {
+            toast.warning("Name is empty !");
+            return;
+        }
+
+        try {
+            const response = await fetch(`${apiBaseUrl}/api/deleteItemName?username=${encodeURIComponent(username)}&itemName=${encodeURIComponent(oldItemName)}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            if (response.ok) {
+                toast.success("Item deleted successfully!");
+          
+            } else {
+                const data = await response.json();
+                toast.error(data.message || "Failed to delete item.");
+            }
+        } catch (error) {
+            toast.error("Something went wrong. Please try again!");
+        }
+    };
+
     const [categoryName, setCategoryName] = useState("");
     const handleCategorySubmit = async (e: any) => {
         e.preventDefault();
@@ -354,6 +381,7 @@ const ProductStock = () => {
                                     <Select className="text-black" name="pname" onChange={(selectedOption: any) => setOldItemName(selectedOption.value)} options={itemOption} />
                                     <input type="text" value={newItemName} name="colorItem" onChange={(e: any) => setNewItemName(e.target.value)} placeholder="Type here" className="input input-bordered max-w-xs" />
                                     <button onClick={handleItemNameUpdate} disabled={pending} className="btn btn-success">{pending ? "Adding..." : "ADD"}</button>
+                                    <button onClick={handleItemNameDelete} className="btn btn-error">DELETE</button>
                                 </div>
                             </label>
                         </div>

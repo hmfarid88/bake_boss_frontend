@@ -111,6 +111,33 @@ const Materials = () => {
             setPending(false);
         }
     };
+    const handleMaterialNameDelete = async (e: any) => {
+        e.preventDefault();
+        if (!oldMaterialsName) {
+            toast.warning("Name is empty !");
+            return;
+        }
+    
+        try {
+            const response = await fetch(`${apiBaseUrl}/api/deleteMaterialsName?username=${encodeURIComponent(username)}&materialsName=${encodeURIComponent(oldMaterialsName)}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            if (response.ok) {
+                toast.success("Materials deleted successfully!");
+                setOldMaterialName("");
+     
+            } else {
+                const data = await response.json();
+                toast.error(data.message || "Failed to delete materials.");
+            }
+        } catch (error) {
+            toast.error("Something went wrong. Please try again!");
+        } 
+    };
     const [supplierName, setSupplierName] = useState("");
     const handleSupplierItemSubmit = async (e: any) => {
         e.preventDefault();
@@ -337,6 +364,7 @@ const Materials = () => {
                                 <Select className="text-black max-w-xs" onChange={(selectedOption: any) => setOldMaterialName(selectedOption.value)} options={materialsOption} />
                                 <input type="text" value={newMaterialsName} onChange={(e: any) => setNewMaterial(e.target.value)} placeholder="New Material" className="input input-bordered max-w-xs" />
                                 <button onClick={handleMaterialNameUpdate} disabled={pending} className='btn btn-success'>{pending ? "Changing..." : "CHANGE"}</button>
+                                <button onClick={handleMaterialNameDelete}  className='btn btn-error'>DELETE</button>
                             </div>
                         </label>
                     </div>
