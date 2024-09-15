@@ -11,10 +11,8 @@ type Product = {
     productName: string;
     soldInvoice: string;
     saleRate: number;
-    discount: number;
     productQty: number;
 };
-
 
 const Page = () => {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -34,7 +32,7 @@ const Page = () => {
     const [allProducts, setAllProducts] = useState<Product[]>([]);
 
     useEffect(() => {
-        fetch(`${apiBaseUrl}/sales/getDatewiseOutletSale?username=${username}&startDate=${startDate}&endDate=${endDate}`)
+        fetch(`${apiBaseUrl}/sales/getDatewiseVendorSale?username=${username}&startDate=${startDate}&endDate=${endDate}`)
             .then(response => response.json())
             .then(data => {
                 setAllProducts(data);
@@ -61,7 +59,7 @@ const Page = () => {
         return total + (product.saleRate * product.productQty);
     }, 0);
     const totalQty = filteredProducts.reduce((acc, item) => acc + item.productQty, 0);
-    const totalDis = filteredProducts.reduce((acc, item) => acc + item.discount, 0);
+
     return (
         <div className="container-2xl min-h-[calc(100vh-228px)]">
             <div className="flex w-full  p-4 items-center justify-center">
@@ -77,23 +75,23 @@ const Page = () => {
                     </div>
                     <div ref={contentToPrint} className="flex-1 p-5">
                         <div className="flex flex-col w-full items-center justify-center">
-                            <h4 className="font-semibold text-lg">SALES REPORT</h4>
+                            <h4 className="font-semibold">VENDOR SALES REPORT</h4>
                             <h4>DATE : {startDate} TO {endDate}</h4>
                         </div>
                         <div className="pt-5">
                             <table className="table text-center">
                                 <thead>
-                                    <tr>
-                                        <th>SN</th>
-                                        <th>DATE</th>
-                                        <th>CATEGORY</th>
-                                        <th>PRODUCT NAME</th>
-                                        <th>INVOICE NO</th>
-                                        <th>SALE PRICE</th>
-                                        <th>QUANTITY</th>
-                                        <th>DISCOUNT</th>
-                                        <th>SUB TOTAL</th>
-                                    </tr>
+                                <tr>
+                  <th>SN</th>
+                  <th>DATE</th>
+                  <th>CATEGORY</th>
+                  <th>PRODUCT NAME</th>
+                  <th>INVOICE NO</th>
+                  <th>SALE PRICE</th>
+                  <th>QUANTITY</th>
+                  <th>SUB TOTAL</th>
+                </tr>
+                                    
                                 </thead>
                                 <tbody>
                                     {filteredProducts?.map((product, index) => (
@@ -105,8 +103,7 @@ const Page = () => {
                                             <td className="uppercase">{product.soldInvoice}</td>
                                             <td>{Number(product.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
                                             <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                                            <td>{Number(product.discount?.toFixed(2)).toLocaleString('en-IN')}</td>
-                                            <td>{Number(((product.saleRate * product.productQty) - (product.discount)).toFixed(2)).toLocaleString('en-IN')}</td>
+                                            <td>{Number((product.saleRate * product.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -115,8 +112,7 @@ const Page = () => {
                                         <td colSpan={5}></td>
                                         <td>TOTAL</td>
                                         <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                                        <td>{Number(totalDis.toFixed(2)).toLocaleString('en-IN')}</td>
-                                        <td>{Number((totalValue - totalDis).toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td>{Number((totalValue).toFixed(2)).toLocaleString('en-IN')}</td>
                                     </tr>
                                 </tfoot>
                             </table>

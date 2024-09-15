@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from "@/app/store";
-import { addProducts, deleteAllProducts, deleteProduct } from "@/app/store/salesProductSaleSlice";
+import { addProducts, updateDiscount, deleteAllProducts, deleteProduct } from "@/app/store/salesProductSaleSlice";
 
 import Select from "react-select";
 import { uid } from 'uid';
@@ -50,6 +50,8 @@ const Page: React.FC = () => {
     };
 
     const [selectedProid, setSelectedProid] = useState("");
+    const [discount, setDiscount] = useState("");
+    
     const [selectedQty, setSelectedQty] = useState("");
     const numericProductQty: number = Number(selectedQty);
 
@@ -74,7 +76,7 @@ const Page: React.FC = () => {
     const calculateTotals = () => {
         const { total, qtyTotal } = filteredProducts.reduce(
             (acc, p) => ({
-                total: acc.total + p.saleRate * p.productQty,
+                total: acc.total + (p.saleRate * p.productQty) - p.discount,
                 qtyTotal: acc.qtyTotal + p.productQty,
             }),
             { total: 0, qtyTotal: 0 }
@@ -83,6 +85,9 @@ const Page: React.FC = () => {
         setQtyTotal(qtyTotal);
     };
 
+    const handleUpdateDiscount = (id: any) => {
+        dispatch(updateDiscount({ id, discount }));
+    };
 
     const handleDeleteProduct = (id: any) => {
         dispatch(deleteProduct(id));
@@ -122,6 +127,7 @@ const Page: React.FC = () => {
             costPrice: productData.costPrice,
             remainingQty: (productData.remainingQty - numericProductQty),
             saleRate: productData.saleRate,
+            discount: 0,
             productQty: numericProductQty,
             status: 'sold',
             username: username
@@ -159,6 +165,7 @@ const Page: React.FC = () => {
             costPrice: productData.costPrice,
             remainingQty: (productData.remainingQty - 1 / productData.qty),
             saleRate: productData.saleRate,
+            discount: 0,
             productQty: 1 / productData.qty,
             status: 'sold',
             username: username
@@ -253,6 +260,7 @@ const Page: React.FC = () => {
                                     <th>DESCRIPTION</th>
                                     <th>UNIT RATE</th>
                                     <th>QTY</th>
+                                    <th>DISCOUNT (%)</th>
                                     <th>SUB TOTAL</th>
                                     <th>ACTION</th>
                                 </tr>
@@ -264,8 +272,13 @@ const Page: React.FC = () => {
                                         <td>{p.productName} </td>
                                         <td>{Number(p.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
                                         <td>{Number(p.productQty.toFixed(2))}</td>
-                                        <td>{Number((p.saleRate * p.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td><input type="number" name="discount" placeholder="0.00" onChange={(e: any) => setDiscount(e.target.value)} className="bg-base-100 w-20 p-1 rounded-md border input-bordered" /></td>
+                                        <td>{Number(((p.saleRate * p.productQty) - (p.discount)).toFixed(2)).toLocaleString('en-IN')}</td>
                                         <td className="flex justify-between gap-3">
+                                            <button onClick={() => {
+                                                handleUpdateDiscount(p.id);
+                                            }} className="btn btn-xs btn-success btn-outline">Apply Discount
+                                            </button>
                                             <button onClick={() => {
                                                 handleDeleteProduct(p.id);
                                             }} className="btn-xs rounded-md btn-outline btn-error"> <RiDeleteBin6Line size={18} />
@@ -280,6 +293,7 @@ const Page: React.FC = () => {
                                     <td></td>
                                     <td className="text-lg font-semibold">Total</td>
                                     <td className="text-lg font-semibold">{Number(qtyTotal).toFixed(2)}</td>
+                                    <td></td>
                                     <td className="text-lg font-semibold">{Number(total.toFixed(2)).toLocaleString('en-IN')} Tk</td>
                                     <td></td>
                                 </tr>

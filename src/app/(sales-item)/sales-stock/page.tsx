@@ -115,7 +115,7 @@ const Page = () => {
 
   return (
     <div className="container-2xl min-h-screen">
-      <div className="flex w-full justify-end pr-5">
+          <div className="flex w-full justify-end pr-5">
         <a href="#my_modal_3" className="btn btn-circle btn-ghost"><FcPlus size={35} /></a>
       </div>
       <div className="flex w-full p-4 items-center justify-center">

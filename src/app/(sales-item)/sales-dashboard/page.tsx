@@ -9,29 +9,25 @@ export default function Page() {
   const dashboardData = [
     {
       id: 1,
-      title: "Product Info"
+      title: "Product Stock"
     },
     {
       id: 2,
-      title: "Sale Today"
+      title: "Sales Today"
     },
     {
       id: 3,
-      title: "Sale Progress"
+      title: "Monthly Total"
     },
     {
       id: 4,
-      title: "Payment Today"
+      title: "Cash Balance"
     },
     {
       id: 5,
       title: "Low Stock"
-    },
-    {
-      id: 6,
-      title: "Monthly Total"
-    },
-
+    }
+   
   ]
   return (
     <main>

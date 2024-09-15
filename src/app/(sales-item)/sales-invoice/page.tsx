@@ -34,6 +34,7 @@ const Invoice = () => {
         productName: string,
         saleRate: number,
         productQty: number,
+        discount: number,
 
     }
     interface shopData {
@@ -68,6 +69,7 @@ const Invoice = () => {
     }
 
     const subtotal = invoiceData.salesStock.reduce((acc: number, item: { saleRate: number; productQty: number; }) => acc + item.saleRate * item.productQty, 0);
+    const totalDis = invoiceData.salesStock.reduce((acc: any, item: { discount: any; }) => acc + item.discount, 0);
     const totalQty = invoiceData.salesStock.reduce((acc: any, item: { productQty: any; }) => acc + item.productQty, 0);
 
 
@@ -117,7 +119,7 @@ const Invoice = () => {
                                         <tr key={index}>
                                             <td className='text-left p-0'>{products.productName}</td>
                                             <td>{Number(products.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
-                                            <td>{products.productQty}</td>
+                                            <td>{Number(products.productQty).toFixed(2)}</td>
                                             <td className='text-right pr-0'>{Number((products.saleRate * products.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
                                         </tr>
                                     ))}
@@ -126,8 +128,20 @@ const Invoice = () => {
                                     <tr className='text-xs md:text-md text-black'>
                                         <td></td>
                                         <td>Total</td>
-                                        <td>{totalQty.toLocaleString('en-IN')}</td>
+                                        <td>{Number((totalQty).toFixed(2)).toLocaleString('en-IN')}</td>
                                         <td className='text-end pr-0'>{Number(subtotal.toFixed(2)).toLocaleString('en-IN')}</td>
+                                    </tr>
+                                    <tr className='text-xs md:text-md text-black'>
+                                        <td></td>
+                                        <td>Discount</td>
+                                        <td>--</td>
+                                        <td className='text-end pr-0'>{Number(totalDis.toFixed(2)).toLocaleString('en-IN')}</td>
+                                    </tr>
+                                    <tr className='text-xs md:text-md text-black'>
+                                        <td></td>
+                                        <td>Net Payable</td>
+                                        <td>--</td>
+                                        <td className='text-end pr-0'>{Number(subtotal-totalDis.toFixed(2)).toLocaleString('en-IN')}</td>
                                     </tr>
                                 </tfoot>
                             </table>

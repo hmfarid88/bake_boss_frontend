@@ -15,7 +15,7 @@ type Product = {
     averageRate: number;
 };
 const Page: React.FC = () => {
-    const [pending, setPending] = useState(false);
+    
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -28,8 +28,7 @@ const Page: React.FC = () => {
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [allProducts, setAllProducts] = useState<Product[]>([]);
 
-    const [newItemName, setNewItemName] = useState("");
-
+  
     useEffect(() => {
         fetch(`${apiBaseUrl}/api/getMaterials/grouped?username=${username}`)
             .then(response => response.json())

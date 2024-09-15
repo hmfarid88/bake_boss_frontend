@@ -9,6 +9,7 @@ interface Product {
     costPrice: number;
     remainingQty: number;
     saleRate: number;
+    discount: number;
     productQty: number;
     status: string;
     username: string;
@@ -35,7 +36,14 @@ export const salesProductSaleSlice = createSlice({
                 state.products.push(action.payload);
             }
         },
-
+        updateDiscount: (state, action) => {
+            const { id, discount } = action.payload;
+            const product = state.products.find(product => product.id === id);
+            if (product) {
+                const discountValue = (product.saleRate * product.productQty * discount) / 100;
+                product.discount = discountValue;
+            }
+        },
         deleteProduct: (state, action) => {
             const id = action.payload;
             state.products = state.products.filter((product) => product.id !== id);
@@ -48,6 +56,6 @@ export const salesProductSaleSlice = createSlice({
     }
 
 })
-export const { showProducts, addProducts, deleteProduct, deleteAllProducts } = salesProductSaleSlice.actions;
+export const { showProducts, addProducts, updateDiscount, deleteProduct, deleteAllProducts } = salesProductSaleSlice.actions;
 
 export default salesProductSaleSlice.reducer;

@@ -16,12 +16,6 @@ interface Receive {
   note: string;
   amount: number;
 }
-interface Sale {
-  date: String;
-  soldInvoice: string;
-  productQty: number;
-  saleRate: number;
-}
 
 const CashBook = () => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
