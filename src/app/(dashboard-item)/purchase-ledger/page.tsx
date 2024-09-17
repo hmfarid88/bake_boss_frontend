@@ -55,8 +55,12 @@ const Page = () => {
         setFilterCriteria(e.target.value);
     };
 
-    const totalValue = filteredProducts.reduce((total, product) => {
+    const totalQty = filteredProducts.reduce((total, product) => {
         return total + product.materialsQty;
+    }, 0);
+
+    const totalValue = filteredProducts.reduce((total, product) => {
+        return total + product.materialsQty*product.materialsRate;
     }, 0);
 
     return (
@@ -86,6 +90,7 @@ const Page = () => {
                                     <th>INVOICE NO</th>
                                     <th>COST PRICE</th>
                                     <th>QTY</th>
+                                    <th>SUB TOTAL</th>
                             
                                 </tr>
                             </thead>
@@ -99,6 +104,7 @@ const Page = () => {
                                         <td>{product.supplierInvoice}</td>
                                         <td>{Number(product.materialsRate.toFixed(2)).toLocaleString('en-IN')}</td>
                                         <td>{Number(product.materialsQty.toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td>{Number((product.materialsRate*product.materialsQty).toFixed(2)).toLocaleString('en-IN')}</td>
 
                                     </tr>
                                 ))}
@@ -107,6 +113,7 @@ const Page = () => {
                                 <tr className="font-semibold text-lg">
                                     <td colSpan={5}></td>
                                     <td>TOTAL</td>
+                                    <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
                                     <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
                                 </tr>
                             </tfoot>

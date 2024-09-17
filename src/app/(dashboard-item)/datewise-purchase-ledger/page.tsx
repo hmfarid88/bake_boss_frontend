@@ -57,10 +57,14 @@ const Page = () => {
     const handleFilterChange = (e: any) => {
         setFilterCriteria(e.target.value);
     };
-    const totalValue = filteredProducts.reduce((total, product) => {
+    const totalQty = filteredProducts.reduce((total, product) => {
         return total + product.materialsQty;
     }, 0);
-    
+
+    const totalValue = filteredProducts.reduce((total, product) => {
+        return total + product.materialsQty*product.materialsRate;
+    }, 0);
+
     return (
         <div className="container-2xl">
             <div className="flex w-full min-h-[calc(100vh-228px)] p-4 items-center justify-center">
@@ -87,6 +91,7 @@ const Page = () => {
                                     <th>INVOICE NO</th>
                                     <th>COST PRICE</th>
                                     <th>QTY</th>
+                                    <th>SUB TOTAL</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -99,6 +104,7 @@ const Page = () => {
                                         <td>{product.supplierInvoice}</td>
                                         <td>{Number(product.materialsRate.toFixed(2)).toLocaleString('en-IN')}</td>
                                         <td>{Number(product.materialsQty.toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td>{Number((product.materialsRate*product.materialsQty).toFixed(2)).toLocaleString('en-IN')}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -106,6 +112,7 @@ const Page = () => {
                                 <tr className="font-semibold text-lg">
                                     <td colSpan={5}></td>
                                     <td>TOTAL</td>
+                                    <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
                                     <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
                                 </tr>
                             </tfoot>
