@@ -60,6 +60,7 @@ const Expense = () => {
                 <select className='select select-bordered'  onChange={(e:any)=>{setExpenseName(e.target.value)}}>
                 <option selected disabled>Select . . .</option>
                     <option value="OFFICE COST">OFFICE COST</option>
+                    <option value="OFFICE ASSET">OFFICE ASSET</option>
                     <option value="STAFF SALARY">STAFF SALARY</option>
                     <option value="SHOP RENT">SHOP RENT</option>
                 </select>

@@ -3,8 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAppSelector } from "@/app/store";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
-import CurrentMonthYear from "@/app/components/CurrentMonthYear";
-import DateToDate from "@/app/components/DateToDate";
+import { useSearchParams } from "next/navigation";
 
 type Product = {
     date: string;
@@ -21,6 +20,10 @@ const Page = () => {
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
 
+    const searchParams = useSearchParams();
+    const startDate = searchParams.get('startDate');
+    const endDate = searchParams.get('endDate');
+
     const contentToPrint = useRef(null);
     const handlePrint = useReactToPrint({
         content: () => contentToPrint.current,
@@ -31,14 +34,14 @@ const Page = () => {
 
 
     useEffect(() => {
-        fetch(`${apiBaseUrl}/sales/salesStock/thismonth-entry?username=${username}`)
+        fetch(`${apiBaseUrl}/sales/datewiseEntryLedger?username=${username}&startDate=${startDate}&endDate=${endDate}`)
             .then(response => response.json())
             .then(data => {
                 setAllProducts(data);
                 setFilteredProducts(data);
             })
             .catch(error => console.error('Error fetching products:', error));
-    }, [apiBaseUrl, username]);
+    }, [apiBaseUrl, username, startDate, endDate]);
 
 
     useEffect(() => {
@@ -60,7 +63,6 @@ const Page = () => {
         <div className="container-2xl min-h-screen">
             <div className="flex flex-col w-full p-4 items-center justify-center">
                 <div className="flex w-full justify-between p-5">
-                    <DateToDate routePath="/datewise-entry-ledger" />
                     <div className="flex">
                         <label className="input input-bordered flex max-w-xs  items-center gap-2">
                             <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
@@ -72,7 +74,9 @@ const Page = () => {
                     <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
                 </div>
                 <div ref={contentToPrint} className="flex-1 p-5">
-                    <div className="flex flex-col items-center justify-center gap-2 p-3"><h4 className="font-semibold">STOCK ENTRY LEDGER</h4><CurrentMonthYear /></div>
+                    <div className="flex flex-col items-center justify-center gap-2 p-3"><h4 className="font-semibold">STOCK ENTRY LEDGER</h4>
+                    {startDate} TO {endDate}
+                    </div>
                     <table className="table table-sm capitalize text-center">
                         <thead>
                             <tr>

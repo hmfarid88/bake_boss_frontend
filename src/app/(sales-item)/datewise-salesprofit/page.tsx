@@ -3,8 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAppSelector } from "@/app/store";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
-import DateToDate from "@/app/components/DateToDate";
-import CurrentMonthYear from "@/app/components/CurrentMonthYear";
+import { useSearchParams } from "next/navigation";
 
 type Product = {
   date: string;
@@ -23,6 +22,10 @@ const Page = () => {
   const uname = useAppSelector((state) => state.username.username);
   const username = uname ? uname.username : 'Guest';
 
+  const searchParams = useSearchParams();
+    const startDate = searchParams.get('startDate');
+    const endDate = searchParams.get('endDate');
+     
   const contentToPrint = useRef(null);
   const handlePrint = useReactToPrint({
     content: () => contentToPrint.current,
@@ -32,14 +35,14 @@ const Page = () => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/sales/getMonthlySalesProfit?username=${username}`)
+    fetch(`${apiBaseUrl}/sales/getDatewiseSalesProfit?username=${username}&startDate=${startDate}&endDate=${endDate}`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);
         setFilteredProducts(data);
       })
       .catch(error => console.error('Error fetching products:', error));
-  }, [apiBaseUrl, username]);
+  }, [apiBaseUrl, username, startDate, endDate]);
 
 
   useEffect(() => {
@@ -60,11 +63,12 @@ const Page = () => {
   }, 0);
   const totalQty = filteredProducts.reduce((acc, item) => acc + item.qty, 0);
   const totalDis = filteredProducts.reduce((acc, item) => acc + item.discount, 0);
+
   return (
     <div className="container-2xl min-h-[calc(100vh-228px)]">
       <div className="flex w-full justify-between p-5">
-        <DateToDate routePath="/datewise-salesprofit" />
-        <div className="pt-7">
+       
+        <div className="pt-2">
           <label className="input input-bordered flex max-w-xs  items-center gap-2">
             <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-4 w-4 opacity-70">
@@ -79,7 +83,9 @@ const Page = () => {
       <div className="flex w-full items-center justify-center">
         <div className="overflow-x-auto">
           <div ref={contentToPrint} className="flex-1 p-5">
-            <div className="flex flex-col gap-2 items-center"><h4 className="font-bold">PROFIT REPORT</h4><CurrentMonthYear /></div>
+            <div className="flex flex-col gap-2 items-center"><h4 className="font-bold">PROFIT REPORT</h4>
+            {startDate} TO {endDate}
+            </div>
             <table className="table mt-5 text-center">
               <thead>
                 <tr>

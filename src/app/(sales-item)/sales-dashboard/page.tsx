@@ -5,7 +5,7 @@ import Barchart from "@/app/components/Barchart";
 import Linechart from "@/app/components/Linechart";
 
 export default function Page() {
-
+  
   const dashboardData = [
     {
       id: 1,
@@ -27,7 +27,7 @@ export default function Page() {
       id: 5,
       title: "Low Stock"
     }
-   
+
   ]
   return (
     <main>

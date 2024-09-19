@@ -277,7 +277,7 @@ const Page: React.FC = () => {
                                         <td className="flex justify-between gap-3">
                                             <button onClick={() => {
                                                 handleUpdateDiscount(p.id);
-                                            }} className="btn btn-xs btn-success btn-outline">Apply Discount
+                                            }} className="btn btn-xs btn-success btn-outline">Apply
                                             </button>
                                             <button onClick={() => {
                                                 handleDeleteProduct(p.id);

@@ -49,7 +49,7 @@ const Page = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ productName, saleRate: productValue, qty:qtyPerKg, username }),
+        body: JSON.stringify({ productName, saleRate: productValue, qty: qtyPerKg, username }),
       });
 
       if (response.ok) {
@@ -77,7 +77,7 @@ const Page = () => {
       .catch(error => console.error('Error fetching products:', error));
   }, [apiBaseUrl, username, productValue]);
 
-  
+
   useEffect(() => {
     const filtered = allProducts.filter(product =>
       (product.productName?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
@@ -92,7 +92,7 @@ const Page = () => {
     setFilterCriteria(e.target.value);
   };
   const totalValue = filteredProducts.reduce((total, product) => {
-    return total + product.saleRate * product.remainingQty;
+    return total + product.costPrice * product.remainingQty;
   }, 0);
 
   const totalQty = filteredProducts.reduce((total, product) => {
@@ -115,7 +115,7 @@ const Page = () => {
 
   return (
     <div className="container-2xl min-h-screen">
-          <div className="flex w-full justify-end pr-5">
+      <div className="flex w-full justify-end pr-5">
         <a href="#my_modal_3" className="btn btn-circle btn-ghost"><FcPlus size={35} /></a>
       </div>
       <div className="flex w-full p-4 items-center justify-center">
@@ -197,7 +197,7 @@ const Page = () => {
                     <td>{Number((product.costPrice).toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number((product.saleRate).toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number((product.remainingQty).toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{Number((product.saleRate * product.remainingQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number((product.costPrice * product.remainingQty).toFixed(2)).toLocaleString('en-IN')}</td>
                   </tr>
                 ))}
               </tbody>
