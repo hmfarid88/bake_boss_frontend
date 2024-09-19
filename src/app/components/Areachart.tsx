@@ -24,7 +24,7 @@ import { AreaChart, Area, YAxis, XAxis, CartesianGrid, Tooltip, ResponsiveContai
      
     },
     {
-      "name": "Popcorn",
+      "name": "Biscuits",
       "total": 50000,
       
     },

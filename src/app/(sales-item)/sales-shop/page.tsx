@@ -9,8 +9,8 @@ import { uid } from 'uid';
 import { DatePicker } from 'react-date-picker';
 import { toast, ToastContainer } from "react-toastify";
 import { FcCalendar, FcManager, FcPhone, FcViewDetails } from "react-icons/fc";
-import { FaHandHoldingUsd } from "react-icons/fa";
-import { MdAttachMoney } from "react-icons/md";
+import { HiCurrencyBangladeshi } from "react-icons/hi";
+import { FaHandHoldingMedical } from "react-icons/fa";
 import { RiDeleteBin6Line, RiHandCoinLine } from "react-icons/ri";
 
 type ValuePiece = Date | null;
@@ -324,11 +324,11 @@ const Page: React.FC = () => {
                             </div>
                             <div className="flex flex-col gap-3">
                                 <label className="input input-bordered flex w-full max-w-xs items-center gap-2">
-                                    <MdAttachMoney size={20} />
+                                    <HiCurrencyBangladeshi size={20} />
                                     <input type="text" className="grow" value={Number(total.toFixed(2)).toLocaleString('en-IN')} placeholder="Total Amount" readOnly />
                                 </label>
                                 <label className="input input-bordered flex w-full max-w-xs items-center gap-2">
-                                    <FaHandHoldingUsd size={20} />
+                                    <FaHandHoldingMedical size={20} />
                                     <input type="text" className="grow" value={received} onChange={handleReceivedChange} placeholder="Received Amount" />
                                 </label>
                                 <label className="input input-bordered flex w-full max-w-xs items-center gap-2">

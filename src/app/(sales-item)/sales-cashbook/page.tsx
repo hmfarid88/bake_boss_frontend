@@ -61,7 +61,7 @@ const CashBook = () => {
 
   const [saleTotal, setSaleTotal] = useState('');
   useEffect(() => {
-    fetch(`${apiBaseUrl}/sales/cashbook/salesTotal?username=${username}&date=${date}`)
+    fetch(`${apiBaseUrl}/sales/cashbook/previousSalesTotal?username=${username}&date=${date}`)
       .then(response => response.json())
       .then(data => {
         setSaleTotal(data);

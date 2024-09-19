@@ -3,33 +3,33 @@ import { BarChart, Bar, YAxis, XAxis, CartesianGrid, Tooltip, Legend, Responsive
 const data = [
     {
       "name": "January",
-      "Mobile": 4000,
-      "Accessories": 2400
+      "Bakery": 4000,
+      "Sweets": 2400
     },
     {
       "name": "February",
-      "Mobile": 3000,
-      "Accessories": 1398
+      "Bakery": 3000,
+      "Sweets": 1398
     },
     {
       "name": "March",
-      "Mobile": 2000,
-      "Accessories": 9800
+      "Bakery": 2000,
+      "Sweets": 9800
     },
     {
       "name": "April",
-      "Mobile": 2780,
-      "Accessories": 3908
+      "Bakery": 2780,
+      "Sweets": 3908
     },
     {
       "name": "May",
-      "Mobile": 1890,
-      "Accessories": 4800
+      "Bakery": 1890,
+      "Sweets": 4800
     },
     {
       "name": "June",
-      "Mobile": 2390,
-      "Accessories": 3800
+      "Bakery": 2390,
+      "Sweets": 3800
     }
    
   ]
@@ -43,8 +43,8 @@ const Barchart = () => {
                 <YAxis />
                 <Tooltip />
                 <Legend verticalAlign='top' height={36} />
-                <Bar dataKey="Mobile" fill="#8884d8" />
-                <Bar dataKey="Accessories" fill="#82ca9d" />
+                <Bar dataKey="Bakery" fill="#8884d8" />
+                <Bar dataKey="Sweets" fill="#82ca9d" />
             </BarChart>
             </ResponsiveContainer>
         </div>

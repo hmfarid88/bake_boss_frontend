@@ -218,13 +218,13 @@ const Page = () => {
               <p>Sold Invoice: {selectedProduct.soldInvoice}</p>
               <p>Sale Rate: {selectedProduct.saleRate.toLocaleString('en-IN')}</p>
               <p>Quantity: {selectedProduct.productQty.toFixed(2)}<input className="input input-sm input-bordered ml-2 w-[100px]" type="number" name="productQty" onChange={(e: any) => setUpdatedQty(e.target.value)} />
-                <button className="btn btn-sm btn-primary ml-3" onClick={() => {
+                <button className="btn btn-sm btn-accent ml-3" onClick={() => {
                   if (window.confirm("Are you sure you want to update this item?")) {
                     handleQtyUpdate(selectedProduct.productId);
                   }
                 }} >Apply</button></p>
               <p>Discount: {selectedProduct.discount.toFixed(2)}<input className="input input-sm input-bordered ml-2 w-[100px]" type="number" name="discount" onChange={(e: any) => setUpdatedDiscount(e.target.value)} />
-                <button className="btn btn-sm btn-primary ml-3" onClick={() => {
+                <button className="btn btn-sm btn-accent ml-3" onClick={() => {
                   if (window.confirm("Are you sure you want to update this item?")) {
                     handleDiscountUpdate(selectedProduct.productId);
                   }
@@ -232,7 +232,7 @@ const Page = () => {
               <p>Total: {((selectedProduct.saleRate * selectedProduct.productQty) - (selectedProduct.discount)).toLocaleString('en-IN')}</p>
             </div>
             <div className="flex gap-3 p-3">
-            <button className="btn btn-sm btn-primary ml-3" onClick={() => {
+            <button className="btn btn-sm btn-accent ml-3" onClick={() => {
                   if (window.confirm("Are you sure you want to update this item?")) {
                     handleProductDelete(selectedProduct.productId);
                   }
