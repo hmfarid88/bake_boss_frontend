@@ -87,7 +87,7 @@ const Invoice = () => {
                             <h4 className='flex font-sans text-xs md:text-md'><AiOutlineMail className='mt-0.5 mr-1'/> {shopInfo?.email}</h4>
                         </div>
                    
-                    <div className="flex w-full justify-between">
+                    <div className="flex w-full justify-between pt-5">
                         <div className="flex flex-col">
                             <h2 className='uppercase text-black font-bold text-xs md:text-md'>{invoiceData[0]?.customer}</h2>
 

@@ -20,6 +20,7 @@ const Page: React.FC = () => {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     const router = useRouter();
     const [date, setDate] = useState<Value>(new Date());
+    const [dob, setDob] = useState('');
     const [pending, setPending] = useState(false);
     const [total, setTotal] = useState(0);
     const [qtyTotal, setQtyTotal] = useState(0);
@@ -51,7 +52,7 @@ const Page: React.FC = () => {
 
     const [selectedProid, setSelectedProid] = useState("");
     const [discount, setDiscount] = useState("");
-    
+
     const [selectedQty, setSelectedQty] = useState("");
     const numericProductQty: number = Number(selectedQty);
 
@@ -186,6 +187,7 @@ const Page: React.FC = () => {
             customer: {
                 customerName,
                 phoneNumber,
+                dob,
                 soldBy,
                 soldInvoice: invoiceNo
             },
@@ -317,6 +319,10 @@ const Page: React.FC = () => {
                                     <input type="text" className="grow" maxLength={11} onChange={(e: any) => setPhoneNumber(e.target.value.replace(/\D/g, ""))} value={phoneNumber} placeholder="Mobile Number" />
                                 </label>
                                 <label className="input input-bordered flex w-full max-w-xs items-center gap-2">
+                                    <FcCalendar size={20} />
+                                    <input type="date" className="grow" onChange={(e: any) => setDob(e.target.value)} value={dob} placeholder="Date of Birth" />
+                                </label>
+                                <label className="input input-bordered flex w-full max-w-xs items-center gap-2">
                                     <FcViewDetails size={20} />
                                     <input type="text" name="soldby" autoComplete="soldby" className="grow" value={soldBy} onChange={(e: any) => setSoldBy(e.target.value)} placeholder="Sold By" />
                                 </label>
@@ -335,14 +341,11 @@ const Page: React.FC = () => {
                                     <RiHandCoinLine size={20} />
                                     <input type="text" className="grow" value={returnAmount.toFixed(2)} placeholder="Return Amount" readOnly />
                                 </label>
-
+                                <label className="form-control w-full max-w-xs">
+                                    <button onClick={handleFinalSubmit} disabled={pending} className="btn btn-success btn-outline  font-bold">{pending ? <span className="loading loading-ring loading-md text-accent"></span> : "SUBMIT"}</button>
+                                </label>
                             </div>
 
-                        </div>
-                        <div className="flex">
-                            <label className="form-control w-full max-w-xs">
-                                <button onClick={handleFinalSubmit} disabled={pending} className="btn btn-success btn-outline  font-bold">{pending ? <span className="loading loading-ring loading-md text-accent"></span> : "SUBMIT"}</button>
-                            </label>
                         </div>
 
                     </div>

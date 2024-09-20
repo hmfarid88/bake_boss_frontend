@@ -48,8 +48,8 @@ const HomeSummary = () => {
     fetch(`${apiBaseUrl}/sales/sales/today?username=${username}`)
       .then(response => response.json())
       .then(data => {
-        const total = data.reduce((total: number, product: { saleRate: number; productQty: number; }) => {
-          return total + (product.saleRate * product.productQty);
+        const total = data.reduce((total: number, product: { saleRate: number; productQty: number; discount:number}) => {
+          return total + (product.saleRate * product.productQty)-(product.discount*product.productQty);
         }, 0);
         setTotalValue(total);
       })
@@ -60,8 +60,8 @@ const HomeSummary = () => {
     fetch(`${apiBaseUrl}/sales/getOutletSale?username=${username}`)
       .then(response => response.json())
       .then(data => {
-        const monthlyTotal = data.reduce((total: number, product: { saleRate: number; productQty: number; }) => {
-          return total + (product.saleRate * product.productQty);
+        const monthlyTotal = data.reduce((total: number, product: { saleRate: number; productQty: number; discount:number}) => {
+          return total + (product.saleRate * product.productQty)-(product.discount*product.productQty);
         }, 0);
         setMonthlyTotalValue(monthlyTotal);
       })
