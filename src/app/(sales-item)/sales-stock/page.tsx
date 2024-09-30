@@ -34,6 +34,7 @@ const Page = () => {
 
   const [productName, setProductName] = useState("");
   const [productValue, setProductValue] = useState("");
+  const [unitValue, setUnitValue] = useState<number>(0);
   const [qtyPerKg, setQtyPerKg] = useState("");
 
   const handleProductRateSubmit = async (e: any) => {
@@ -49,7 +50,7 @@ const Page = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ productName, saleRate: productValue, qty: qtyPerKg, username }),
+        body: JSON.stringify({ productName, saleRate: productValue, unitRate:unitValue, qty: qtyPerKg, username }),
       });
 
       if (response.ok) {
@@ -63,6 +64,7 @@ const Page = () => {
     } finally {
       setPending(false);
       setProductValue("");
+      setUnitValue(0);
       setQtyPerKg("");
     }
   };
@@ -135,6 +137,12 @@ const Page = () => {
                     <span className="label-text-alt">SALE RATE</span>
                   </div>
                   <input type="number" value={productValue} onChange={(e: any) => setProductValue(e.target.value)} placeholder="Type here" className="input-bordered border rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" />
+                </label>
+                <label className="form-control w-full max-w-xs">
+                  <div className="label">
+                    <span className="label-text-alt">UNIT RATE (%)</span>
+                  </div>
+                  <input type="number" value={unitValue} onChange={(e: any) => setUnitValue(e.target.value)} placeholder="Type here" className="input-bordered border rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" />
                 </label>
                 <label className="form-control w-full max-w-xs">
                   <div className="label">

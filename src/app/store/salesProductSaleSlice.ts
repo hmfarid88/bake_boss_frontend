@@ -7,7 +7,6 @@ interface Product {
     category: string;
     productName: string;
     costPrice: number;
-    remainingQty: number;
     saleRate: number;
     discount: number;
     productQty: number;
@@ -29,7 +28,7 @@ export const salesProductSaleSlice = createSlice({
     reducers: {
         showProducts: (state) => state,
         addProducts: (state, action: PayloadAction<Product>) => {
-            const exist = state.products.find((pro) => pro.productName === action.payload.productName && pro.username === action.payload.username)
+            const exist = state.products.find((pro) => pro.saleRate===action.payload.saleRate && pro.productName === action.payload.productName && pro.username === action.payload.username)
             if (exist) {
                 exist.productQty += action.payload.productQty;
             } else {
