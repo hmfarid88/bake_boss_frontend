@@ -34,6 +34,7 @@ const Materials = () => {
         const day = String(today.getDate()).padStart(2, '0');
         const formattedDate = `${year}-${month}-${day}`;
         setMaxDate(formattedDate);
+        setMaterialDate(formattedDate);
     }, []);
 
     const handleAddMaterials = (e: any) => {

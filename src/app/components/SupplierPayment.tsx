@@ -1,13 +1,8 @@
 "use client"
 import React, { useEffect, useState } from 'react'
-import { DatePicker } from 'react-date-picker';
 import { toast} from "react-toastify";
-import { FcCalendar } from "react-icons/fc";
 import { useAppSelector } from "@/app/store";
 import Select from "react-select";
-
-type ValuePiece = Date | null;
-type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 const SupplierPayment = () => {
     const uname = useAppSelector((state) => state.username.username);
@@ -15,7 +10,17 @@ const SupplierPayment = () => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
 
   const [pending, setPending] = useState(false);
-  const [date, setDate] = useState<Value>(new Date());
+  const [date, setDate] = useState("");
+  const [maxDate, setMaxDate] = useState('');
+  useEffect(() => {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setMaxDate(formattedDate);
+    setDate(formattedDate);
+  }, []);
   const [supplierName, setSupplierName] = useState("");
   const [supplierAmount, setSupplierAmount] = useState("");
   const [supplierNote, setSupplierNote] = useState("");
@@ -68,11 +73,18 @@ const SupplierPayment = () => {
 
   return (
     <div>
-        <p>DATE : <DatePicker calendarIcon={FcCalendar} className="rounded-md max-w-xs z-20" clearIcon={null} maxDate={new Date()} format='y-MM-dd' onChange={setDate} value={date} /></p>
-            <div className="flex pt-5">
+       <div className="flex">
+       <label className="form-control w-full max-w-xs">
+          <div className="label">
+            <span className="label-text-alt">Date</span>
+          </div>
+          <input type="date" name="date" onChange={(e: any) => setDate(e.target.value)} max={maxDate} value={date} className="border rounded-md p-2 mt-1.5 bg-white text-black  w-full max-w-xs h-[40px]" />
+        </label>
+       </div>
+            <div className="flex">
               <label className="form-control w-full max-w-xs">
                 <div className="label">
-                  <span className="label-text">Pick the Supplier</span>
+                  <span className="label-text">Pick Supplier</span>
                 </div>
                 <Select className="text-black" name="supplier" onChange={(selectedOption: any) => setSupplierName(selectedOption.value)} options={supplierOption} />
               </label>

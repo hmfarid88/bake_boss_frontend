@@ -26,6 +26,7 @@ const ProductStock = () => {
         const day = String(today.getDate()).padStart(2, '0');
         const formattedDate = `${year}-${month}-${day}`;
         setMaxDate(formattedDate);
+        setStockDate(formattedDate);
     }, []);
 
     const [stockDate, setStockDate] = useState("");

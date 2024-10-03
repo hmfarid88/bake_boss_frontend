@@ -6,20 +6,16 @@ import { addProducts, updateDiscount, deleteAllProducts, deleteProduct } from "@
 
 import Select from "react-select";
 import { uid } from 'uid';
-import { DatePicker } from 'react-date-picker';
 import { toast, ToastContainer } from "react-toastify";
 import { FcCalendar, FcManager, FcPhone, FcViewDetails } from "react-icons/fc";
 import { HiCurrencyBangladeshi } from "react-icons/hi";
 import { FaHandHoldingMedical } from "react-icons/fa";
 import { RiDeleteBin6Line, RiHandCoinLine } from "react-icons/ri";
 
-type ValuePiece = Date | null;
-type Value = ValuePiece | [ValuePiece, ValuePiece];
-
 const Page: React.FC = () => {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     const router = useRouter();
-    const [date, setDate] = useState<Value>(new Date());
+    const [date, setDate] = useState("");
     const [dob, setDob] = useState('');
     const [pending, setPending] = useState(false);
     const [total, setTotal] = useState(0);
@@ -60,7 +56,7 @@ const Page: React.FC = () => {
     const [phoneNumber, setPhoneNumber] = useState("");
     const [soldBy, setSoldBy] = useState("");
 
-    const [maxDate, setMaxDate] = useState('');
+    const [maxDate, setMaxDate] = useState("");
     useEffect(() => {
         const today = new Date();
         const year = today.getFullYear();
@@ -68,6 +64,7 @@ const Page: React.FC = () => {
         const day = String(today.getDate()).padStart(2, '0');
         const formattedDate = `${year}-${month}-${day}`;
         setMaxDate(formattedDate);
+        setDate(formattedDate);
     }, []);
 
     useEffect(() => {
@@ -163,7 +160,7 @@ const Page: React.FC = () => {
             category: productData.category,
             productName: productData.productName,
             costPrice: productData.costPrice,
-            saleRate: productData.saleRate+((productData.saleRate*productData.unitRate)/100),
+            saleRate: productData.saleRate + (productData.saleRate * (((productData.unitRate - (productData.saleRate / productData.qty)) * 100) / (productData.saleRate / productData.qty))) / 100,
             discount: 0,
             productQty: 1 / productData.qty,
             status: 'sold',
@@ -238,8 +235,8 @@ const Page: React.FC = () => {
     return (
         <div className='container-2xl min-h-screen'>
             <div className="flex flex-col">
-                <div className="flex justify-between font-bold pt-5 px-10 pb-0">
-                    <p>DATE : <DatePicker calendarIcon={FcCalendar} className="rounded-md max-w-xs z-20" clearIcon={null} maxDate={new Date()} minDate={new Date()} format='y-MM-dd' onChange={setDate} value={date} /></p>
+                <div className="flex pt-5 px-10 pb-0">
+                    <input type="date" name="date" onChange={(e: any) => setDate(e.target.value)} max={maxDate} value={date} className="input input-ghost" />
                 </div>
 
                 <div className="flex flex-col w-full">

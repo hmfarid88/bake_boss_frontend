@@ -3,24 +3,19 @@ import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from "@/app/store";
 import { addProducts, deleteAllProducts, deleteProduct } from "@/app/store/vendorSale";
-
 import Select from "react-select";
 import { uid } from 'uid';
-import { DatePicker } from 'react-date-picker';
 import { toast, ToastContainer } from "react-toastify";
-import { FcCalendar } from "react-icons/fc";
 import { RiDeleteBin6Line } from "react-icons/ri";
-type ValuePiece = Date | null;
-type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 const Page: React.FC = () => {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     const router = useRouter();
-    const [date, setDate] = useState<Value>(new Date());
+    const [date, setDate] = useState("");
     const [pending, setPending] = useState(false);
     const [total, setTotal] = useState(0);
     const [qtyTotal, setQtyTotal] = useState(0);
-    
+
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
     const saleProducts = useAppSelector((state) => state.vendorSalesProduct.products);
@@ -28,14 +23,14 @@ const Page: React.FC = () => {
     const dispatch = useAppDispatch();
     const invoiceNo = uid();
 
-    const inputRef = useRef<HTMLInputElement>(null); 
+    const inputRef = useRef<HTMLInputElement>(null);
     const handleProductSelect = (selectedOption: any) => {
-        setSelectedProid(selectedOption.value); 
+        setSelectedProid(selectedOption.value);
         if (inputRef.current) {
             inputRef.current.focus();
         }
     };
-   
+
     const [selectedProid, setSelectedProid] = useState("");
     const [selectedQty, setSelectedQty] = useState("");
     const numericProductQty: number = Number(selectedQty);
@@ -52,6 +47,7 @@ const Page: React.FC = () => {
         const day = String(today.getDate()).padStart(2, '0');
         const formattedDate = `${year}-${month}-${day}`;
         setMaxDate(formattedDate);
+        setDate(formattedDate);
     }, []);
 
 
@@ -134,7 +130,7 @@ const Page: React.FC = () => {
             toast.warning("Your product list is empty!");
             return;
         }
-        if(!customerName){
+        if (!customerName) {
             toast.warning("Outlet name is empty!");
             return;
         }
@@ -205,8 +201,8 @@ const Page: React.FC = () => {
     return (
         <div className='container-2xl min-h-screen'>
             <div className="flex flex-col">
-                <div className="flex justify-between font-bold pt-5 px-10 pb-0">
-                    <p>DATE : <DatePicker calendarIcon={FcCalendar} className="rounded-md max-w-xs z-20" clearIcon={null} maxDate={new Date()} minDate={new Date()} format='y-MM-dd' onChange={setDate} value={date} /></p>
+                <div className="flex pt-5 px-10 pb-0">
+                    <input type="date" name="date" onChange={(e: any) => setDate(e.target.value)} max={maxDate} value={date} className="input input-ghost" />
                 </div>
 
                 <div className="flex flex-col w-full">
@@ -270,7 +266,7 @@ const Page: React.FC = () => {
                     </div>
                 </div>
             </div>
-        
+
             <ToastContainer autoClose={1000} theme="dark" />
         </div>
     )

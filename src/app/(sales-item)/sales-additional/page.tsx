@@ -5,9 +5,6 @@ import { toast } from 'react-toastify';
 import { useAppSelector } from "@/app/store";
 import { uid } from 'uid';
 import Select from "react-select";
-import DatePicker from 'react-date-picker';
-type ValuePiece = Date | null;
-type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 const Page = () => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -21,7 +18,7 @@ const Page = () => {
   const [productQty, setProductQty] = useState("");
   const [pending, setPending] = useState(false);
   const [maxDate, setMaxDate] = useState('');
-  const [date, setDate] = useState<Value>(new Date());
+  const [date, setDate] = useState("");
   const pid = uid();
 
   useEffect(() => {
@@ -31,39 +28,40 @@ const Page = () => {
     const day = String(today.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
     setMaxDate(formattedDate);
+    setDate(formattedDate);
   }, []);
 
   const handleAdditionalName = async (e: any) => {
     e.preventDefault();
 
     if (!additionalName) {
-        toast.warning("Additional name is empty !")
-        return;
+      toast.warning("Additional name is empty !")
+      return;
     }
     setPending(true)
     try {
-        const response = await fetch(`${apiBaseUrl}/api/addAdditionalName`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({additionalName}),
-        });
+      const response = await fetch(`${apiBaseUrl}/api/addAdditionalName`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ additionalName }),
+      });
 
-        if (response.ok) {
-            toast.success("Name added successfully !");
-        } else {
-            const data = await response.json();
-            toast.error(data.message);
-        }
+      if (response.ok) {
+        toast.success("Name added successfully !");
+      } else {
+        const data = await response.json();
+        toast.error(data.message);
+      }
     } catch (error) {
-        toast.error("Invalid product name !")
+      toast.error("Invalid product name !")
     } finally {
-        setPending(false);
-        setAdditionalName("");
+      setPending(false);
+      setAdditionalName("");
     }
 
-};
+  };
   const handleAdditionalSubmit = async (e: any) => {
     e.preventDefault();
     if (!productName || !costPrice || !saleRate || !productQty) {
@@ -98,21 +96,21 @@ const Page = () => {
   }
   const [itemOption, setItemOption] = useState([]);
   useEffect(() => {
-      const fetchMadeProducts = () => {
-          fetch(`${apiBaseUrl}/api/getAdditionalName`)
-              .then(response => response.json())
-              .then(data => {
-                  const transformedData = data.map((item: any) => ({
-                      value: item.additionalName,
-                      label: item.additionalName
-                  }));
-                  setItemOption(transformedData);
-              })
-              .catch(error => console.error('Error fetching products:', error));
-      };
+    const fetchMadeProducts = () => {
+      fetch(`${apiBaseUrl}/api/getAdditionalName`)
+        .then(response => response.json())
+        .then(data => {
+          const transformedData = data.map((item: any) => ({
+            value: item.additionalName,
+            label: item.additionalName
+          }));
+          setItemOption(transformedData);
+        })
+        .catch(error => console.error('Error fetching products:', error));
+    };
 
-      // Fetch data initially
-      fetchMadeProducts();
+    // Fetch data initially
+    fetchMadeProducts();
   }, [apiBaseUrl, additionalName]);
 
   return (
@@ -120,9 +118,14 @@ const Page = () => {
 
       <div className="flex w-full p-4 items-center justify-center">
         <div className="flex flex-col gap-3 w-full items-center justify-center p-2">
-          <div className="flex justify-between font-bold pt-5 px-10 pb-0">
-            <p>DATE : <DatePicker calendarIcon={FcCalendar} className="rounded-md max-w-xs z-20" clearIcon={null} maxDate={new Date()} minDate={new Date()} format='y-MM-dd' onChange={setDate} value={date} /></p>
-          </div>
+          
+            <label className="form-control w-full max-w-xs">
+              <div className="label">
+                <span className="label-text-alt">DATE</span>
+              </div>
+              <input type="date" name="date" onChange={(e: any) => setDate(e.target.value)} max={maxDate} value={date} className="border rounded-md p-2 mt-1.5 bg-white text-black  w-full max-w-xs h-[40px]" />
+            </label>
+      
           <label className="form-control w-full max-w-xs">
             <div className="label">
               <span className="label-text-alt">PRODUCT NAME</span>

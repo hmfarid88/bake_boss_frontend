@@ -4,16 +4,13 @@ import { useAppDispatch, useAppSelector } from "@/app/store";
 import { addProducts, deleteAllProducts, deleteProduct } from "@/app/store/damageProducts";
 import Select from "react-select";
 import { uid } from 'uid';
-import { DatePicker } from 'react-date-picker';
 import { toast } from "react-toastify";
 import { FcCalendar } from "react-icons/fc";
 import { RiDeleteBin6Line } from "react-icons/ri";
-type ValuePiece = Date | null;
-type Value = ValuePiece | [ValuePiece, ValuePiece];
 
 const Page: React.FC = () => {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-    const [date, setDate] = useState<Value>(new Date());
+    const [date, setDate] = useState("");
     const [pending, setPending] = useState(false);
     const [total, setTotal] = useState(0);
     const [qtyTotal, setQtyTotal] = useState(0);
@@ -29,6 +26,16 @@ const Page: React.FC = () => {
     const damageProducts = useAppSelector((state) => state.damageProduct.products);
     const dispatch = useAppDispatch();
 
+    const [maxDate, setMaxDate] = useState("");
+    useEffect(() => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        const formattedDate = `${year}-${month}-${day}`;
+        setMaxDate(formattedDate);
+        setDate(formattedDate);
+    }, []);
     const invoiceNo = uid();
 
     useEffect(() => {
@@ -152,8 +159,8 @@ const Page: React.FC = () => {
     return (
         <div className='container-2xl min-h-screen'>
             <div className="flex flex-col">
-                <div className="flex justify-start font-bold pt-5 px-10 pb-0">
-                    <p>DATE : <DatePicker calendarIcon={FcCalendar} className="rounded-md max-w-xs z-20" clearIcon={null} maxDate={new Date()} format='y-MM-dd' onChange={setDate} value={date} /></p>
+                <div className="flex pt-5 px-10 pb-0">
+                    <input type="date" name="date" onChange={(e: any) => setDate(e.target.value)} max={maxDate} value={date} className="input input-ghost" />
                 </div>
                 <div className="flex flex-col w-full">
                     <div className="divider divider-accent tracking-widest font-bold p-5">DAMAGE PRODUCT</div>

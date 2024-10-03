@@ -39,6 +39,13 @@ const Invoice = () => {
         address:string,
         email:string
     }
+
+    useEffect(() => {
+        if (invoiceData) {
+            handlePrint();
+        }
+    }, [invoiceData]);
+    
     const [shopInfo, setShopInfo] = useState<shopData>();
     useEffect(() => {
         fetch(`${apiBaseUrl}/invoice/getShopInfo?username=${username}`)

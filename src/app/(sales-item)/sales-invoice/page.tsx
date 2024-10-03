@@ -18,7 +18,7 @@ const Invoice = () => {
     const handlePrint = useReactToPrint({
         content: () => contentToPrint.current,
     });
-
+    
     const searchParams = useSearchParams();
     const soldInvoice = searchParams.get('soldInvoice');
     const [invoiceData, setInvoiceData] = useState<invoiceData>();
@@ -43,6 +43,11 @@ const Invoice = () => {
         address: string,
         email: string
     }
+    useEffect(() => {
+        if (invoiceData) {
+            handlePrint();
+        }
+    }, [invoiceData]);
     const [shopInfo, setShopInfo] = useState<shopData>();
     useEffect(() => {
         fetch(`${apiBaseUrl}/invoice/getShopInfo?username=${username}`)
@@ -76,7 +81,7 @@ const Invoice = () => {
     return (
         <div className="container min-h-[calc(100vh-228px)]">
             <div className="flex justify-end pr-10 pt-5 gap-3">
-                <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
+                <button onClick={handlePrint}  className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
             </div>
             <div className="flex justify-center pb-5">
                 <div className='flex-1 max-w-[794px] h-auto border border-slate-700'>

@@ -140,7 +140,7 @@ const Page = () => {
                 </label>
                 <label className="form-control w-full max-w-xs">
                   <div className="label">
-                    <span className="label-text-alt">UNIT RATE (%)</span>
+                    <span className="label-text-alt">UNIT RATE</span>
                   </div>
                   <input type="number" value={unitValue} onChange={(e: any) => setUnitValue(e.target.value)} placeholder="Type here" className="input-bordered border rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" />
                 </label>

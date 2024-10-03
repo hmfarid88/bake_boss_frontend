@@ -21,8 +21,9 @@ const Page: React.FC = () => {
   const [productOption, setProductOption] = useState([]);
   const [selectedProid, setSelectedProid] = useState("");
   const [selectedQty, setSelectedQty] = useState("");
- 
+
   const [retailer, setRetailer] = useState("");
+  const [date, setDate] = useState("");
 
   const uname = useAppSelector((state) => state.username.username);
   const username = uname ? uname.username : 'Guest';
@@ -30,12 +31,12 @@ const Page: React.FC = () => {
   const addedProductMaterials = useAppSelector((state) => state.materialUse.materials);
   const dispatch = useAppDispatch();
 
-  const inputRef = useRef<HTMLInputElement>(null); 
+  const inputRef = useRef<HTMLInputElement>(null);
   const handleProductSelect = (selectedOption: any) => {
-      setSelectedProid(selectedOption.value); 
-      if (inputRef.current) {
-          inputRef.current.focus();
-      }
+    setSelectedProid(selectedOption.value);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
   const invoiceNo = uid();
   const pid = uid();
@@ -47,6 +48,7 @@ const Page: React.FC = () => {
     const day = String(today.getDate()).padStart(2, '0');
     const formattedDate = `${year}-${month}-${day}`;
     setMaxDate(formattedDate);
+    setDate(formattedDate);
   }, []);
 
   useEffect(() => {
@@ -78,7 +80,7 @@ const Page: React.FC = () => {
     dispatch(deleteMaterial(id));
   };
 
-  
+
   const handleProductSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -166,12 +168,12 @@ const Page: React.FC = () => {
         },
         body: JSON.stringify(productInfo),
       });
-  
+
       if (!response.ok) {
         toast.error("Product sale not submitted!");
         return;
       }
-  
+
       const materialsResponse = await fetch(`${apiBaseUrl}/api/updateMaterialsStock`, {
         method: 'POST',
         headers: {
@@ -179,12 +181,12 @@ const Page: React.FC = () => {
         },
         body: JSON.stringify(addedProductMaterials),
       });
-  
+
       if (!materialsResponse.ok) {
         toast.error("Materials stock update failed!");
         return;
       }
-  
+
       dispatch(deleteAllProducts());
       dispatch(deleteAllMaterials());
       router.push(`/invoice?invoiceNo=${invoiceNo}`);
@@ -195,7 +197,7 @@ const Page: React.FC = () => {
       setPending(false);
     }
   };
-  
+
 
   useEffect(() => {
     fetch(`${apiBaseUrl}/api/getProductStock?username=${username}`)
@@ -227,8 +229,8 @@ const Page: React.FC = () => {
   return (
     <div className='container-2xl min-h-screen'>
       <div className="flex flex-col">
-        <div className="flex justify-start font-bold pt-5 px-10 pb-0">
-          <p>Date : {maxDate}</p>
+        <div className="flex pt-5 px-10 pb-0">
+          <input type="date" name="date" onChange={(e: any) => setDate(e.target.value)} max={maxDate} value={date} className="input input-ghost" />
         </div>
         <div className="flex flex-col w-full">
           <div className="divider divider-accent tracking-widest font-bold p-5">DISTRIBUTION</div>
