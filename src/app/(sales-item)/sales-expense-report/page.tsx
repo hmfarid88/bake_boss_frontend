@@ -8,6 +8,7 @@ import DateToDate from "@/app/components/DateToDate";
 
 type Product = {
     date: string;
+    time: string;
     expenseName: string;
     expenseNote: string;
     amount: number;
@@ -75,6 +76,7 @@ const Page = () => {
                             <tr>
                                 <th>SN</th>
                                 <th>DATE</th>
+                                <th>TIME</th>
                                 <th>EXPENSE NAME</th>
                                 <th>EXPENSE NOTE</th>
                                 <th>AMOUNT</th>
@@ -86,6 +88,7 @@ const Page = () => {
                                 <tr key={index}>
                                     <td>{index + 1}</td>
                                     <td>{product.date}</td>
+                                    <td>{product.time}</td>
                                     <td>{product.expenseName}</td>
                                     <td>{product.expenseNote}</td>
                                     <td>{Number(product.amount.toFixed(2)).toLocaleString('en-IN')}</td>
@@ -94,7 +97,7 @@ const Page = () => {
                         </tbody>
                         <tfoot>
                             <tr className="font-semibold text-lg">
-                                <td colSpan={3}></td>
+                                <td colSpan={4}></td>
                                 <td>TOTAL</td>
                                 <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
                             </tr>

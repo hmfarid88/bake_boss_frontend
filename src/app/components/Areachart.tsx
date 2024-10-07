@@ -1,38 +1,32 @@
 "use client"
-
-import React from 'react'
+import React, { useState, useEffect } from 'react';
 import { AreaChart, Area, YAxis, XAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import { useAppSelector } from '../store';
 
-  const data = [
-    {
-      "name": "Pizza",
-      "total": 40000,
-       },
-    {
-      "name": "Burger",
-      "total": 60000,
-      
-    },
-    {
-      "name": "Cake",
-      "total": 50000,
-      
-    },
-    {
-      "name": "Sweets",
-      "total": 70000,
-     
-    },
-    {
-      "name": "Biscuits",
-      "total": 50000,
-      
-    },
-   
-  ]
-const Areachart = () => {
+  const Areachart = () => {
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const uname = useAppSelector((state) => state.username.username);
+    const username = uname ? uname.username : 'Guest';
+    const [data, setData] = useState([]);
+
+  useEffect(() => {
+    const fetchSalesData = async () => {
+      try {
+        const response = await fetch(`${apiBaseUrl}/sales/current-month/saleprogress?username=${username}`);
+        const salesData = await response.json();
+        setData(salesData.map((item: { productName: any; saleAmount: any; }) => ({
+          name: item.productName, 
+          total: item.saleAmount
+        })));
+      } catch (error) {
+        console.error("Error fetching sales data:", error);
+      }
+    };
+
+    fetchSalesData();
+  }, [apiBaseUrl, username]);
   return (
-    <ResponsiveContainer width={600} height={240}>
+    <ResponsiveContainer width={1200} height={300}>
     <AreaChart data={data}
   margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
   <defs>
@@ -42,7 +36,7 @@ const Areachart = () => {
     </linearGradient>
     
   </defs>
-  <XAxis dataKey="name" tickMargin={10} />
+  <XAxis dataKey="name"  tickMargin={10} />
   <YAxis />
   
   <CartesianGrid strokeDasharray="3 3" />
@@ -55,3 +49,4 @@ const Areachart = () => {
 }
 
 export default Areachart
+

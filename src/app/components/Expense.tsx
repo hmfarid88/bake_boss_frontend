@@ -32,6 +32,7 @@ const Expense = () => {
       toast.warning("Item is empty !");
       return;
     }
+    const currentTime = new Date().toLocaleTimeString('en-GB', { hour12: false });
     setPending(true);
     try {
       const response = await fetch(`${apiBaseUrl}/paymentApi/expenseRecord`, {
@@ -39,7 +40,7 @@ const Expense = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ date, expenseName, expenseNote, amount: expensAmount, username }),
+        body: JSON.stringify({ date, expenseName, expenseNote, amount: expensAmount, time:currentTime, username }),
       });
 
       if (response.ok) {

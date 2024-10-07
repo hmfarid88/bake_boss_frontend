@@ -7,6 +7,7 @@ import { useSearchParams } from "next/navigation";
 
 type Product = {
     date: string;
+    time: string;
     category: string;
     productName: string;
     soldInvoice: string;
@@ -81,23 +82,25 @@ const Page = () => {
                         <div className="pt-5">
                             <table className="table text-center">
                                 <thead>
-                                <tr>
-                  <th>SN</th>
-                  <th>DATE</th>
-                  <th>CATEGORY</th>
-                  <th>PRODUCT NAME</th>
-                  <th>INVOICE NO</th>
-                  <th>SALE PRICE</th>
-                  <th>QUANTITY</th>
-                  <th>SUB TOTAL</th>
-                </tr>
-                                    
+                                    <tr>
+                                        <th>SN</th>
+                                        <th>DATE</th>
+                                        <th>TIME</th>
+                                        <th>CATEGORY</th>
+                                        <th>PRODUCT NAME</th>
+                                        <th>INVOICE NO</th>
+                                        <th>SALE PRICE</th>
+                                        <th>QUANTITY</th>
+                                        <th>SUB TOTAL</th>
+                                    </tr>
+
                                 </thead>
                                 <tbody>
                                     {filteredProducts?.map((product, index) => (
                                         <tr key={index}>
                                             <td>{index + 1}</td>
                                             <td>{product.date}</td>
+                                            <td>{product.time}</td>
                                             <td className="capitalize">{product.category}</td>
                                             <td className="capitalize">{product.productName}</td>
                                             <td className="uppercase">{product.soldInvoice}</td>
@@ -109,7 +112,7 @@ const Page = () => {
                                 </tbody>
                                 <tfoot>
                                     <tr className="font-semibold text-lg">
-                                        <td colSpan={5}></td>
+                                        <td colSpan={6}></td>
                                         <td>TOTAL</td>
                                         <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
                                         <td>{Number((totalValue).toFixed(2)).toLocaleString('en-IN')}</td>

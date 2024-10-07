@@ -10,7 +10,6 @@ interface Product {
     costPrice: number;
     saleRate: number;
     productQty: number;
-    remainingQty: number;
     status: string,
     username: string
 }

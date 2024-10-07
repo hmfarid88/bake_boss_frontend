@@ -107,8 +107,8 @@ const Page: React.FC = () => {
                 category: productData.category,
                 productName: productData.productName,
                 costPrice: productData.costPrice,
-                remainingQty: (productData.remainingQty - numericProductQty),
                 saleRate: productData.costPrice,
+                stockRate: productData.costPrice,
                 productQty: numericProductQty,
                 status: 'vendor',
                 username: username

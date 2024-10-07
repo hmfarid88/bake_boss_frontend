@@ -82,6 +82,7 @@ const Page = () => {
             toast.warning("Sorry, your product list is empty!");
             return;
         }
+       
         setPending(true);
         try {
             const response = await fetch(`${apiBaseUrl}/api/addSalesStock`, {
@@ -89,7 +90,7 @@ const Page = () => {
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ customer: username, invoiceNo:invoiceNo }),
+                body: JSON.stringify({ customer: username, invoiceNo: invoiceNo }),
             });
 
             if (!response.ok) {

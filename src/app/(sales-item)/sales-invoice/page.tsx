@@ -33,6 +33,7 @@ const Invoice = () => {
         soldInvoice: string,
         productName: string,
         saleRate: number,
+        stockRate: number,
         productQty: number,
         discount: number,
 
@@ -114,16 +115,16 @@ const Invoice = () => {
                                 <thead>
                                     <tr className='border-b-base-content text-black text-xs md:text-md'>
                                         <th className='text-left p-0'>Description</th>
-                                        <th>Value</th>
+                                        <th>Unit Rate</th>
                                         <th>Qty</th>
-                                        <th className='text-right pt-3 pr-1'>Total</th>
+                                        <th className='text-right pt-3 pr-1'>Sub Total</th>
                                     </tr>
                                 </thead>
                                 <tbody className='text-xs md:text-md capitalize text-black'>
                                     {invoiceData.salesStock.map((products: any, index: any) => (
                                         <tr key={index}>
                                             <td className='text-left p-0'>{products.productName}</td>
-                                            <td>{Number(products.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
+                                            <td>{(products.stockRate ? Number(products.stockRate.toFixed(2)).toLocaleString('en-IN') : 0)}</td>
                                             <td>{Number(products.productQty).toFixed(2)}</td>
                                             <td className='text-right pr-1'>{Number((products.saleRate * products.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
                                         </tr>

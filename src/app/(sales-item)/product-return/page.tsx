@@ -1,5 +1,5 @@
 'use client'
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "@/app/store";
 import { addProducts, deleteAllProducts, deleteProduct } from "@/app/store/salesDamageProduct";
 import Select from "react-select";
@@ -36,7 +36,13 @@ const Page: React.FC = () => {
     const dispatch = useAppDispatch();
 
     const invoiceNo = uid();
-
+    const inputRef = useRef<HTMLInputElement>(null);
+    const handleProductSelect = (selectedOption: any) => {
+        setSelectedProid(selectedOption.value);
+        if (inputRef.current) {
+            inputRef.current.focus();
+        }
+    };
     useEffect(() => {
         calculateTotal();
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -87,7 +93,6 @@ const Page: React.FC = () => {
                 category: productData.category,
                 productName: productData.productName,
                 costPrice: productData.costPrice,
-                remainingQty: (productData.remainingQty - numericProductQty),
                 saleRate: productData.saleRate,
                 productQty: numericProductQty,
                 status: 'Returned',
@@ -168,8 +173,8 @@ const Page: React.FC = () => {
                     <div className="divider divider-accent tracking-widest font-bold p-5">PRODUCT RETURN</div>
                 </div>
                 <div className="flex items-center justify-center gap-2 z-10">
-                    <Select className="text-black h-[38px] w-64 md:w-96" autoFocus={true} onChange={(selectedOption: any) => setSelectedProid(selectedOption.value)} options={productOption} />
-                    <input type="number" className="w-[100px] h-[38px] p-2 bg-white text-black border rounded-md" placeholder="Qty" value={selectedQty} onChange={(e) => setSelectedQty(e.target.value)} />
+                    <Select className="text-black h-[38px] w-64 md:w-96" autoFocus={true} onChange={handleProductSelect} options={productOption} />
+                    <input type="number" className="w-[100px] h-[38px] p-2 bg-white text-black border rounded-md" placeholder="Qty" ref={inputRef} value={selectedQty} onChange={(e) => setSelectedQty(e.target.value)} />
                     <button onClick={handleProductSubmit} className='btn btn-outline btn-success btn-sm h-[38px]'>ADD</button>
                 </div>
                 <div className="flex items-center justify-center w-full p-5">
@@ -220,7 +225,7 @@ const Page: React.FC = () => {
                 <div className="flex w-full justify-center p-5">
                     <div className="card shadow shadow-slate-500 max-w-lg gap-3 p-5">
                         <div className="card-title text-sm">Add Reason</div>
-                        <input type="text" value={reason} className="input input-sm input-bordered" onChange={(e) => setReason(e.target.value)} />
+                        <input type="text" name="reason" value={reason} className="input input-sm input-bordered" onChange={(e) => setReason(e.target.value)} />
                         <button onClick={handleFinalSubmit} disabled={pending} className="btn btn-sm w-xs h-[38px] btn-success btn-outline font-bold">{pending ? <span className="loading loading-ring loading-md text-accent"></span> : "SUBMIT"}</button>
                     </div>
                 </div>

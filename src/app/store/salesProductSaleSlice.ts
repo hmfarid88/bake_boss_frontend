@@ -8,6 +8,7 @@ interface Product {
     productName: string;
     costPrice: number;
     saleRate: number;
+    stockRate: number;
     discount: number;
     productQty: number;
     status: string;

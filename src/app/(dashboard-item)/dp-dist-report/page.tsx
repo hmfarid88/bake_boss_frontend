@@ -6,6 +6,7 @@ import CurrentMonthYear from "@/app/components/CurrentMonthYear";
 
 type Product = {
   date:string;
+  time:string;
   customer:string;
   category: string;
   productName: string;
@@ -76,6 +77,7 @@ const Page = () => {
                 <tr>
                   <th>SN</th>
                   <th>DATE</th>
+                  <th>TIME</th>
                   <th>OUTLET</th>
                   <th>CATEGORY</th>
                   <th>PRODUCT NAME</th>
@@ -91,6 +93,7 @@ const Page = () => {
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>{product.date}</td>
+                    <td>{product.time}</td>
                     <td className="uppercase">{product.customer}</td>
                     <td className="capitalize">{product.category}</td>
                     <td className="capitalize">{product.productName}</td>
@@ -104,7 +107,7 @@ const Page = () => {
               </tbody>
               <tfoot>
                 <tr className="font-semibold text-lg">
-                  <td colSpan={7}></td>
+                  <td colSpan={8}></td>
                   <td>TOTAL</td>
                   <td>{totalQty}</td>
                   <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>

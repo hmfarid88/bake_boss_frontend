@@ -31,6 +31,7 @@ const OfficeReceive = () => {
       toast.warning("Item is empty !");
       return;
     }
+    const currentTime = new Date().toLocaleTimeString('en-GB', { hour12: false });
     setPending(true);
     try {
       const response = await fetch(`${apiBaseUrl}/paymentApi/officeReceive`, {
@@ -38,7 +39,7 @@ const OfficeReceive = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ date, receiveName, receiveNote, amount: receiveAmount, username }),
+        body: JSON.stringify({ date, receiveName, receiveNote, amount: receiveAmount, time:currentTime, username }),
       });
 
       if (response.ok) {

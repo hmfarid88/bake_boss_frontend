@@ -32,6 +32,7 @@ const RetailerPayment = () => {
       toast.warning("Item is empty !");
       return;
     }
+    const currentTime = new Date().toLocaleTimeString('en-GB', { hour12: false });
     setPending(true);
     try {
       const response = await fetch(`${apiBaseUrl}/paymentApi/retailerPayment`, {
@@ -39,7 +40,7 @@ const RetailerPayment = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ date, retailerName, amount: retailerAmount, note: retailerNote, username }),
+        body: JSON.stringify({ date, retailerName, amount: retailerAmount, note: retailerNote, time:currentTime, username }),
       });
 
       if (response.ok) {

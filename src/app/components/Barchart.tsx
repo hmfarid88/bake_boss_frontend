@@ -1,56 +1,83 @@
-import React from 'react'
-import { BarChart, Bar, YAxis, XAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
-const data = [
-    {
-      "name": "January",
-      "Bakery": 4000,
-      "Sweets": 2400
-    },
-    {
-      "name": "February",
-      "Bakery": 3000,
-      "Sweets": 1398
-    },
-    {
-      "name": "March",
-      "Bakery": 2000,
-      "Sweets": 9800
-    },
-    {
-      "name": "April",
-      "Bakery": 2780,
-      "Sweets": 3908
-    },
-    {
-      "name": "May",
-      "Bakery": 1890,
-      "Sweets": 4800
-    },
-    {
-      "name": "June",
-      "Bakery": 2390,
-      "Sweets": 3800
-    }
-   
-  ]
-const Barchart = () => {
-    return (
-        <div>
-          <ResponsiveContainer width={600} height={250}>
-            <BarChart  data={data}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="name" tickMargin={10} />
-                <YAxis />
-                <Tooltip />
-                <Legend verticalAlign='top' height={36} />
-                <Bar dataKey="Bakery" fill="#8884d8" />
-                <Bar dataKey="Sweets" fill="#82ca9d" />
-            </BarChart>
-            </ResponsiveContainer>
-        </div>
 
-    )
-}
+import React, { useEffect, useState } from 'react';
+import { BarChart, Bar, YAxis, XAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { useAppSelector } from '../store';
+
+const Barchart = () => {
+  const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+  const uname = useAppSelector((state) => state.username.username);
+  const username = uname ? uname.username : 'Guest';
+
+  const [chartData, setChartData] = useState([]);
+  const [categories, setCategories] = useState<string[]>([]);
+
+  useEffect(() => {
+    const fetchSalesData = async () => {
+      try {
+        const response = await fetch(`${apiBaseUrl}/sales/lastsixmonth/saleprogress?username=${username}`);
+        const salesData = await response.json();
+
+        // Process data
+        const processedData: any = [];
+        const categorySet = new Set<string>();
+
+        salesData.forEach((item: any) => {
+          const monthName = item.month; // Month name from API
+          const foundMonth = processedData.find((data: any) => data.name === monthName);
+
+          if (foundMonth) {
+            foundMonth[item.category] = item.totalSale;
+          } else {
+            processedData.push({
+              name: monthName,
+              [item.category]: item.totalSale,
+            });
+          }
+
+          // Track unique category names
+          categorySet.add(item.category);
+        });
+
+        setChartData(processedData);
+        setCategories(Array.from(categorySet));
+
+      } catch (error) {
+        console.error('Error fetching sales data:', error);
+      }
+    };
+
+    fetchSalesData();
+  }, [apiBaseUrl, username]);
+
+  return (
+    <div>
+      <ResponsiveContainer width={1200} height={400}>
+        <BarChart data={chartData}>
+          <CartesianGrid strokeDasharray="3 3" />
+          <XAxis dataKey="name" tickMargin={10} />
+          <YAxis />
+          <Tooltip />
+          <Legend verticalAlign="top" height={36} />
+
+          {categories.map((category) => (
+            <Bar key={category} dataKey={category} fill={getRandomColor()} />
+          ))}
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
+
+// Utility function to generate random colors for different categories
+const getRandomColor = () => {
+  const letters = '0123456789ABCDEF';
+  let color = '#';
+  for (let i = 0; i < 6; i++) {
+    color += letters[Math.floor(Math.random() * 16)];
+  }
+  return color;
+};
 
 export default Barchart;
+
 

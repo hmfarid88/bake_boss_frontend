@@ -124,6 +124,7 @@ const Page: React.FC = () => {
             productName: productData.productName,
             costPrice: productData.costPrice,
             saleRate: productData.saleRate,
+            stockRate: productData.saleRate,
             discount: 0,
             productQty: numericProductQty,
             status: 'sold',
@@ -161,6 +162,7 @@ const Page: React.FC = () => {
             productName: productData.productName,
             costPrice: productData.costPrice,
             saleRate: productData.saleRate + (productData.saleRate * (((productData.unitRate - (productData.saleRate / productData.qty)) * 100) / (productData.saleRate / productData.qty))) / 100,
+            stockRate: productData.saleRate,
             discount: 0,
             productQty: 1 / productData.qty,
             status: 'sold',
@@ -178,6 +180,7 @@ const Page: React.FC = () => {
             toast.error("Your product list is empty!");
             return;
         }
+       
         const salesRequest = {
             customer: {
                 customerName,
