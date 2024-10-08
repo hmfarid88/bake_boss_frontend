@@ -15,7 +15,7 @@ export default function Page() {
         </div>
         <div className="grid grid-cols-1 gap-5 p-10">
           <div className="flex flex-col items-center justify-center">
-            <div className="p-5"><h4 className="uppercase font-bold text-sm">Top Ten Sold Products In This Month</h4></div>
+            <div className="p-5"><h4 className="uppercase font-bold text-sm">Top Sold Products In This Month</h4></div>
             <div>
               <Areachart />
             </div>
