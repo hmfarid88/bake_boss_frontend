@@ -23,27 +23,25 @@ const Page = () => {
         <div className='container-2xl'>
             <div className="flex items-center justify-center p-10">
                 <table className="table table-sm">
-                                      <thead>
+                    <thead>
                         <tr>
                             <th>SN</th>
                             <th>EMAIL</th>
                             <th>USER NAME</th>
-                            <th>PASSWORD</th>
                             <th>ROLES</th>
                             <th>ACTION</th>
                         </tr>
                     </thead>
                     <tbody>
-                       {allUsers?.map((user, index)=>(
-                        <tr key={index}>
-                            <th>{index+1}</th>
-                            <td>{user.email}</td>
-                            <td>{user.username}</td>
-                            <td>{user.password}</td>
-                            <td>{user.roles}</td>
-                            <td className='flex gap-2'><button className='btn btn-xs btn-warning'>EDIT</button><button className='btn btn-xs btn-error'>DELETE</button></td>
-                        </tr>
-                       ))}
+                        {allUsers?.map((user, index) => (
+                            <tr key={index}>
+                                <th>{index + 1}</th>
+                                <td>{user.email}</td>
+                                <td>{user.username}</td>
+                                <td>{user.roles}</td>
+                                <td className='flex gap-2'><button className='btn btn-xs btn-warning'>EDIT</button><button className='btn btn-xs btn-error'>DELETE</button></td>
+                            </tr>
+                        ))}
                     </tbody>
                 </table>
             </div>

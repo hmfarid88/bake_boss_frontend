@@ -27,6 +27,7 @@ const Invoice = () => {
         customerInfo: any;
         salesStock: any;
         date: string,
+        time: string,
         customerName: string,
         phoneNumber: string,
         soldBy: string,
@@ -108,6 +109,7 @@ const Invoice = () => {
                             <div className="flex flex-col items-end">
                                 <h4 className='text-black text-xs md:text-md pr-1'>Invoice No : {invoiceData.customerInfo.soldInvoice}</h4>
                                 <h4 className='text-black text-xs md:text-md pt-1 pr-1'>Date : {invoiceData.salesStock[0].date}</h4>
+                                <h4 className='text-black text-xs md:text-md pt-1 pr-1'>Time : {invoiceData.salesStock[0].time}</h4>
                             </div>
                         </div>
                         <div className="w-full pt-2">

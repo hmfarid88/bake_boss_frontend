@@ -38,6 +38,7 @@ const Navbar = () => {
                     <ul className="menu menu-horizontal px-1">
                     <li><Link href="/admin-dashboard">HOME</Link></li>
                     <li><Link href="/adduser">ADD USER</Link></li>
+                    <li><Link href="/updateuser">UPDATE USER</Link></li>
                         <li>
                             <details>
                                 <summary>ITEM 2</summary>

@@ -25,6 +25,7 @@ const Invoice = () => {
 
     interface invoiceData {
         date: string,
+        time: string,
         category: string,
         productName: string,
         dpRate: number,
@@ -102,6 +103,7 @@ const Invoice = () => {
                         <div className="flex flex-col items-end">
                             <h4 className='font-semibold text-xs md:text-md uppercase'>Invoice No : {invoiceData[0]?.invoiceNo}</h4>
                             <h4 className='font-semibold text-xs md:text-md uppercase pt-1'>Date : {invoiceData[0]?.date}</h4>
+                            <h4 className='font-semibold text-xs md:text-md uppercase pt-1'>Time : {invoiceData[0]?.time}</h4>
                         </div>
                     </div>
                     <div className="w-full pt-2">
