@@ -25,7 +25,7 @@ export default function Page() {
             <div><Barchart /></div>
           </div>
         </div>
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center justify-center pb-10">
           <div className="p-5"><h4 className="uppercase font-bold text-sm">Last 12 Month Profit-Loss Analysis</h4></div>
           <div><Linechart /></div>
         </div>

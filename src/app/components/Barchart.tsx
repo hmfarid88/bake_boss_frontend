@@ -22,7 +22,7 @@ const Barchart = () => {
         const categorySet = new Set<string>();
 
         salesData.forEach((item: any) => {
-          const monthName = item.month; // Month name from API
+          const monthName = item.monthname; // Month name from API
           const foundMonth = processedData.find((data: any) => data.name === monthName);
 
           if (foundMonth) {
@@ -52,9 +52,9 @@ const Barchart = () => {
   return (
     <div>
       <ResponsiveContainer width={1200} height={400}>
-        <BarChart data={chartData}>
+        <BarChart data={chartData} margin={{ top: 5, right: 10, left: 10, bottom: 50 }}>
           <CartesianGrid strokeDasharray="3 3" />
-          <XAxis dataKey="name" tickMargin={10} />
+          <XAxis dataKey="name" angle={-45} tickMargin={25} />
           <YAxis />
           <Tooltip />
           <Legend verticalAlign="top" height={36} />

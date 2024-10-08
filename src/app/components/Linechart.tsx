@@ -19,9 +19,9 @@ const Linechart = () => {
 
         // Process data for recharts
         const processedData = profitLossData.map((item: any) => ({
-          name: item[0],
-          Profit: item[1],
-          Loss: item[2]
+          name: item.month,
+          Profit: item.profit,
+          Loss: item.loss
         }));
 
         setChartData(processedData);
