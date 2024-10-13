@@ -162,7 +162,7 @@ const Page = () => {
             <div className="flex flex-col gap-2 items-center"><h4 className="font-bold">SALES REPORT</h4>
               <h4><CurrentDate /></h4>
             </div>
-            <table className="table mt-5 text-center">
+            <table className="table table-sm mt-5 text-center">
               <thead>
                 <tr>
                   <th>SN</th>

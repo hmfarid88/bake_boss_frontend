@@ -18,10 +18,11 @@ const Invoice = () => {
     const handlePrint = useReactToPrint({
         content: () => contentToPrint.current,
     });
-    
+
     const searchParams = useSearchParams();
     const soldInvoice = searchParams.get('soldInvoice');
     const [invoiceData, setInvoiceData] = useState<invoiceData>();
+
 
     interface invoiceData {
         customerInfo: any;
@@ -83,7 +84,7 @@ const Invoice = () => {
     return (
         <div className="container min-h-[calc(100vh-228px)]">
             <div className="flex justify-end pr-10 pt-5 gap-3">
-                <button onClick={handlePrint}  className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
+                <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
             </div>
             <div className="flex justify-center pb-5">
                 <div className='flex-1 max-w-[794px] h-auto border border-slate-700'>
@@ -107,7 +108,7 @@ const Invoice = () => {
                                 <p className='capitalize text-xs md:text-md text-black pt-1'>Sold By: {invoiceData.customerInfo.soldBy || "Shop"}</p>
                             </div>
                             <div className="flex flex-col items-end">
-                                <h4 className='text-black text-xs md:text-md pr-1'>Invoice No : {invoiceData.customerInfo.soldInvoice}</h4>
+                                <h4 className='flex text-black text-xs md:text-md pr-1'>Invoice No : <p className='uppercase pl-1'>{invoiceData.customerInfo.soldInvoice}</p></h4>
                                 <h4 className='text-black text-xs md:text-md pt-1 pr-1'>Date : {invoiceData.salesStock[0].date}</h4>
                                 <h4 className='text-black text-xs md:text-md pt-1 pr-1'>Time : {invoiceData.salesStock[0].time}</h4>
                             </div>
@@ -146,11 +147,12 @@ const Invoice = () => {
                                         <td className='text-end pr-1'>{Number(totalDis.toFixed(2)).toLocaleString('en-IN')}</td>
                                     </tr>
                                     <tr className='text-xs md:text-md text-black'>
-                                        <td></td>
+                                        <td className='font-bold text-xl'>PAID</td>
                                         <td>Net Payable</td>
                                         <td>--</td>
-                                        <td className='text-end pr-1'>{Number(subtotal-totalDis.toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td className='text-end pr-1'>{Number(subtotal - totalDis.toFixed(2)).toLocaleString('en-IN')}</td>
                                     </tr>
+                                   
                                 </tfoot>
                             </table>
                         </div>

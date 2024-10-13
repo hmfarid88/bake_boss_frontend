@@ -5,6 +5,7 @@ import { FcPlus, FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
 import Select from "react-select";
 import { toast } from "react-toastify";
+import CurrentDate from "@/app/components/CurrentDate";
 
 type Product = {
   date: string;
@@ -103,12 +104,12 @@ const Page = () => {
 
   const [productOption, setProductOption] = useState([]);
   useEffect(() => {
-    fetch(`${apiBaseUrl}/api/getMadeProducts`)
+    fetch(`${apiBaseUrl}/sales/getSalesStock?username=${username}`)
       .then(response => response.json())
       .then(data => {
-        const transformedData = data.map((madeItem: any) => ({
-          value: madeItem,
-          label: madeItem
+        const transformedData = data.map((product: any) => ({
+          value: product.productName,
+          label: product.productName
         }));
         setProductOption(transformedData);
       })
@@ -177,10 +178,11 @@ const Page = () => {
             <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
           </div>
           <div ref={contentToPrint} className="flex-1 p-5">
-            <div className="flex font-semibold text-lg items-cente justify-center w-full pb-5">
-              <h4>PRODUCT STOCK</h4>
+            <div className="flex flex-col items-center justify-center w-full pb-5">
+              <h4 className="font-semibold text-lg">PRODUCT STOCK</h4>
+              <h4><CurrentDate/></h4>
             </div>
-            <table className="table">
+            <table className="table table-sm">
               <thead>
                 <tr>
                   <th>SN</th>

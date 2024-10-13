@@ -180,7 +180,7 @@ const Page: React.FC = () => {
             toast.error("Your product list is empty!");
             return;
         }
-       
+
         const salesRequest = {
             customer: {
                 customerName,
