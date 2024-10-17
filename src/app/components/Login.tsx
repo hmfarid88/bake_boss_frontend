@@ -38,13 +38,13 @@ const Login = () => {
                 const roles: string = data.roles;
                 createSession(username, roles);
                 dispatch(addUser({ id: uid(), username }));
-                if (data.roles === 'ROLE_PRODUCTION') {
-                    router.push("/dashboard");
-                } else if (data.roles === 'ROLE_ADMIN') {
-                    router.push("/admin-dashboard");
-                } else if (data.roles === 'ROLE_SALES') {
-                    router.push("/sales-dashboard");
-                }
+                // if (data.roles === 'ROLE_PRODUCTION') {
+                //     router.push("/dashboard");
+                // } else if (data.roles === 'ROLE_ADMIN') {
+                //     router.push("/admin-dashboard");
+                // } else if (data.roles === 'ROLE_SALES') {
+                //     router.push("/sales-dashboard");
+                // }
 
                 toast.success("Congrats, login successful!");
             }
