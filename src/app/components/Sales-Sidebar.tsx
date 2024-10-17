@@ -1,14 +1,14 @@
 import React from 'react'
 import Link from 'next/link'
 import { IoHomeOutline } from "react-icons/io5";
-import { MdOutlinePointOfSale } from "react-icons/md";
 import { RiSecurePaymentLine } from "react-icons/ri";
-import { BsDatabaseAdd, BsDatabaseCheck, BsDatabaseDown, BsDatabaseFillLock } from "react-icons/bs";
+import { BsDatabaseCheck } from "react-icons/bs";
+import { MdAddShoppingCart, MdPendingActions, MdReadMore, MdOutlineAssignmentReturn, MdOutlineInterests } from "react-icons/md";
+import { CiShop, CiMemoPad  } from "react-icons/ci";
 import { TbReportSearch } from "react-icons/tb";
 import { MdOutlinePayments } from "react-icons/md";
 import { PiNotebook } from "react-icons/pi";
 import { VscRepo } from "react-icons/vsc";
-import { MdOutlineInterests } from "react-icons/md";
 import { GrUserAdmin } from "react-icons/gr";
 import CashBook from './Sales-Cashbook';
 import Invoice from './Sales-Invoice';
@@ -30,12 +30,12 @@ export const SalesSidebar = () => {
                     <label htmlFor="my-drawer-3" aria-label="close sidebar" className="drawer-overlay"></label>
                     <ul className="menu p-4 w-60 min-h-full bg-base-200 text-base-content">
                         <li><Link href="/sales-dashboard"><IoHomeOutline size={20} /> HOME</Link></li>
-                        <li><Link href="/pending-product"><BsDatabaseFillLock size={20} /> PRODUCT PENDING</Link></li>
+                        <li><Link href="/pending-product"><MdPendingActions size={20} /> PRODUCT PENDING</Link></li>
                         <li><Link href="/sales-stock"><BsDatabaseCheck size={20} /> PRODUCT STOCK</Link></li>
-                        <li><Link href="/sales-additional"><BsDatabaseAdd size={20} /> ADDITIONAL STOCK</Link></li>
-                        <li><Link href="/product-return"><BsDatabaseDown size={20} /> PRODUCT RETURN</Link></li>
-                        <li><Link href="/sales-shop" className='text-success'><MdOutlinePointOfSale size={20} />CUSTOMER SALE</Link></li>
-                        <li><Link href="/vendor-sale"><MdOutlinePointOfSale size={20} />VENDOR SALE</Link></li>
+                        <li><Link href="/sales-additional"><MdReadMore size={20} /> ADDITIONAL STOCK</Link></li>
+                        <li><Link href="/product-return"><MdOutlineAssignmentReturn size={20} /> PRODUCT RETURN</Link></li>
+                        <li><Link href="/sales-shop" className='text-success'><MdAddShoppingCart size={20} />CUSTOMER SALE</Link></li>
+                        <li><Link href="/vendor-sale"><CiShop size={20} />VENDOR SALE</Link></li>
                         {/* <li><Link href="/sales-requisition"><PiNotebook size={20} />REQUISITION</Link></li> */}
                         <li>
                             <details>
@@ -89,7 +89,7 @@ export const SalesSidebar = () => {
                         </li>
                         <li>
                             <details>
-                                <summary><a className='flex gap-2'><PiNotebook size={20} />FIND INVOICE </a></summary>
+                                <summary><a className='flex gap-2'><CiMemoPad size={20} />FIND INVOICE </a></summary>
                                 <ul>
                                     <li>
                                         <Invoice />
