@@ -23,9 +23,9 @@ const Page = () => {
   const username = uname ? uname.username : 'Guest';
 
   const searchParams = useSearchParams();
-    const startDate = searchParams.get('startDate');
-    const endDate = searchParams.get('endDate');
-     
+  const startDate = searchParams.get('startDate');
+  const endDate = searchParams.get('endDate');
+
   const contentToPrint = useRef(null);
   const handlePrint = useReactToPrint({
     content: () => contentToPrint.current,
@@ -50,7 +50,7 @@ const Page = () => {
       (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
       (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
       (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
-     
+
     );
     setFilteredProducts(filtered);
   }, [filterCriteria, allProducts]);
@@ -58,16 +58,16 @@ const Page = () => {
   const handleFilterChange = (e: any) => {
     setFilterCriteria(e.target.value);
   };
-  const totalValue = filteredProducts.reduce((total, product) => {
-    return total + (product.salePrice * product.qty);
-  }, 0);
+
+  const totalCost = filteredProducts.reduce((acc, item) => acc + item.costPrice, 0);
+  const totalSale = filteredProducts.reduce((acc, item) => acc + item.salePrice, 0);
   const totalQty = filteredProducts.reduce((acc, item) => acc + item.qty, 0);
   const totalDis = filteredProducts.reduce((acc, item) => acc + item.discount, 0);
 
   return (
     <div className="container-2xl min-h-[calc(100vh-228px)]">
       <div className="flex w-full justify-between p-5">
-       
+
         <div className="pt-2">
           <label className="input input-bordered flex max-w-xs  items-center gap-2">
             <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
@@ -84,7 +84,7 @@ const Page = () => {
         <div className="overflow-x-auto">
           <div ref={contentToPrint} className="flex-1 p-5">
             <div className="flex flex-col gap-2 items-center"><h4 className="font-bold">PROFIT REPORT</h4>
-            {startDate} TO {endDate}
+              {startDate} TO {endDate}
             </div>
             <table className="table mt-5 text-center">
               <thead>
@@ -111,7 +111,7 @@ const Page = () => {
                     <td>{Number(product.salePrice.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.qty.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.discount?.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{Number(((product.salePrice * product.qty) - (product.discount)).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number(((product.salePrice - product.costPrice - product.discount) * product.qty).toFixed(2)).toLocaleString('en-IN')}</td>
                   </tr>
                 ))}
               </tbody>
@@ -121,7 +121,7 @@ const Page = () => {
                   <td>TOTAL</td>
                   <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
                   <td>{Number(totalDis.toFixed(2)).toLocaleString('en-IN')}</td>
-                  <td>{Number((totalValue - totalDis).toFixed(2)).toLocaleString('en-IN')}</td>
+                  <td>{Number(((totalSale - totalCost - totalDis) * totalQty).toFixed(2)).toLocaleString('en-IN')}</td>
                 </tr>
               </tfoot>
             </table>
