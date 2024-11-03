@@ -44,29 +44,47 @@ const HomeSummary = () => {
       .catch(error => console.error('Error fetching products:', error));
   }, [apiBaseUrl, username]);
 
+ 
   useEffect(() => {
     fetch(`${apiBaseUrl}/sales/sales/today?username=${username}`)
       .then(response => response.json())
       .then(data => {
-        const total = data.reduce((total: number, product: { saleRate: number; productQty: number; discount:number}) => {
-          return total + ((product.saleRate-product.discount) * product.productQty);
+        const total = data.reduce((total: number, product: { saleRate: number; productQty: number; discount: number; }) => {
+          const saleAmount = product.saleRate * product.productQty;
+          const discountAmount = product.discount * product.productQty;
+          const netAmount = saleAmount - discountAmount;
+          
+          return total + netAmount;
         }, 0);
+  
         setTotalValue(total);
       })
       .catch(error => console.error('Error fetching sales:', error));
   }, [apiBaseUrl, username]);
+  
 
   useEffect(() => {
     fetch(`${apiBaseUrl}/sales/getOutletSale?username=${username}`)
       .then(response => response.json())
       .then(data => {
-        const monthlyTotal = data.reduce((total: number, product: { saleRate: number; productQty: number; discount:number}) => {
-          return total + ((product.saleRate-product.discount) * product.productQty);
-        }, 0);
-        setMonthlyTotalValue(monthlyTotal);
+        const { totalSale, totalDiscount } = data.reduce(
+          (totals: { totalSale: number; totalDiscount: number; }, product: { saleRate: number; productQty: number; discount: number; }) => {
+            const saleValue = product.saleRate * product.productQty;
+            const discountValue = product.discount * product.productQty;
+            return {
+              totalSale: totals.totalSale + saleValue,
+              totalDiscount: totals.totalDiscount + discountValue,
+            };
+          },
+          { totalSale: 0, totalDiscount: 0 }
+        );
+  
+        const netSaleValue = totalSale - totalDiscount;
+        setMonthlyTotalValue(netSaleValue);
       })
       .catch(error => console.error('Error fetching products:', error));
   }, [apiBaseUrl, username]);
+  
 
   useEffect(() => {
     fetch(`${apiBaseUrl}/paymentApi/payments/today?username=${username}&date=${date}`)
