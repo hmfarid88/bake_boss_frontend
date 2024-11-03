@@ -49,7 +49,7 @@ const HomeSummary = () => {
       .then(response => response.json())
       .then(data => {
         const total = data.reduce((total: number, product: { saleRate: number; productQty: number; discount:number}) => {
-          return total + (product.saleRate * product.productQty)-(product.discount*product.productQty);
+          return total + ((product.saleRate-product.discount) * product.productQty);
         }, 0);
         setTotalValue(total);
       })
@@ -61,7 +61,7 @@ const HomeSummary = () => {
       .then(response => response.json())
       .then(data => {
         const monthlyTotal = data.reduce((total: number, product: { saleRate: number; productQty: number; discount:number}) => {
-          return total + (product.saleRate * product.productQty)-(product.discount*product.productQty);
+          return total + ((product.saleRate-product.discount) * product.productQty);
         }, 0);
         setMonthlyTotalValue(monthlyTotal);
       })
