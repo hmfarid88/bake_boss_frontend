@@ -10,6 +10,7 @@ type Product = {
     time: string;
     category: string;
     productName: string;
+    invoiceNo: string;
     costPrice: number;
     productQty: number;
 
@@ -49,6 +50,7 @@ const Page = () => {
         const filtered = allProducts.filter(product =>
             (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+            (product.invoiceNo.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
         );
         setFilteredProducts(filtered);
@@ -84,6 +86,7 @@ const Page = () => {
                                 <th>SN</th>
                                 <th>DATE</th>
                                 <th>TIME</th>
+                                <th>INVOICE NO</th>
                                 <th>CATEGORY</th>
                                 <th>PRODUCT NAME</th>
                                 <th>PURCHASE PRICE</th>
@@ -96,8 +99,9 @@ const Page = () => {
                                     <td>{index + 1}</td>
                                     <td>{product.date}</td>
                                     <td>{product.time}</td>
-                                    <td>{product.category}</td>
-                                    <td>{product.productName}</td>
+                                    <td className="uppercase">{product.invoiceNo}</td>
+                                    <td className="capitalize">{product.category}</td>
+                                    <td className="capitalize">{product.productName}</td>
                                     <td>{product.costPrice.toFixed(2)}</td>
                                     <td>{product.productQty.toFixed(2)}</td>
                                 </tr>
@@ -105,7 +109,7 @@ const Page = () => {
                         </tbody>
                         <tfoot>
                             <tr className="font-semibold text-lg">
-                                <td colSpan={5}></td>
+                                <td colSpan={6}></td>
                                 <td>TOTAL</td>
                                 <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
                             </tr>
