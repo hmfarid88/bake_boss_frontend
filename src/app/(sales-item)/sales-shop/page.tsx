@@ -11,7 +11,6 @@ import { FcCalendar, FcManager, FcPhone, FcViewDetails } from "react-icons/fc";
 import { HiCurrencyBangladeshi } from "react-icons/hi";
 import { FaHandHoldingMedical } from "react-icons/fa";
 import { RiDeleteBin6Line, RiHandCoinLine } from "react-icons/ri";
-import revalidate from "@/app/revalidate";
 
 const Page: React.FC = () => {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -32,6 +31,7 @@ const Page: React.FC = () => {
     const dispatch = useAppDispatch();
     const invoiceNo = uid();
 
+    const selectRef = useRef<any>(null);
     const inputRef = useRef<HTMLInputElement>(null);
     const handleProductSelect = (selectedOption: any) => {
         setSelectedProid(selectedOption.value);
@@ -137,7 +137,9 @@ const Page: React.FC = () => {
         setSelectedQty("");
         setSelectedProid("");
         setSelectedProidOption(null);
-        revalidate();
+        if (selectRef.current) {
+            selectRef.current.focus();
+        }
     };
     const productInfo = filteredProducts.map(product => ({
         ...product,
@@ -178,7 +180,9 @@ const Page: React.FC = () => {
         setSelectedQty("");
         setSelectedProid("");
         setSelectedProidOption(null);
-        revalidate();
+        if (selectRef.current) {
+            selectRef.current.focus();
+        }
     };
 
     const handleFinalSubmit = async (e: any) => {
@@ -254,7 +258,7 @@ const Page: React.FC = () => {
                     <div className="divider divider-accent tracking-widest font-bold p-5">SALES AREA</div>
                 </div>
                 <div className="flex items-center justify-center gap-2 z-10">
-                    <Select className="text-black h-[38px] w-64 md:w-96"  value={selectedProidOption} autoFocus={true} onChange={handleProductSelect} options={productOption} />
+                    <Select className="text-black h-[38px] w-64 md:w-96" ref={selectRef}  value={selectedProidOption} autoFocus={true} onChange={handleProductSelect} options={productOption} />
                     <input type="number" className="w-[100px] h-[38px] p-2 bg-white text-black border rounded-md" ref={inputRef} placeholder="Qty" value={selectedQty} onChange={(e) => setSelectedQty(e.target.value)} />
                     <button onClick={handleProductSubmit} className='btn btn-outline btn-success btn-sm h-[38px]'>ADD</button>
                     <button onClick={handleUnitProductSubmit} className='btn btn-outline btn-info btn-sm h-[38px]'>UNIT</button>
