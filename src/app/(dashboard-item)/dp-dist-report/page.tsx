@@ -70,9 +70,9 @@ const Page = () => {
             </label>
             <Print contentRef={contentToPrint} />
           </div>
-          <div ref={contentToPrint} className="flex-1 p-5">
+          <div ref={contentToPrint} className="flex-1 w-full p-5">
           <div className="flex flex-col items-center pb-5"><h4 className="font-bold">DISTRIBUTION REPORT</h4><CurrentMonthYear /></div>
-            <table className="table table-sm text-center">
+            <table className="table table-sm">
               <thead>
                 <tr>
                   <th>SN</th>
@@ -84,7 +84,7 @@ const Page = () => {
                   <th>INVOICE NO</th>
                   <th>COST PRICE</th>
                   <th>SALE PRICE</th>
-                  <th>QUANTITY</th>
+                  <th>QTY</th>
                   <th>SUB TOTAL</th>
                 </tr>
               </thead>
@@ -94,7 +94,7 @@ const Page = () => {
                     <td>{index + 1}</td>
                     <td>{product.date}</td>
                     <td>{product.time}</td>
-                    <td className="uppercase">{product.customer}</td>
+                    <td className="capitalize">{product.customer}</td>
                     <td className="capitalize">{product.category}</td>
                     <td className="capitalize">{product.productName}</td>
                     <td className="uppercase">{product.invoiceNo}</td>

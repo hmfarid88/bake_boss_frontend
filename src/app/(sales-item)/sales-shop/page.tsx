@@ -34,6 +34,7 @@ const Page: React.FC = () => {
     const inputRef = useRef<HTMLInputElement>(null);
     const handleProductSelect = (selectedOption: any) => {
         setSelectedProid(selectedOption.value);
+        setSelectedProidOption(selectedOption);
         if (inputRef.current) {
             inputRef.current.focus();
         }
@@ -47,6 +48,7 @@ const Page: React.FC = () => {
     };
 
     const [selectedProid, setSelectedProid] = useState("");
+    const [selectedProidOption, setSelectedProidOption] = useState(null);
     const [discount, setDiscount] = useState("");
 
     const [selectedQty, setSelectedQty] = useState("");
@@ -132,6 +134,8 @@ const Page: React.FC = () => {
         };
         dispatch(addProducts(saleData));
         setSelectedQty("");
+        setSelectedProid("");
+        setSelectedProidOption(null);
     };
     const productInfo = filteredProducts.map(product => ({
         ...product,
@@ -170,6 +174,8 @@ const Page: React.FC = () => {
         };
         dispatch(addProducts(saleData));
         setSelectedQty("");
+        setSelectedProid("");
+        setSelectedProidOption(null);
 
     };
 
@@ -246,7 +252,7 @@ const Page: React.FC = () => {
                     <div className="divider divider-accent tracking-widest font-bold p-5">SALES AREA</div>
                 </div>
                 <div className="flex items-center justify-center gap-2 z-10">
-                    <Select className="text-black h-[38px] w-64 md:w-96" autoFocus={true} onChange={handleProductSelect} options={productOption} />
+                    <Select className="text-black h-[38px] w-64 md:w-96"  value={selectedProidOption} autoFocus={true} onChange={handleProductSelect} options={productOption} />
                     <input type="number" className="w-[100px] h-[38px] p-2 bg-white text-black border rounded-md" ref={inputRef} placeholder="Qty" value={selectedQty} onChange={(e) => setSelectedQty(e.target.value)} />
                     <button onClick={handleProductSubmit} className='btn btn-outline btn-success btn-sm h-[38px]'>ADD</button>
                     <button onClick={handleUnitProductSubmit} className='btn btn-outline btn-info btn-sm h-[38px]'>UNIT</button>
