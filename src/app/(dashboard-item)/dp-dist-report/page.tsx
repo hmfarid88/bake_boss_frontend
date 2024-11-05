@@ -109,7 +109,7 @@ const Page = () => {
                 <tr className="font-semibold text-lg">
                   <td colSpan={8}></td>
                   <td>TOTAL</td>
-                  <td>{totalQty}</td>
+                  <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
                   <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
                 </tr>
               </tfoot>
