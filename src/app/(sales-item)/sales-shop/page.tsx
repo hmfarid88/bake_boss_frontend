@@ -11,6 +11,7 @@ import { FcCalendar, FcManager, FcPhone, FcViewDetails } from "react-icons/fc";
 import { HiCurrencyBangladeshi } from "react-icons/hi";
 import { FaHandHoldingMedical } from "react-icons/fa";
 import { RiDeleteBin6Line, RiHandCoinLine } from "react-icons/ri";
+import revalidate from "@/app/revalidate";
 
 const Page: React.FC = () => {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -136,6 +137,7 @@ const Page: React.FC = () => {
         setSelectedQty("");
         setSelectedProid("");
         setSelectedProidOption(null);
+        revalidate();
     };
     const productInfo = filteredProducts.map(product => ({
         ...product,
@@ -176,7 +178,7 @@ const Page: React.FC = () => {
         setSelectedQty("");
         setSelectedProid("");
         setSelectedProidOption(null);
-
+        revalidate();
     };
 
     const handleFinalSubmit = async (e: any) => {
