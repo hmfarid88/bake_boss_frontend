@@ -178,11 +178,11 @@ const Page: React.FC = () => {
         };
         dispatch(addProducts(saleData));
         setSelectedQty("");
-        setSelectedProid("");
-        setSelectedProidOption(null);
-        if (selectRef.current) {
-            selectRef.current.focus();
-        }
+        // setSelectedProid("");
+        // setSelectedProidOption(null);
+        // if (selectRef.current) {
+        //     selectRef.current.focus();
+        // }
     };
 
     const handleFinalSubmit = async (e: any) => {
