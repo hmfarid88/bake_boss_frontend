@@ -266,7 +266,7 @@ const Page: React.FC = () => {
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>{p.productName} </td>
-                    <td>{Number(p.dpRate.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number(p.dpRate?.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{p.productQty}</td>
                     <td>{Number((p.dpRate * p.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
                     <td className="flex justify-between gap-3">
@@ -295,7 +295,7 @@ const Page: React.FC = () => {
       <div className="flex flex-col md:flex-row justify-between">
         <div className="flex w-full justify-center p-5">
           <div className="card shadow shadow-slate-500 max-w-lg gap-3 p-5">
-            <div className="card-title">Select Retailer</div>
+            <div className="card-title text-sm">SELECT OUTLET</div>
             <Select className="text-black h-[38px] w-64" onChange={(selectedOption: any) => setRetailer(selectedOption.value)} options={salesuser} />
             <button onClick={handleFinalSubmit} disabled={pending} className="btn w-xs h-[38px] btn-success btn-outline font-bold">{pending ? <span className="loading loading-ring loading-md text-accent"></span> : "SUBMIT"}</button>
           </div>

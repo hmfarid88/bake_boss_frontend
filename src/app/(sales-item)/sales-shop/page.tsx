@@ -116,7 +116,10 @@ const Page: React.FC = () => {
         const data = await fetchProductData(selectedProid);
         if (!data) return;
         const productData = data[0];
-        if (productData.remainingQty < numericProductQty) {
+        const totalSoldQty = filteredProducts
+            .filter(p => p.productName === productData.productName && p.username === username)
+            .reduce((total, p) => total + p.productQty, 0);
+        if (productData.remainingQty < totalSoldQty + numericProductQty) {
             toast.error("Sorry, not enough qty!");
             return;
         }
@@ -155,7 +158,10 @@ const Page: React.FC = () => {
         const data = await fetchProductData(selectedProid);
         if (!data) return;
         const productData = data[0];
-        if (productData.remainingQty < numericProductQty) {
+        const totalSoldQty = filteredProducts
+            .filter(p => p.productName === productData.productName && p.username === username)
+            .reduce((total, p) => total + p.productQty, 0);
+        if (productData.remainingQty < totalSoldQty + numericProductQty) {
             toast.warning("Sorry, not enough qty !");
             return;
         }
@@ -178,11 +184,7 @@ const Page: React.FC = () => {
         };
         dispatch(addProducts(saleData));
         setSelectedQty("");
-        // setSelectedProid("");
-        // setSelectedProidOption(null);
-        // if (selectRef.current) {
-        //     selectRef.current.focus();
-        // }
+
     };
 
     const handleFinalSubmit = async (e: any) => {
@@ -258,7 +260,7 @@ const Page: React.FC = () => {
                     <div className="divider divider-accent tracking-widest font-bold p-5">SALES AREA</div>
                 </div>
                 <div className="flex items-center justify-center gap-2 z-10">
-                    <Select className="text-black h-[38px] w-64 md:w-96" ref={selectRef}  value={selectedProidOption} autoFocus={true} onChange={handleProductSelect} options={productOption} />
+                    <Select className="text-black h-[38px] w-64 md:w-96" ref={selectRef} value={selectedProidOption} autoFocus={true} onChange={handleProductSelect} options={productOption} />
                     <input type="number" className="w-[100px] h-[38px] p-2 bg-white text-black border rounded-md" ref={inputRef} placeholder="Qty" value={selectedQty} onChange={(e) => setSelectedQty(e.target.value)} />
                     <button onClick={handleProductSubmit} className='btn btn-outline btn-success btn-sm h-[38px]'>ADD</button>
                     <button onClick={handleUnitProductSubmit} className='btn btn-outline btn-info btn-sm h-[38px]'>UNIT</button>

@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAppSelector } from "@/app/store";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
+import CurrentDate from "@/app/components/CurrentDate";
 
 type Product = {
   category: string;
@@ -71,7 +72,9 @@ const Page = () => {
             <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
           </div>
           <div ref={contentToPrint} className="flex-1 p-5">
-          <div className="flex flex-col items-center pb-5"><h4 className="font-bold">MADE PRODUCTS</h4></div>
+          <div className="flex flex-col items-center pb-5"><h4 className="font-bold">MADE PRODUCTS</h4>
+          <h4><CurrentDate/></h4>
+          </div>
             <table className="table">
               <thead>
                 <tr>
