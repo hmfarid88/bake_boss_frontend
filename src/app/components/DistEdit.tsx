@@ -95,6 +95,10 @@ const DistEdit = () => {
         productName: string,
         productQty: number,
     }
+    interface Product {
+        invoiceNo: string,
+        customer: string,
+    }
 
     const [invoiceProducts, setInvoiceProducts] = useState<items[]>([]);
     const [productName, setProductsName] = useState([])
@@ -115,7 +119,7 @@ const DistEdit = () => {
         }
     };
 
-    const [product, setProducts] = useState([]);
+    const [product, setProducts] = useState<Product[]>([]);
     useEffect(() => {
         fetch(`${apiBaseUrl}/api/getEditableDistribution?username=${username}`)
             .then(response => response.json())
@@ -169,7 +173,7 @@ const DistEdit = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {product?.map((p: any, index) => (
+                    {product?.map((p, index) => (
                         <tr key={index}>
                             <td>{index + 1}</td>
                             <td className='capitalize'>{p.customer}</td>
