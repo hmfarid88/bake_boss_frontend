@@ -92,11 +92,14 @@ const CashBook = () => {
         <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
       </div>
       <div className="w-full card pb-5">
-        <div ref={contentToPrint} className="flex w-full items-center justify-center pt-5">
+        <div ref={contentToPrint} className="flex flex-col w-full items-center justify-center pt-5">
+        <div className="flex flex-col items-center justify-center">
+            <h4 className='font-bold'>CASH BOOK</h4>
+            <h4 className='font-semibold'>{date}</h4>
+          </div>
           <div className="overflow-x-auto">
-            <div className="flex w-full font-bold items-center justify-between p-5">
+            <div className="flex w-full items-center justify-between text-sm font-semibold p-5">
               <h4>DEBIT</h4>
-              <h4>CASH BOOK ({date})</h4>
               <h4>CREDIT</h4>
             </div>
             <div className="flex w-full gap-10">
@@ -113,7 +116,7 @@ const CashBook = () => {
                     <tr>
                       <td>{date}</td>
                       <td>BALANCE B/D</td>
-                      <td>{Number((netSumAmount+saleTotal) ?? 0).toLocaleString('en-IN')}</td>
+                      <td>{Number(netSumAmount+saleTotal).toLocaleString('en-IN')}</td>
                     </tr>
                     {saledata?.map((sold: any, index) => (
                       <tr key={index}>

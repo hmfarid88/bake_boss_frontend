@@ -17,17 +17,7 @@ interface Receive {
   amount: number;
 }
 
-// const formatDate = (dateString: string) => {
-//   const options: Intl.DateTimeFormatOptions = {
-//     year: 'numeric',
-//     month: '2-digit',
-//     day: '2-digit',
-//     hour: '2-digit',
-//     minute: '2-digit',
-//     second: '2-digit',
-//   };
-//   return new Date(dateString).toLocaleString(undefined, options);
-// };
+
 const CashBook = () => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const uname = useAppSelector((state) => state.username.username);
