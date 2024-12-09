@@ -25,7 +25,7 @@ const HomeSummary = () => {
   const [recvValue, setRecvValue] = useState<number>(0);
  
   const dashboardData = [
-    { id: 1, title: "Product Stock" },
+    { id: 1, title: "Stock Today" },
     { id: 2, title: "Sales Today" },
     { id: 3, title: "Monthly Total" },
     { id: 4, title: "Payment Today" },
@@ -132,7 +132,7 @@ const HomeSummary = () => {
     <div className='flex flex-col md:flex-row gap-5 p-4 items-center justify-center w-full'>
     {dashboardData?.map((item) =>
       <div key={item.id} className="card shadow-md shadow-slate-700 border border-accent text-center font-bold h-32 w-60 p-2">
-        {item.title === "Product Stock" ? (
+        {item.title === "Stock Today" ? (
           <div className='flex flex-col items-center justify-center gap-5'>
             <p>{item.title}</p>
             <p className='flex text-lg font-bold gap-2'><HiCurrencyBangladeshi size={26}/> {Number(stockValue.toFixed(2)).toLocaleString('en-IN')}</p>
