@@ -175,7 +175,7 @@ const Page = () => {
                   <th>QUANTITY</th>
                   <th>DISCOUNT</th>
                   <th>SUB TOTAL</th>
-                  {/* <th>ACTION</th> */}
+                  <th>ACTION</th>
                 </tr>
               </thead>
               <tbody>
@@ -191,9 +191,9 @@ const Page = () => {
                     <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.discount?.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(((product.saleRate * product.productQty) - (product.discount)).toFixed(2)).toLocaleString('en-IN')}</td>
-                    {/* <td>
+                    <td>
                       <a href="#my_modal_edit_sale" className="btn btn-xs btn-ghost"> <FiEdit size={16} onClick={() => handleEditClick(product)} /> </a>
-                    </td> */}
+                    </td>
                   </tr>
                 ))}
               </tbody>
