@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAppSelector } from "@/app/store";
 import Print from "@/app/components/Print";
 import CurrentMonthYear from "@/app/components/CurrentMonthYear";
-import DateToDate from "@/app/components/DateToDate";
+import { useSearchParams } from "next/navigation";
 
 type Product = {
   date: string;
@@ -24,20 +24,24 @@ const Page = () => {
   const username = uname ? uname.username : 'Guest';
   const contentToPrint = useRef<HTMLDivElement>(null);
 
+  const searchParams = useSearchParams();
+  const startDate = searchParams.get('startDate');
+  const endDate = searchParams.get('endDate');
+
   const [filterCriteria, setFilterCriteria] = useState('');
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/api/getSoldProduct?username=${username}`)
+    fetch(`${apiBaseUrl}/api/getDatewiseSoldProduct?username=${username}&startDate=${startDate}&endDate=${endDate}`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);
         setFilteredProducts(data);
       })
       .catch(error => console.error('Error fetching products:', error));
-  }, [apiBaseUrl, username]);
+  }, [apiBaseUrl, username, startDate, endDate]);
 
 
   useEffect(() => {
@@ -60,10 +64,7 @@ const Page = () => {
   const totalQty = filteredProducts.reduce((acc, item) => acc + item.productQty, 0);
   return (
     <div className="container-2xl">
-      <div className="flex flex-col w-full min-h-[calc(100vh-228px)] items-center justify-center">
-        <div className="flex">
-          <DateToDate routePath="/datewise-dp-dist" />
-        </div>
+      <div className="flex flex-col w-full min-h-[calc(100vh-228px)] p-4 items-center justify-center">
         <div className="flex w-full justify-between pl-5 pr-5 pt-1">
           <label className="input input-bordered flex max-w-xs  items-center gap-2">
             <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
@@ -75,7 +76,7 @@ const Page = () => {
         </div>
         <div className="overflow-x-auto w-full">
           <div ref={contentToPrint} className="flex flex-col w-full p-5">
-            <div className="flex flex-col items-center pb-5"><h4 className="font-bold">DISTRIBUTION REPORT</h4><CurrentMonthYear /></div>
+            <div className="flex flex-col items-center pb-5"><h4 className="font-bold">DISTRIBUTION REPORT</h4>{startDate} TO {endDate}</div>
             <table className="table table-sm">
               <thead>
                 <tr>
