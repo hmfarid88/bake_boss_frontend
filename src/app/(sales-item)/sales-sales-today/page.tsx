@@ -35,8 +35,8 @@ const Page = () => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product>();
-  const [updatedQty, setUpdatedQty] = useState();
-  const [updatedDiscount, setUpdatedDiscount] = useState();
+  const [updatedQty, setUpdatedQty] = useState("");
+  const [updatedDiscount, setUpdatedDiscount] = useState('');
 
   const handleEditClick = (product: any) => {
     setSelectedProduct(product);
@@ -50,7 +50,7 @@ const Page = () => {
       return;
     }
     try {
-      const response = await fetch(`${apiBaseUrl}/sales/update-quantity/${productId}?newQty=${updatedQty}`, {
+      const response = await fetch(`${apiBaseUrl}/sales/update-quantity/${productId}?username=${username}&newQty=${updatedQty}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -58,6 +58,7 @@ const Page = () => {
       });
 
       if (response.ok) {
+        setUpdatedQty("");
         toast.success("Update Successful!");
       } else {
         const data = await response.json();
@@ -83,6 +84,7 @@ const Page = () => {
       });
 
       if (response.ok) {
+        setUpdatedDiscount('');
         toast.success("Discount updated successfully!");
       } else {
         const data = await response.json();
@@ -96,7 +98,7 @@ const Page = () => {
 
   const handleProductDelete = async (productId: number) => {
     try {
-      const response = await fetch(`${apiBaseUrl}/sales/delete/${productId}`, {
+      const response = await fetch(`${apiBaseUrl}/sales/delete/${productId}?username=${username}`, {
         method: 'DELETE',
       });
   
@@ -218,13 +220,13 @@ const Page = () => {
               <p>Category: {selectedProduct.category}</p>
               <p>Sold Invoice: {selectedProduct.soldInvoice}</p>
               <p>Sale Rate: {selectedProduct.saleRate.toLocaleString('en-IN')}</p>
-              <p>Quantity: {selectedProduct.productQty.toFixed(2)}<input className="input input-sm input-bordered ml-2 w-[100px]" type="number" name="productQty" onChange={(e: any) => setUpdatedQty(e.target.value)} />
+              <p>Quantity: {selectedProduct.productQty.toFixed(2)}<input className="input input-sm input-bordered ml-2 w-[100px]" type="number" value={updatedQty} name="productQty" onChange={(e: any) => setUpdatedQty(e.target.value)} />
                 <button className="btn btn-sm btn-accent ml-3" onClick={() => {
                   if (window.confirm("Are you sure you want to update this item?")) {
                     handleQtyUpdate(selectedProduct.productId);
                   }
                 }} >Apply</button></p>
-              <p>Discount: {selectedProduct.discount.toFixed(2)}<input className="input input-sm input-bordered ml-2 w-[100px]" type="number" name="discount" onChange={(e: any) => setUpdatedDiscount(e.target.value)} />
+              <p>Discount: {selectedProduct.discount.toFixed(2)}<input className="input input-sm input-bordered ml-2 w-[100px]" type="number" name="discount" value={updatedDiscount} onChange={(e: any) => setUpdatedDiscount(e.target.value)} />
                 <button className="btn btn-sm btn-accent ml-3" onClick={() => {
                   if (window.confirm("Are you sure you want to update this item?")) {
                     handleDiscountUpdate(selectedProduct.productId);
@@ -233,8 +235,8 @@ const Page = () => {
               <p>Total: {((selectedProduct.saleRate * selectedProduct.productQty) - (selectedProduct.discount)).toLocaleString('en-IN')}</p>
             </div>
             <div className="flex gap-3 p-3">
-            <button className="btn btn-sm btn-accent ml-3" onClick={() => {
-                  if (window.confirm("Are you sure you want to update this item?")) {
+            <button className="btn btn-sm btn-error ml-3" onClick={() => {
+                  if (window.confirm("Are you sure you want to delete this item?")) {
                     handleProductDelete(selectedProduct.productId);
                   }
                 }} >Delete This Item</button>
