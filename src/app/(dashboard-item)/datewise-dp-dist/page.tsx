@@ -44,16 +44,28 @@ const Page = () => {
   }, [apiBaseUrl, username, startDate, endDate]);
 
 
-  useEffect(() => {
-    const filtered = allProducts.filter(product =>
-      (product.customer.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-      (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-      (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-      (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-      (product.invoiceNo.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
-    );
-    setFilteredProducts(filtered);
-  }, [filterCriteria, allProducts]);
+  // useEffect(() => {
+  //   const filtered = allProducts.filter(product =>
+  //     (product.customer.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+  //     (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+  //     (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+  //     (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+  //     (product.invoiceNo.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
+  //   );
+  //   setFilteredProducts(filtered);
+  // }, [filterCriteria, allProducts]);
+
+   useEffect(() => {
+      const filtered = allProducts.filter(product =>
+        (product.customer.toLowerCase().includes(` ${filterCriteria.toLowerCase()} `) ||
+         product.customer.toLowerCase() === filterCriteria.toLowerCase()) ||
+        (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+        (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+        (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+        (product.invoiceNo.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
+      );
+      setFilteredProducts(filtered);
+    }, [filterCriteria, allProducts]);
 
   const handleFilterChange = (e: any) => {
     setFilterCriteria(e.target.value);
