@@ -9,6 +9,8 @@ import DateToDate from "@/app/components/DateToDate";
 type Product = {
     date: string;
     time: string;
+    supplier:string;
+    invoiceNo:string;
     category: string;
     productName: string;
     costPrice: number;
@@ -48,6 +50,8 @@ const Page = () => {
         const filtered = allProducts.filter(product =>
             (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+            (product.supplier.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+            (product.invoiceNo.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.status.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
 
@@ -63,8 +67,10 @@ const Page = () => {
         <div className="container-2xl min-h-screen">
             <div className="flex flex-col w-full p-4 items-center justify-center">
 
-                <div className="flex w-full justify-between p-5">
+                <div className="flex w-full items-center justify-center p-5">
                     <DateToDate routePath="/datewise-salestock-ledger" />
+                </div>
+                <div className="flex w-full justify-between">
                     <div className="flex pt-5">
                         <label className="input input-bordered flex max-w-xs items-center gap-2">
                             <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
@@ -79,18 +85,20 @@ const Page = () => {
                 </div>
                 <div ref={contentToPrint} className="flex-1 p-5">
                     <div className="flex flex-col items-center justify-center p-3"><h4 className="font-semibold">STOCK LEDGER</h4><CurrentMonthYear /></div>
-                    <table className="table table-sm capitalize text-center">
+                    <table className="table table-sm capitalize">
                         <thead>
                             <tr>
                                 <th>SN</th>
                                 <th>DATE</th>
                                 <th>TIME</th>
+                                <th>SUPPLIER / BUYER</th>
+                                <th>INVOICE NO</th>
                                 <th>CATEGORY</th>
                                 <th>PRODUCT NAME</th>
                                 <th>PURCHASE PRICE</th>
                                 <th>STATUS</th>
-                                <th>ENTRY QTY</th>
-                                <th>REMAINING QTY</th>
+                                <th>QTY</th>
+                                <th>REMAINING</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -99,6 +107,8 @@ const Page = () => {
                                     <td>{index + 1}</td>
                                     <td>{product.date}</td>
                                     <td>{product.time}</td>
+                                    <td>{product.supplier}</td>
+                                    <td className="uppercase">{product.invoiceNo}</td>
                                     <td>{product.category}</td>
                                     <td>{product.productName}</td>
                                     <td>{product.costPrice.toFixed(2)}</td>

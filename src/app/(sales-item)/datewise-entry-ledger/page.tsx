@@ -8,6 +8,7 @@ import { useSearchParams } from "next/navigation";
 type Product = {
     date: string;
     time: string;
+    supplier: string;
     category: string;
     productName: string;
     invoiceNo: string;
@@ -50,6 +51,7 @@ const Page = () => {
         const filtered = allProducts.filter(product =>
             (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+            (product.supplier.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.invoiceNo.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
         );
@@ -61,6 +63,9 @@ const Page = () => {
     };
     const totalQty = filteredProducts.reduce((total, product) => {
         return total + product.productQty;
+    }, 0);
+    const totalValue = filteredProducts.reduce((total, product) => {
+        return total + product.productQty*product.costPrice;
     }, 0);
     return (
         <div className="container-2xl min-h-screen">
@@ -87,10 +92,12 @@ const Page = () => {
                                 <th>DATE</th>
                                 <th>TIME</th>
                                 <th>INVOICE NO</th>
+                                <th>SUPPLIER</th>
                                 <th>CATEGORY</th>
                                 <th>PRODUCT NAME</th>
-                                <th>PURCHASE PRICE</th>
-                                <th>ENTRY QTY</th>
+                                <th>P.PRICE</th>
+                                <th>QTY</th>
+                                <th>TOTAL</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -100,18 +107,21 @@ const Page = () => {
                                     <td>{product.date}</td>
                                     <td>{product.time}</td>
                                     <td className="uppercase">{product.invoiceNo}</td>
+                                    <td className="capitalize">{product.supplier}</td>
                                     <td className="capitalize">{product.category}</td>
                                     <td className="capitalize">{product.productName}</td>
                                     <td>{product.costPrice.toFixed(2)}</td>
                                     <td>{product.productQty.toFixed(2)}</td>
+                                    <td>{(product.productQty*product.costPrice).toFixed(2)}</td>
                                 </tr>
                             ))}
                         </tbody>
                         <tfoot>
                             <tr className="font-semibold text-lg">
-                                <td colSpan={6}></td>
+                                <td colSpan={7}></td>
                                 <td>TOTAL</td>
                                 <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
+                                <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
                             </tr>
                         </tfoot>
                     </table>

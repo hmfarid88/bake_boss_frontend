@@ -2,8 +2,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAppSelector } from "@/app/store";
 import Print from "@/app/components/Print";
-import CurrentMonthYear from "@/app/components/CurrentMonthYear";
 import DateToDate from "@/app/components/DateToDate";
+import { useSearchParams } from "next/navigation";
 
 type Product = {
   category: string;
@@ -21,20 +21,24 @@ const Page = () => {
   const username = uname ? uname.username : 'Guest';
   const contentToPrint = useRef<HTMLDivElement>(null);
 
+  const searchParams = useSearchParams();
+  const startDate = searchParams.get('startDate');
+  const endDate = searchParams.get('endDate');
+
   const [filterCriteria, setFilterCriteria] = useState('');
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/api/getSoldProduct?username=${username}`)
+    fetch(`${apiBaseUrl}/api/getDatewiseDistProduct?username=${username}&startDate=${startDate}&endDate=${endDate}`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);
         setFilteredProducts(data);
       })
       .catch(error => console.error('Error fetching products:', error));
-  }, [apiBaseUrl, username]);
+  }, [apiBaseUrl, username, startDate, endDate]);
 
 
   useEffect(() => {
@@ -71,7 +75,9 @@ const Page = () => {
           </div>
           <div className="overflow-x-auto">
           <div ref={contentToPrint} className="flex-1 p-5">
-          <div className="flex flex-col items-center pb-5"><h4 className="font-bold">PROFIT REPORT</h4><CurrentMonthYear /></div>
+          <div className="flex flex-col items-center pb-5"><h4 className="font-bold">PROFIT REPORT</h4>
+          <h4>{startDate} TO {endDate}</h4>
+          </div>
             <table className="table">
               <thead>
                 <tr>

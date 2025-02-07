@@ -8,6 +8,8 @@ import { useSearchParams } from "next/navigation";
 type Product = {
     date: string;
     time: string;
+    supplier: string;
+    invoiceNo: string;
     category: string;
     productName: string;
     costPrice: number;
@@ -51,6 +53,8 @@ const Page = () => {
         const filtered = allProducts.filter(product =>
             (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+            (product.supplier.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+            (product.invoiceNo.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.status.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
 
@@ -79,7 +83,7 @@ const Page = () => {
                 </div>
                 <div ref={contentToPrint} className="flex-1 p-5">
                     <div className="flex flex-col items-center justify-center p-3"><h4 className="font-semibold">STOCK LEDGER</h4>
-                    <h4>{startDate} TO {endDate}</h4>
+                        <h4>{startDate} TO {endDate}</h4>
                     </div>
                     <table className="table table-sm capitalize text-center">
                         <thead>
@@ -87,12 +91,14 @@ const Page = () => {
                                 <th>SN</th>
                                 <th>DATE</th>
                                 <th>TIME</th>
+                                <th>SUPPLIER / BUYER</th>
+                                <th>INVOICE NO</th>
                                 <th>CATEGORY</th>
                                 <th>PRODUCT NAME</th>
                                 <th>PURCHASE PRICE</th>
                                 <th>STATUS</th>
-                                <th>ENTRY QTY</th>
-                                <th>REMAINING QTY</th>
+                                <th>QTY</th>
+                                <th>REMAINING</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -101,6 +107,8 @@ const Page = () => {
                                     <td>{index + 1}</td>
                                     <td>{product.date}</td>
                                     <td>{product.time}</td>
+                                    <td>{product.supplier}</td>
+                                    <td className="uppercase">{product.invoiceNo}</td>
                                     <td>{product.category}</td>
                                     <td>{product.productName}</td>
                                     <td>{product.costPrice.toFixed(2)}</td>

@@ -12,6 +12,8 @@ type Product = {
   category: string;
   productName: string;
   soldInvoice: string;
+  customerName: string;
+  phoneNumber: string;
   saleRate: number;
   discount: number;
   productQty: number;
@@ -47,6 +49,8 @@ const Page = () => {
       (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
       (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
       (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+      (product.customerName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+      (product.phoneNumber.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
       (product.soldInvoice.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
     );
     setFilteredProducts(filtered);
@@ -62,8 +66,11 @@ const Page = () => {
   const totalDis = filteredProducts.reduce((acc, item) => acc + item.discount, 0);
   return (
     <div className="container-2xl min-h-[calc(100vh-228px)]">
-      <div className="flex w-full justify-between p-5">
+      <div className="flex flex-col w-full items-center p-5">
+        <div className="flex">
         <DateToDate routePath="/datewise-salereport" />
+        </div>
+        <div className="flex w-full justify-between">
         <div className="pt-7">
         <label className="input input-bordered flex max-w-xs  items-center gap-2">
           <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
@@ -73,7 +80,7 @@ const Page = () => {
         </label>
         </div>
         <div className="pt-5"><button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button></div>
-        
+        </div>
       </div>
 
       <div className="flex w-full items-center justify-center">
@@ -89,6 +96,7 @@ const Page = () => {
                   <th>CATEGORY</th>
                   <th>PRODUCT NAME</th>
                   <th>INVOICE NO</th>
+                  <th>CUSTOMER INFO</th>
                   <th>SALE PRICE</th>
                   <th>QUANTITY</th>
                   <th>DISCOUNT</th>
@@ -104,6 +112,7 @@ const Page = () => {
                     <td className="capitalize">{product.category}</td>
                     <td className="capitalize">{product.productName}</td>
                     <td className="uppercase">{product.soldInvoice}</td>
+                    <td className="capitalize">{product.customerName} {product.phoneNumber}</td>
                     <td>{Number(product.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.discount?.toFixed(2)).toLocaleString('en-IN')}</td>
@@ -113,7 +122,7 @@ const Page = () => {
               </tbody>
               <tfoot>
                 <tr className="font-semibold text-lg">
-                  <td colSpan={6}></td>
+                  <td colSpan={7}></td>
                   <td>TOTAL</td>
                   <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
                   <td>{Number(totalDis.toFixed(2)).toLocaleString('en-IN')}</td>

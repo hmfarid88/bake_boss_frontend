@@ -5,6 +5,7 @@ import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
 import CurrentMonthYear from "@/app/components/CurrentMonthYear";
 import DateToDate from "@/app/components/DateToDate";
+import { useSearchParams } from "next/navigation";
 
 type Product = {
   date: string;
@@ -23,6 +24,10 @@ const Page = () => {
   const uname = useAppSelector((state) => state.username.username);
   const username = uname ? uname.username : 'Guest';
 
+  const searchParams = useSearchParams();
+  const startDate = searchParams.get('startDate');
+  const endDate = searchParams.get('endDate');
+
   const contentToPrint = useRef(null);
   const handlePrint = useReactToPrint({
     content: () => contentToPrint.current,
@@ -32,14 +37,14 @@ const Page = () => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/sales/getOutletAllReturned`)
+    fetch(`${apiBaseUrl}/sales/datewise-outlet-returned?startDate=${startDate}&endDate=${endDate}`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);
         setFilteredProducts(data);
       })
       .catch(error => console.error('Error fetching products:', error));
-  }, [apiBaseUrl, username]);
+  }, [apiBaseUrl, username, startDate, endDate]);
 
 
   useEffect(() => {
@@ -68,7 +73,7 @@ const Page = () => {
     <div className="container-2xl">
       <div className="flex flex-col w-full min-h-[calc(100vh-228px)] p-4 items-center justify-center">
       <div className="flex">
-          <DateToDate routePath="/datewise-sales-returned" />
+          <DateToDate routePath="/datewise-product-returned" />
         </div>
         <div className="flex w-full justify-between pl-5 pr-5 pt-1">
           <label className="input input-bordered flex max-w-xs  items-center gap-2">
@@ -83,7 +88,9 @@ const Page = () => {
         <div className="flex w-full items-center justify-center">
           <div className="overflow-x-auto">
             <div ref={contentToPrint} className="flex-1 p-5">
-              <div className="flex flex-col gap-2 items-center"><h4 className="font-bold text-lg">RETURNED PRODUCT</h4><CurrentMonthYear /></div>
+              <div className="flex flex-col gap-2 items-center"><h4 className="font-bold text-lg">RETURNED PRODUCT</h4>
+              <h4>{startDate} TO {endDate}</h4>
+              </div>
               <table className="table mt-5">
                 <thead>
                   <tr>

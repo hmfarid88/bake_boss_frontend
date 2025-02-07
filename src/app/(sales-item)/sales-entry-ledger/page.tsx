@@ -9,6 +9,7 @@ import DateToDate from "@/app/components/DateToDate";
 type Product = {
     date: string;
     time: string;
+    supplier: string;
     category: string;
     productName: string;
     invoiceNo: string;
@@ -47,6 +48,7 @@ const Page = () => {
         const filtered = allProducts.filter(product =>
             (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+            (product.supplier.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.invoiceNo.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
         );
@@ -59,11 +61,17 @@ const Page = () => {
     const totalQty = filteredProducts.reduce((total, product) => {
         return total + product.productQty;
     }, 0);
+    const totalValue = filteredProducts.reduce((total, product) => {
+        return total + product.productQty*product.costPrice;
+    }, 0);
     return (
         <div className="container-2xl min-h-screen">
             <div className="flex flex-col w-full p-4 items-center justify-center">
-                <div className="flex w-full justify-between p-5">
+                <div className="flex flex-col w-full gap-5 p-5">
+                    <div className="flex items-center justify-center">
                     <DateToDate routePath="/datewise-entry-ledger" />
+                    </div>
+                    <div className="flex w-full justify-between">
                     <div className="flex">
                         <label className="input input-bordered flex max-w-xs  items-center gap-2">
                             <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
@@ -73,20 +81,23 @@ const Page = () => {
                         </label>
                     </div>
                     <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
+                    </div>
                 </div>
                 <div ref={contentToPrint} className="flex-1 p-5">
                     <div className="flex flex-col items-center justify-center gap-2 p-3"><h4 className="font-semibold">STOCK ENTRY LEDGER</h4><CurrentMonthYear /></div>
-                    <table className="table table-sm capitalize text-center">
+                    <table className="table table-sm">
                         <thead>
                             <tr>
                                 <th>SN</th>
                                 <th>DATE</th>
                                 <th>TIME</th>
                                 <th>INVOICE NO</th>
+                                <th>SUPPLIER</th>
                                 <th>CATEGORY</th>
                                 <th>PRODUCT NAME</th>
-                                <th>PURCHASE PRICE</th>
-                                <th>ENTRY QTY</th>
+                                <th>P.PRICE</th>
+                                <th>QTY</th>
+                                <th>TOTAL</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -96,18 +107,21 @@ const Page = () => {
                                     <td>{product.date}</td>
                                     <td>{product.time}</td>
                                     <td className="uppercase">{product.invoiceNo}</td>
+                                    <td className="capitalize">{product.supplier}</td>
                                     <td className="capitalize">{product.category}</td>
                                     <td className="capitalize">{product.productName}</td>
                                     <td>{product.costPrice.toFixed(2)}</td>
                                     <td>{product.productQty.toFixed(2)}</td>
+                                    <td>{(product.productQty*product.costPrice).toFixed(2)}</td>
                                 </tr>
                             ))}
                         </tbody>
                         <tfoot>
                             <tr className="font-semibold text-lg">
-                                <td colSpan={6}></td>
+                                <td colSpan={7}></td>
                                 <td>TOTAL</td>
                                 <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
+                                <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
                             </tr>
                         </tfoot>
                     </table>
