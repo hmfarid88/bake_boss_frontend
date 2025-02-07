@@ -49,7 +49,10 @@ const Page = () => {
   const handleFilterChange = (e: any) => {
     setFilterCriteria(e.target.value);
   };
-  const totalValue = filteredProducts.reduce((total, product) => {
+  const totalCostValue = filteredProducts.reduce((total, product) => {
+    return total + (product.costPrice * product.productQty);
+  }, 0);
+  const totalSaleValue = filteredProducts.reduce((total, product) => {
     return total + (product.dpRate * product.productQty);
   }, 0);
   const totalQty = filteredProducts.reduce((acc, item) => acc + item.productQty, 0);
@@ -96,17 +99,20 @@ const Page = () => {
                     <td>{Number(product.costPrice.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.dpRate.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.dpRate-product.costPrice).toLocaleString('en-IN')}</td>
-                    <td>{product.productQty.toLocaleString('en-IN')}</td>
+                    <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(((product.dpRate-product.costPrice) * product.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
                 <tr className="font-semibold text-lg">
-                  <td colSpan={6}></td>
+                  <td colSpan={3}></td>
                   <td>TOTAL</td>
+                  <td>{Number((totalCostValue*totalQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                  <td>{Number((totalSaleValue*totalQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                  <td></td>
                   <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                  <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
+                  <td>{Number(((totalSaleValue*totalQty)-(totalCostValue*totalQty)).toFixed(2)).toLocaleString('en-IN')}</td>
                 </tr>
               </tfoot>
             </table>
