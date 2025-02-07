@@ -50,8 +50,8 @@ const Page = () => {
         const filtered = allProducts.filter(product =>
             (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-            (product.supplier.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-            (product.invoiceNo.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+            (product.supplier?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+            (product.invoiceNo?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.status.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
 

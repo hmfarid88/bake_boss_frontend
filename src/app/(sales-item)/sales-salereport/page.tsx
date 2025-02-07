@@ -49,8 +49,8 @@ const Page = () => {
       (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
       (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
       (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-      (product.customerName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-      (product.phoneNumber.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+      (product.customerName?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+      (product.phoneNumber?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
       (product.soldInvoice.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
     );
     setFilteredProducts(filtered);
