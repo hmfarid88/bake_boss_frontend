@@ -13,6 +13,7 @@ interface Product {
     productQty: number;
     status: string;
     username: string;
+    tempRemain: number;
 }
 
 interface SalesProduct {
@@ -44,6 +45,14 @@ export const salesProductSaleSlice = createSlice({
                 product.discount = discountValue;
             }
         },
+       
+        updateQty: (state, action) => {
+            const { id, qty } = action.payload;
+            const product = state.products.find(product => product.id === id);
+            if (product && qty <= product.tempRemain) {
+                product.productQty = qty;
+            }
+        },
         deleteProduct: (state, action) => {
             const id = action.payload;
             state.products = state.products.filter((product) => product.id !== id);
@@ -56,6 +65,6 @@ export const salesProductSaleSlice = createSlice({
     }
 
 })
-export const { showProducts, addProducts, updateDiscount, deleteProduct, deleteAllProducts } = salesProductSaleSlice.actions;
+export const { showProducts, addProducts, updateDiscount, updateQty, deleteProduct, deleteAllProducts } = salesProductSaleSlice.actions;
 
 export default salesProductSaleSlice.reducer;

@@ -87,7 +87,7 @@ const Page = () => {
                             <h4>DATE : {startDate} TO {endDate}</h4>
                         </div>
                         <div className="pt-5">
-                            <table className="table table-sm text-center">
+                            <table className="table table-sm">
                                 <thead>
                                     <tr>
                                         <th>SN</th>

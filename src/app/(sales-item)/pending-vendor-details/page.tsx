@@ -114,8 +114,8 @@ const Page = () => {
                 <div className="flex font-semibold text-lg items-center">
                     <h4>PENDING PRODUCT</h4>
                 </div>
-                <div className="flex pt-5">
-                    <div className="overflow-x-auto">
+                <div className="flex flex-col pt-5">
+                   
                         <div className="flex justify-between pl-5 pr-5 pt-1">
                             <label className="input input-bordered flex max-w-xs  items-center gap-2">
                                 <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
@@ -125,8 +125,9 @@ const Page = () => {
                             </label>
                             <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
                         </div>
+                        <div className="overflow-x-auto">
                         <div ref={contentToPrint} className="flex-1 p-5">
-                            <table className="table text-center">
+                            <table className="table table-sm">
                                 <thead>
                                     <tr>
                                         <th>SN</th>

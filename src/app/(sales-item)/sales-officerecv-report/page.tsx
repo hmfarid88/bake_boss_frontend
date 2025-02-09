@@ -59,7 +59,9 @@ const Page = () => {
     return (
         <div className="container-2xl">
             <div className="flex flex-col w-full min-h-[calc(100vh-228px)] p-4 items-center justify-center">
-               
+               <div className="flex items-center justify-center">
+               <DateToDate routePath="/datewise-officerecev-report" />
+               </div>
                     <div className="flex justify-between w-full p-5">
                         <label className="input input-bordered flex max-w-xs  items-center gap-2">
                             <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
@@ -67,12 +69,12 @@ const Page = () => {
                                 <path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" />
                             </svg>
                         </label>
-                        <DateToDate routePath="/datewise-officerecev-report" />
+                       
                         <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
                     </div>
                     <div ref={contentToPrint} className="flex-1 p-5">
                     <div className="flex flex-col items-center pb-5"><h4 className="font-bold">OFFICE RECEIVE REPORT</h4><CurrentMonthYear /></div>
-                        <table className="table text-center">
+                        <table className="table table-sm">
                             <thead>
                                 <tr>
                                     <th>SN</th>

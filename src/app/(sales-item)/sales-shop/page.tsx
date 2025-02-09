@@ -2,7 +2,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from 'next/navigation';
 import { useAppDispatch, useAppSelector } from "@/app/store";
-import { addProducts, updateDiscount, deleteAllProducts, deleteProduct } from "@/app/store/salesProductSaleSlice";
+import { addProducts, updateDiscount, updateQty, deleteAllProducts, deleteProduct } from "@/app/store/salesProductSaleSlice";
 
 import Select from "react-select";
 import { uid } from 'uid';
@@ -11,6 +11,7 @@ import { FcCalendar, FcManager, FcPhone, FcViewDetails } from "react-icons/fc";
 import { HiCurrencyBangladeshi } from "react-icons/hi";
 import { FaHandHoldingMedical } from "react-icons/fa";
 import { RiDeleteBin6Line, RiHandCoinLine } from "react-icons/ri";
+import swal from 'sweetalert';
 
 const Page: React.FC = () => {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -50,7 +51,6 @@ const Page: React.FC = () => {
 
     const [selectedProid, setSelectedProid] = useState("");
     const [selectedProidOption, setSelectedProidOption] = useState(null);
-    const [discount, setDiscount] = useState("");
 
     const [selectedQty, setSelectedQty] = useState("");
     const numericProductQty: number = Number(selectedQty);
@@ -86,9 +86,6 @@ const Page: React.FC = () => {
         setQtyTotal(qtyTotal);
     };
 
-    const handleUpdateDiscount = (id: any) => {
-        dispatch(updateDiscount({ id, discount }));
-    };
 
     const handleDeleteProduct = (id: any) => {
         dispatch(deleteProduct(id));
@@ -120,7 +117,7 @@ const Page: React.FC = () => {
             .filter(p => p.productName === productData.productName && p.username === username)
             .reduce((total, p) => total + p.productQty, 0);
         if (productData.remainingQty < totalSoldQty + numericProductQty) {
-            toast.error("Sorry, not enough qty!");
+            toast.error("Sorry, insufficient qty!");
             return;
         }
         const saleData = {
@@ -134,7 +131,8 @@ const Page: React.FC = () => {
             discount: 0,
             productQty: numericProductQty,
             status: 'sold',
-            username: username
+            username: username,
+            tempRemain: productData.remainingQty
         };
         dispatch(addProducts(saleData));
         setSelectedQty("");
@@ -180,7 +178,8 @@ const Page: React.FC = () => {
             discount: 0,
             productQty: 1 / productData.qty,
             status: 'sold',
-            username: username
+            username: username,
+            tempRemain: productData.remainingQty
         };
         dispatch(addProducts(saleData));
         setSelectedQty("");
@@ -192,6 +191,12 @@ const Page: React.FC = () => {
 
         if (productInfo.length === 0) {
             toast.error("Your product list is empty!");
+            return;
+        }
+
+        const hasZeroQty = productInfo.some(product => product.productQty === 0);
+        if (hasZeroQty) {
+            toast.error("Product quantity cannot be 0!");
             return;
         }
 
@@ -259,7 +264,11 @@ const Page: React.FC = () => {
                 <div className="flex flex-col w-full">
                     <div className="divider divider-accent tracking-widest font-bold p-5">SALES AREA</div>
                 </div>
-                <div className="flex items-center justify-center gap-2 z-10">
+                <div className="flex items-center justify-center gap-2 z-10" onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                        handleProductSubmit(e);
+                    }
+                }}>
                     <Select className="text-black h-[38px] w-64 md:w-96" ref={selectRef} value={selectedProidOption} autoFocus={true} onChange={handleProductSelect} options={productOption} />
                     <input type="number" className="w-[100px] h-[38px] p-2 bg-white text-black border rounded-md" ref={inputRef} placeholder="Qty" value={selectedQty} onChange={(e) => setSelectedQty(e.target.value)} />
                     <button onClick={handleProductSubmit} className='btn btn-outline btn-success btn-sm h-[38px]'>ADD</button>
@@ -285,14 +294,26 @@ const Page: React.FC = () => {
                                         <td>{index + 1}</td>
                                         <td>{p.productName} </td>
                                         <td>{Number(p.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
-                                        <td>{Number(p.productQty.toFixed(2))}</td>
-                                        <td><input type="number" name="discount" placeholder="0.00" onChange={(e: any) => setDiscount(e.target.value)} className="bg-base-100 w-20 p-1 rounded-md border input-bordered" /></td>
+                                        <td>
+                                            <div className="flex gap-2">
+                                                <input type="number" step="any" name="qty" value={p.productQty} placeholder="0.00" onChange={(e) => {
+                                                    let newQty = parseFloat(e.target.value) || 0;
+                                                    if (newQty > p.tempRemain) {
+                                                        swal("Oops!", "Insufficient Quantity!", "warning");
+                                                        newQty = p.productQty;
+                                                    }
+                                                    dispatch(updateQty({ id: p.id, qty: newQty }));
+                                                }}
+                                                    className="input input-sm w-20 input-bordered" />
+
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="number" name="discount" step="any" placeholder="0.00" onChange={(e) =>
+                                                dispatch(updateDiscount({ id: p.id, discount: parseFloat(e.target.value) || 0 }))} className="input input-sm w-20 input-bordered" />
+                                        </td>
                                         <td>{Number(((p.saleRate * p.productQty) - (p.discount)).toFixed(2)).toLocaleString('en-IN')}</td>
-                                        <td className="flex justify-between gap-3">
-                                            <button onClick={() => {
-                                                handleUpdateDiscount(p.id);
-                                            }} className="btn btn-xs btn-success btn-outline">Apply
-                                            </button>
+                                        <td>
                                             <button onClick={() => {
                                                 handleDeleteProduct(p.id);
                                             }} className="btn-xs rounded-md btn-outline btn-error"> <RiDeleteBin6Line size={18} />

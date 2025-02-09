@@ -62,8 +62,11 @@ const Page = () => {
   return (
     <div className="container-2xl min-h-[calc(100vh-228px)]">
       <div className="flex flex-col w-full">
+        <div className="flex items-center justify-center">
+        <DateToDate routePath="/datewise-stock-returned" />
+        </div>
         <div className="flex w-full justify-between p-5">
-          <DateToDate routePath="/datewise-stock-returned" />
+          
           <label className="input input-bordered flex max-w-xs  items-center gap-2">
             <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-4 w-4 opacity-70">
@@ -77,7 +80,7 @@ const Page = () => {
           <div className="overflow-x-auto">
             <div ref={contentToPrint} className="flex-1 p-5">
               <div className="flex flex-col gap-2 items-center"><h4 className="font-bold text-lg">RETURNED PRODUCT</h4><CurrentMonthYear /></div>
-              <table className="table mt-5 text-center">
+              <table className="table table-sm">
                 <thead>
                   <tr>
                     <th>SN</th>

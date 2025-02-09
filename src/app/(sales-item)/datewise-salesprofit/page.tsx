@@ -86,7 +86,7 @@ const Page = () => {
             <div className="flex flex-col gap-2 items-center"><h4 className="font-bold">PROFIT REPORT</h4>
               {startDate} TO {endDate}
             </div>
-            <table className="table mt-5 text-center">
+            <table className="table table-sm">
               <thead>
                 <tr>
                   <th>SN</th>

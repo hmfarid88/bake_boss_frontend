@@ -81,7 +81,7 @@ const Page = () => {
                             <div className="flex flex-col gap-2 items-center"><h4 className="font-bold text-lg">RETURNED PRODUCT</h4>
                                 <h4>{startDate} TO {endDate}</h4>
                             </div>
-                            <table className="table mt-5 text-center">
+                            <table className="table table-sm">
                                 <thead>
                                     <tr>
                                         <th>SN</th>

@@ -85,7 +85,7 @@ const Page = () => {
                     <div className="flex flex-col items-center justify-center gap-2 p-3"><h4 className="font-semibold">STOCK ENTRY LEDGER</h4>
                     {startDate} TO {endDate}
                     </div>
-                    <table className="table table-sm capitalize text-center">
+                    <table className="table table-sm">
                         <thead>
                             <tr>
                                 <th>SN</th>
