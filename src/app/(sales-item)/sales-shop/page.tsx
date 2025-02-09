@@ -253,7 +253,6 @@ const Page: React.FC = () => {
             .catch(error => console.error('Error fetching products:', error));
     }, [apiBaseUrl, username]);
 
-
     return (
         <div className='container-2xl min-h-screen'>
             <div className="flex flex-col">
