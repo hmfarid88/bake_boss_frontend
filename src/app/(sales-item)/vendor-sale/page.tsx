@@ -208,7 +208,11 @@ const Page: React.FC = () => {
                 <div className="flex flex-col w-full">
                     <div className="divider divider-accent tracking-widest font-bold p-5">VENDOR SALE AREA</div>
                 </div>
-                <div className="flex items-center justify-center gap-2 z-10">
+                <div className="flex items-center justify-center gap-2 z-10" onKeyDown={(e) => {
+                    if (e.key === "Enter") {
+                        handleProductSubmit(e);
+                    }
+                }}>
                     <Select className="text-black h-[38px] w-64 md:w-96" autoFocus={true} onChange={handleProductSelect} options={productOption} />
                     <input type="number" className="w-[100px] h-[38px] p-2 bg-white text-black border rounded-md" placeholder="Qty" ref={inputRef} value={selectedQty} onChange={(e) => setSelectedQty(e.target.value)} />
                     <button onClick={handleProductSubmit} className='btn btn-outline btn-success btn-sm h-[38px]'>ADD</button>
