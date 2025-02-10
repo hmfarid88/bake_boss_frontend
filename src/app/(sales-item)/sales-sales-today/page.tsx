@@ -181,7 +181,7 @@ const Page = () => {
                   <th>PRODUCT NAME</th>
                   <th>INVOICE NO</th>
                   <th>CUSTOMER INFO</th>
-                  <th>SALE PRICE</th>
+                  <th>SALE RATE</th>
                   <th>QUANTITY</th>
                   <th>DISCOUNT</th>
                   <th>SUB TOTAL</th>

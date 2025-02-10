@@ -59,6 +59,11 @@ const Page = () => {
   const totalSale = filteredProducts.reduce((acc, item) => acc + item.salePrice, 0);
   const totalQty = filteredProducts.reduce((acc, item) => acc + item.qty, 0);
   const totalDis = filteredProducts.reduce((acc, item) => acc + item.discount, 0);
+
+  const grandTotal = filteredProducts.reduce((acc, item) => {
+    return acc + (item.salePrice - item.costPrice - item.discount) * item.qty;
+  }, 0);
+  
   return (
     <div className="container-2xl min-h-[calc(100vh-228px)]">
       <div className="flex flex-col w-full justify-center items-center">
@@ -91,6 +96,7 @@ const Page = () => {
                     <th>PRODUCT NAME</th>
                     <th>COST PRICE</th>
                     <th>SALE PRICE</th>
+                    <th>UNIT PROFIT</th>
                     <th>QUANTITY</th>
                     <th>DISCOUNT</th>
                     <th>SUB TOTAL</th>
@@ -105,6 +111,7 @@ const Page = () => {
                       <td className="capitalize">{product.productName}</td>
                       <td>{Number(product.costPrice.toFixed(2)).toLocaleString('en-IN')}</td>
                       <td>{Number(product.salePrice.toFixed(2)).toLocaleString('en-IN')}</td>
+                      <td>{Number((product.salePrice - product.costPrice).toFixed(2)).toLocaleString('en-IN')}</td>
                       <td>{Number(product.qty.toFixed(2)).toLocaleString('en-IN')}</td>
                       <td>{Number(product.discount?.toFixed(2)).toLocaleString('en-IN')}</td>
                       <td>{Number(((product.salePrice - product.costPrice - product.discount) * product.qty).toFixed(2)).toLocaleString('en-IN')}</td>
@@ -117,9 +124,10 @@ const Page = () => {
                     <td>TOTAL</td>
                     <td>{Number(totalCost.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(totalSale.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number((totalSale - totalCost).toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(totalDis.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{Number(((totalSale - totalCost - totalDis) * totalQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number((grandTotal).toFixed(2)).toLocaleString('en-IN')}</td>
                   </tr>
                 </tfoot>
               </table>
