@@ -142,7 +142,7 @@ const Page = () => {
     setFilterCriteria(e.target.value);
   };
   const totalValue = filteredProducts.reduce((total, product) => {
-    return total + (product.saleRate * product.productQty);
+    return total + ((product.saleRate - product.discount) * product.productQty);
   }, 0);
   const totalQty = filteredProducts.reduce((acc, item) => acc + item.productQty, 0);
   const totalDis = filteredProducts.reduce((acc, item) => acc + item.discount, 0);
@@ -201,7 +201,7 @@ const Page = () => {
                     <td>{Number(product.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.discount?.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{Number(((product.saleRate * product.productQty) - (product.discount)).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number(((product.saleRate - product.discount) * (product.productQty)).toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>
                       <a href="#my_modal_edit_sale" className="btn btn-xs btn-ghost"> <FiEdit size={16} onClick={() => handleEditClick(product)} /> </a>
                     </td>
@@ -214,7 +214,7 @@ const Page = () => {
                   <td>TOTAL</td>
                   <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
                   <td>{Number(totalDis.toFixed(2)).toLocaleString('en-IN')}</td>
-                  <td>{Number((totalValue - totalDis).toFixed(2)).toLocaleString('en-IN')}</td>
+                  <td>{Number((totalValue).toFixed(2)).toLocaleString('en-IN')}</td>
                 </tr>
               </tfoot>
             </table>

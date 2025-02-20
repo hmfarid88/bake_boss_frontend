@@ -10,12 +10,12 @@ const HomeSummary = () => {
   const [date, setDate] = useState('');
 
   useEffect(() => {
-      const today = new Date();
-      const year = today.getFullYear();
-      const month = String(today.getMonth() + 1).padStart(2, '0');
-      const day = String(today.getDate()).padStart(2, '0');
-      const formattedDate = `${year}-${month}-${day}`;
-      setDate(formattedDate)
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const formattedDate = `${year}-${month}-${day}`;
+    setDate(formattedDate)
   }, []);
 
   const [stockValue, setProductStock] = useState<number>(0);
@@ -23,7 +23,7 @@ const HomeSummary = () => {
   const [monthlyTotalValue, setMonthlyTotalValue] = useState<number>(0);
   const [payValue, setPayValue] = useState<number>(0);
   const [recvValue, setRecvValue] = useState<number>(0);
- 
+
   const dashboardData = [
     { id: 1, title: "Stock Today" },
     { id: 2, title: "Sales Today" },
@@ -37,31 +37,31 @@ const HomeSummary = () => {
       .then(response => response.json())
       .then(data => {
         const totalStock = data.reduce((total: number, product: { costPrice: number; remainingQty: number; }) => {
-          return total + (product.costPrice*product.remainingQty);
+          return total + (product.costPrice * product.remainingQty);
         }, 0);
         setProductStock(totalStock);
       })
       .catch(error => console.error('Error fetching products:', error));
   }, [apiBaseUrl, username]);
 
-  
+
   useEffect(() => {
     fetch(`${apiBaseUrl}/sales/sales/today?username=${username}`)
       .then(response => response.json())
       .then(data => {
         const total = data.reduce((total: number, product: { saleRate: number; productQty: number; discount: number; }) => {
-          const saleAmount = product.saleRate * product.productQty;
-          const discountAmount = product.discount;
-          const netAmount = saleAmount - discountAmount;
-          
-          return total + netAmount;
+          const saleAmount = (product.saleRate - product.discount) * product.productQty;
+          // const discountAmount = product.discount;
+          // const netAmount = saleAmount - discountAmount;
+
+          return total + saleAmount;
         }, 0);
-  
+
         setTotalValue(total);
       })
       .catch(error => console.error('Error fetching sales:', error));
   }, [apiBaseUrl, username]);
-  
+
 
   useEffect(() => {
     fetch(`${apiBaseUrl}/sales/getOutletSale?username=${username}`)
@@ -69,22 +69,22 @@ const HomeSummary = () => {
       .then(data => {
         const { totalSale, totalDiscount } = data.reduce(
           (totals: { totalSale: number; totalDiscount: number; }, product: { saleRate: number; productQty: number; discount: number; }) => {
-            const saleValue = product.saleRate * product.productQty;
-            const discountValue = product.discount;
+            const saleValue = (product.saleRate - product.discount) * product.productQty;
+            // const discountValue = product.discount;
             return {
               totalSale: totals.totalSale + saleValue,
-              totalDiscount: totals.totalDiscount + discountValue,
+              // totalDiscount: totals.totalDiscount + discountValue,
             };
           },
           { totalSale: 0, totalDiscount: 0 }
         );
-  
-        const netSaleValue = totalSale - totalDiscount;
+
+        const netSaleValue = totalSale;
         setMonthlyTotalValue(netSaleValue);
       })
       .catch(error => console.error('Error fetching products:', error));
   }, [apiBaseUrl, username]);
-  
+
 
   useEffect(() => {
     fetch(`${apiBaseUrl}/paymentApi/payments/today?username=${username}&date=${date}`)
@@ -130,39 +130,39 @@ const HomeSummary = () => {
 
   return (
     <div className='flex flex-col md:flex-row gap-5 p-4 items-center justify-center w-full'>
-    {dashboardData?.map((item) =>
-      <div key={item.id} className="card shadow-md shadow-slate-700 border border-accent text-center font-bold h-32 w-60 p-2">
-        {item.title === "Stock Today" ? (
-          <div className='flex flex-col items-center justify-center gap-5'>
-            <p>{item.title}</p>
-            <p className='flex text-lg font-bold gap-2'><HiCurrencyBangladeshi size={26}/> {Number(stockValue.toFixed(2)).toLocaleString('en-IN')}</p>
-          </div>
-        ) : item.title === "Sales Today" ? (
+      {dashboardData?.map((item) =>
+        <div key={item.id} className="card shadow-md shadow-slate-700 border border-accent text-center font-bold h-32 w-60 p-2">
+          {item.title === "Stock Today" ? (
             <div className='flex flex-col items-center justify-center gap-5'>
               <p>{item.title}</p>
-              <p className='flex text-lg font-bold gap-2'><HiCurrencyBangladeshi size={26}/> {Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</p>
+              <p className='flex text-lg font-bold gap-2'><HiCurrencyBangladeshi size={26} /> {Number(stockValue.toFixed(2)).toLocaleString('en-IN')}</p>
+            </div>
+          ) : item.title === "Sales Today" ? (
+            <div className='flex flex-col items-center justify-center gap-5'>
+              <p>{item.title}</p>
+              <p className='flex text-lg font-bold gap-2'><HiCurrencyBangladeshi size={26} /> {Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</p>
             </div>
           ) : item.title === "Monthly Total" ? (
             <div className='flex flex-col items-center justify-center gap-5'>
               <p>{item.title}</p>
-              <p className='flex text-lg font-bold gap-2'><HiCurrencyBangladeshi size={26}/> {Number(monthlyTotalValue.toFixed(2)).toLocaleString('en-IN')}</p>
+              <p className='flex text-lg font-bold gap-2'><HiCurrencyBangladeshi size={26} /> {Number(monthlyTotalValue.toFixed(2)).toLocaleString('en-IN')}</p>
             </div>
           ) : item.title === "Payment Today" ? (
             <div className='flex flex-col items-center justify-center gap-5'>
               <p>{item.title}</p>
-              <p className='flex text-lg font-bold gap-2'><HiCurrencyBangladeshi size={26}/> {Number(payValue.toFixed(2)).toLocaleString('en-IN')}</p>
+              <p className='flex text-lg font-bold gap-2'><HiCurrencyBangladeshi size={26} /> {Number(payValue.toFixed(2)).toLocaleString('en-IN')}</p>
             </div>
           ) : item.title === "Cash Balance" ? (
             <div className='flex flex-col items-center justify-center gap-5'>
               <p>{item.title}</p>
-              <p className='flex text-lg font-bold gap-2'><HiCurrencyBangladeshi size={26}/> {Number((((netSumAmount+previousSaleTotal+totalValue+recvValue)-payValue)).toFixed(2)).toLocaleString('en-IN')}</p>
+              <p className='flex text-lg font-bold gap-2'><HiCurrencyBangladeshi size={26} /> {Number((((netSumAmount + previousSaleTotal + totalValue + recvValue) - payValue)).toFixed(2)).toLocaleString('en-IN')}</p>
             </div>
-          ): (
+          ) : (
             <p>{item.title}</p>
           )}
-      </div>
-    )}
-  </div>
+        </div>
+      )}
+    </div>
   )
 }
 

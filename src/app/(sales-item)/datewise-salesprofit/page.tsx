@@ -65,7 +65,7 @@ const Page = () => {
   const totalDis = filteredProducts.reduce((acc, item) => acc + item.discount, 0);
 
   const grandTotal = filteredProducts.reduce((acc, item) => {
-    return acc + (item.salePrice - item.costPrice - item.discount) * item.qty;
+    return acc + (item.salePrice - item.costPrice - item.discount);
   }, 0);
 
   return (
