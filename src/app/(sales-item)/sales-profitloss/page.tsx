@@ -61,9 +61,9 @@ const Page = () => {
   const totalDis = filteredProducts.reduce((acc, item) => acc + item.discount, 0);
 
   const grandTotal = filteredProducts.reduce((acc, item) => {
-    return acc + (item.salePrice - item.costPrice - item.discount) * item.qty;
+    return acc + (item.salePrice - item.costPrice - item.discount);
   }, 0);
-  
+
   return (
     <div className="container-2xl min-h-[calc(100vh-228px)]">
       <div className="flex flex-col w-full justify-center items-center">
@@ -86,7 +86,7 @@ const Page = () => {
         <div className="flex w-full items-center justify-center">
           <div className="overflow-x-auto">
             <div ref={contentToPrint} className="flex-1 p-5">
-              <div className="flex flex-col gap-2 items-center"><h4 className="font-bold">PROFIT REPORT</h4><CurrentMonthYear /></div>
+              <div className="flex flex-col gap-2 items-center pb-5"><h4 className="font-bold">PROFIT REPORT</h4><CurrentMonthYear /></div>
               <table className="table table-sm">
                 <thead>
                   <tr>
@@ -94,10 +94,10 @@ const Page = () => {
                     <th>DATE</th>
                     <th>CATEGORY</th>
                     <th>PRODUCT NAME</th>
-                    <th>COST PRICE</th>
-                    <th>SALE PRICE</th>
-                    <th>UNIT PROFIT</th>
                     <th>QUANTITY</th>
+                    <th>SALE PRICE</th>
+                    <th>COST PRICE</th>
+                    <th>PROFIT</th>
                     <th>DISCOUNT</th>
                     <th>SUB TOTAL</th>
                   </tr>
@@ -109,12 +109,12 @@ const Page = () => {
                       <td>{product.date}</td>
                       <td className="capitalize">{product.category}</td>
                       <td className="capitalize">{product.productName}</td>
-                      <td>{Number(product.costPrice.toFixed(2)).toLocaleString('en-IN')}</td>
-                      <td>{Number(product.salePrice.toFixed(2)).toLocaleString('en-IN')}</td>
-                      <td>{Number((product.salePrice - product.costPrice).toFixed(2)).toLocaleString('en-IN')}</td>
                       <td>{Number(product.qty.toFixed(2)).toLocaleString('en-IN')}</td>
+                      <td>{Number(product.salePrice.toFixed(2)).toLocaleString('en-IN')}</td>
+                      <td>{Number(product.costPrice.toFixed(2)).toLocaleString('en-IN')}</td>
+                      <td>{Number((product.salePrice - product.costPrice).toFixed(2)).toLocaleString('en-IN')}</td>
                       <td>{Number(product.discount?.toFixed(2)).toLocaleString('en-IN')}</td>
-                      <td>{Number(((product.salePrice - product.costPrice - product.discount) * product.qty).toFixed(2)).toLocaleString('en-IN')}</td>
+                      <td>{Number(((product.salePrice - product.costPrice - product.discount)).toFixed(2)).toLocaleString('en-IN')}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -122,10 +122,10 @@ const Page = () => {
                   <tr className="font-semibold text-lg">
                     <td colSpan={3}></td>
                     <td>TOTAL</td>
-                    <td>{Number(totalCost.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{Number(totalSale.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{Number((totalSale - totalCost).toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number(totalSale.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number(totalCost.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number((totalSale - totalCost).toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(totalDis.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number((grandTotal).toFixed(2)).toLocaleString('en-IN')}</td>
                   </tr>
