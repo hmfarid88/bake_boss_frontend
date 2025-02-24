@@ -63,24 +63,24 @@ const Page = () => {
         setFilterCriteria(e.target.value);
     };
     const totalValue = filteredProducts.reduce((total, product) => {
-        return total + ((product.saleRate - product.discount) * product.productQty);
+        return total + ((product.saleRate * product.productQty));
     }, 0);
     const totalQty = filteredProducts.reduce((acc, item) => acc + item.productQty, 0);
     const totalDis = filteredProducts.reduce((acc, item) => acc + item.discount, 0);
     return (
         <div className="container-2xl min-h-[calc(100vh-228px)]">
             <div className="flex flex-col w-full  p-4 items-center justify-center">
-                
-                    <div className="flex w-full justify-between pl-5 pr-5 pt-1">
-                        <label className="input input-bordered flex max-w-xs  items-center gap-2">
-                            <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-4 w-4 opacity-70">
-                                <path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" />
-                            </svg>
-                        </label>
-                        <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
-                    </div>
-                    <div className="overflow-x-auto">
+
+                <div className="flex w-full justify-between pl-5 pr-5 pt-1">
+                    <label className="input input-bordered flex max-w-xs  items-center gap-2">
+                        <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-4 w-4 opacity-70">
+                            <path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" />
+                        </svg>
+                    </label>
+                    <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
+                </div>
+                <div className="overflow-x-auto">
                     <div ref={contentToPrint} className="flex-1 p-5">
                         <div className="flex flex-col w-full items-center justify-center">
                             <h4 className="font-semibold text-lg">SALES REPORT</h4>
@@ -116,7 +116,7 @@ const Page = () => {
                                             <td>{Number(product.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
                                             <td>{Number(product.productQty?.toFixed(2)).toLocaleString('en-IN')}</td>
                                             <td>{Number(product.discount?.toFixed(2)).toLocaleString('en-IN')}</td>
-                                            <td>{Number(((product.saleRate - product.discount) * (product.productQty)).toFixed(2)).toLocaleString('en-IN')}</td>
+                                            <td>{Number(((product.saleRate * product.productQty) - (product.discount)).toFixed(2)).toLocaleString('en-IN')}</td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -126,7 +126,7 @@ const Page = () => {
                                         <td>TOTAL</td>
                                         <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
                                         <td>{Number(totalDis.toFixed(2)).toLocaleString('en-IN')}</td>
-                                        <td>{Number((totalValue).toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td>{Number((totalValue - totalDis).toFixed(2)).toLocaleString('en-IN')}</td>
                                     </tr>
                                 </tfoot>
                             </table>

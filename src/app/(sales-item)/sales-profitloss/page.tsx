@@ -61,7 +61,7 @@ const Page = () => {
   const totalDis = filteredProducts.reduce((acc, item) => acc + item.discount, 0);
 
   const grandTotal = filteredProducts.reduce((acc, item) => {
-    return acc + (item.salePrice - item.costPrice - item.discount);
+    return acc + (((item.salePrice - item.costPrice)*item.qty) - item.discount);
   }, 0);
 
   return (
@@ -94,10 +94,10 @@ const Page = () => {
                     <th>DATE</th>
                     <th>CATEGORY</th>
                     <th>PRODUCT NAME</th>
-                    <th>QUANTITY</th>
                     <th>SALE PRICE</th>
                     <th>COST PRICE</th>
-                    <th>PROFIT</th>
+                    <th>UNIT PROFIT</th>
+                    <th>QUANTITY</th>
                     <th>DISCOUNT</th>
                     <th>SUB TOTAL</th>
                   </tr>
@@ -109,12 +109,12 @@ const Page = () => {
                       <td>{product.date}</td>
                       <td className="capitalize">{product.category}</td>
                       <td className="capitalize">{product.productName}</td>
-                      <td>{Number(product.qty.toFixed(2)).toLocaleString('en-IN')}</td>
                       <td>{Number(product.salePrice.toFixed(2)).toLocaleString('en-IN')}</td>
                       <td>{Number(product.costPrice.toFixed(2)).toLocaleString('en-IN')}</td>
                       <td>{Number((product.salePrice - product.costPrice).toFixed(2)).toLocaleString('en-IN')}</td>
+                      <td>{Number(product.qty.toFixed(2)).toLocaleString('en-IN')}</td>
                       <td>{Number(product.discount?.toFixed(2)).toLocaleString('en-IN')}</td>
-                      <td>{Number(((product.salePrice - product.costPrice - product.discount)).toFixed(2)).toLocaleString('en-IN')}</td>
+                      <td>{Number(((((product.salePrice - product.costPrice)*product.qty) - product.discount)).toFixed(2)).toLocaleString('en-IN')}</td>
                     </tr>
                   ))}
                 </tbody>

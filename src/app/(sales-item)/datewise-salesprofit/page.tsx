@@ -65,9 +65,9 @@ const Page = () => {
   const totalDis = filteredProducts.reduce((acc, item) => acc + item.discount, 0);
 
   const grandTotal = filteredProducts.reduce((acc, item) => {
-    return acc + (item.salePrice - item.costPrice - item.discount);
+    return acc + (((item.salePrice - item.costPrice)*item.qty) - item.discount);
   }, 0);
-
+  
   return (
     <div className="container-2xl min-h-[calc(100vh-228px)]">
       <div className="flex w-full justify-between p-5">
@@ -92,46 +92,46 @@ const Page = () => {
             </div>
             <table className="table table-sm">
               <thead>
-              <tr>
-                    <th>SN</th>
-                    <th>DATE</th>
-                    <th>CATEGORY</th>
-                    <th>PRODUCT NAME</th>
-                    <th>QUANTITY</th>
-                    <th>SALE PRICE</th>
-                    <th>COST PRICE</th>
-                    <th>PROFIT</th>
-                    <th>DISCOUNT</th>
-                    <th>SUB TOTAL</th>
-                  </tr>
+                <tr>
+                  <th>SN</th>
+                  <th>DATE</th>
+                  <th>CATEGORY</th>
+                  <th>PRODUCT NAME</th>
+                  <th>SALE PRICE</th>
+                  <th>COST PRICE</th>
+                  <th>UNIT PROFIT</th>
+                  <th>QUANTITY</th>
+                  <th>DISCOUNT</th>
+                  <th>SUB TOTAL</th>
+                </tr>
               </thead>
               <tbody>
                 {filteredProducts?.map((product, index) => (
                   <tr key={index}>
                     <td>{index + 1}</td>
                     <td>{product.date}</td>
-                      <td className="capitalize">{product.category}</td>
-                      <td className="capitalize">{product.productName}</td>
-                      <td>{Number(product.qty.toFixed(2)).toLocaleString('en-IN')}</td>
-                      <td>{Number(product.salePrice.toFixed(2)).toLocaleString('en-IN')}</td>
-                      <td>{Number(product.costPrice.toFixed(2)).toLocaleString('en-IN')}</td>
-                      <td>{Number((product.salePrice - product.costPrice).toFixed(2)).toLocaleString('en-IN')}</td>
-                      <td>{Number(product.discount?.toFixed(2)).toLocaleString('en-IN')}</td>
-                      <td>{Number(((product.salePrice - product.costPrice - product.discount)).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td className="capitalize">{product.category}</td>
+                    <td className="capitalize">{product.productName}</td>
+                    <td>{Number(product.salePrice.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number(product.costPrice.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number((product.salePrice - product.costPrice).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number(product.qty.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number(product.discount?.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number(((((product.salePrice - product.costPrice) * product.qty) - product.discount)).toFixed(2)).toLocaleString('en-IN')}</td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
-              <tr className="font-semibold text-lg">
-                    <td colSpan={3}></td>
-                    <td>TOTAL</td>
-                    <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{Number(totalSale.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{Number(totalCost.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{Number((totalSale - totalCost).toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{Number(totalDis.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{Number((grandTotal).toFixed(2)).toLocaleString('en-IN')}</td>
-                  </tr>
+                <tr className="font-semibold text-lg">
+                  <td colSpan={3}></td>
+                  <td>TOTAL</td>
+                  <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
+                  <td>{Number(totalSale.toFixed(2)).toLocaleString('en-IN')}</td>
+                  <td>{Number(totalCost.toFixed(2)).toLocaleString('en-IN')}</td>
+                  <td>{Number((totalSale - totalCost).toFixed(2)).toLocaleString('en-IN')}</td>
+                  <td>{Number(totalDis.toFixed(2)).toLocaleString('en-IN')}</td>
+                  <td>{Number((grandTotal).toFixed(2)).toLocaleString('en-IN')}</td>
+                </tr>
               </tfoot>
             </table>
           </div>
