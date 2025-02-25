@@ -66,22 +66,6 @@ const HomeSummary = () => {
   useEffect(() => {
     fetch(`${apiBaseUrl}/sales/getOutletSale?username=${username}`)
       .then(response => response.json())
-      // .then(data => {
-      //   const { totalSale, totalDiscount } = data.reduce(
-      //     (totals: { totalSale: number; totalDiscount: number; }, product: { saleRate: number; productQty: number; discount: number; }) => {
-      //       const saleValue = product.saleRate * product.productQty;
-      //       const discountValue = product.discount;
-      //       return {
-      //         totalSale: totals.totalSale + saleValue,
-      //         totalDiscount: totals.totalDiscount + discountValue,
-      //       };
-      //     },
-      //     { totalSale: 0, totalDiscount: 0 }
-      //   );
-
-      //   const netSaleValue = totalSale;
-      //   setMonthlyTotalValue(netSaleValue);
-      // })
       .then(data => {
         const total = data.reduce((total: number, product: { saleRate: number; productQty: number; discount: number; }) => {
           const saleAmount = product.saleRate * product.productQty;

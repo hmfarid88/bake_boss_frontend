@@ -11,6 +11,7 @@ const Page = () => {
   const uname = useAppSelector((state) => state.username.username);
   const username = uname ? uname.username : 'Guest';
 
+  const [category, setCategory] = useState("");
   const [productName, setProductName] = useState("");
   const [additionalName, setAdditionalName] = useState("");
   const [costPrice, setCostPrice] = useState("");
@@ -75,7 +76,7 @@ const Page = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify([{ date, category: "Additional", productName, costPrice, saleRate, productQty, status: 'stored', username, invoiceNo: pid }]),
+        body: JSON.stringify([{ date, category, productName, costPrice, saleRate, productQty, status: 'stored', username, invoiceNo: pid }]),
       });
 
       if (!response.ok) {
@@ -118,14 +119,32 @@ const Page = () => {
 
       <div className="flex w-full p-4 items-center justify-center">
         <div className="flex flex-col gap-3 w-full items-center justify-center p-2">
-          
-            <label className="form-control w-full max-w-xs">
-              <div className="label">
-                <span className="label-text-alt">DATE</span>
-              </div>
-              <input type="date" name="date" onChange={(e: any) => setDate(e.target.value)} max={maxDate} value={date} className="border rounded-md p-2 mt-1.5 bg-white text-black  w-full max-w-xs h-[40px]" />
-            </label>
-      
+
+          <label className="form-control w-full max-w-xs">
+            <div className="label">
+              <span className="label-text-alt">DATE</span>
+            </div>
+            <input type="date" name="date" onChange={(e: any) => setDate(e.target.value)} max={maxDate} value={date} className="border rounded-md p-2 mt-1.5 bg-white text-black  w-full max-w-xs h-[40px]" />
+          </label>
+
+          <label className="form-control w-full max-w-xs">
+            <div className="label">
+              <span className="label-text-alt">CATEGORY NAME</span>
+            </div>
+            <select className='select select-bordered bg-white text-black h-[38px]' onChange={(e: any) => { setCategory(e.target.value) }}>
+              <option selected disabled>Select . . .</option>
+              <option value="Additional">Additional</option>
+              <option value="Barista">Barista</option>
+              <option value="Birthday Item">Birthday Item</option>
+              <option value="Bakery">Bakery</option>
+              <option value="Sweets">Sweets</option>
+              <option value="Pastry">Pastry</option>
+              <option value="Fast Food">Fast Food</option>
+              <option value="Others">Others</option>
+            </select>
+
+          </label>
+
           <label className="form-control w-full max-w-xs">
             <div className="label">
               <span className="label-text-alt">PRODUCT NAME</span>
@@ -151,7 +170,7 @@ const Page = () => {
             <div className="label">
               <span className="label-text-alt">QUANTITY</span>
             </div>
-            <input type="number" value={productQty} onChange={(e: any) => setProductQty(e.target.value)} placeholder="Type here" className="border rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" />
+            <input type="number" value={productQty} step="any" onChange={(e: any) => setProductQty(e.target.value)} placeholder="Type here" className="border rounded-md p-2  w-full max-w-xs h-[40px] bg-white text-black" />
           </label>
           <label className="form-control w-full max-w-xs">
             <button onClick={handleAdditionalSubmit} disabled={pending} className="btn btn-outline btn-success">{pending ? "Adding..." : "ADD"}</button>
