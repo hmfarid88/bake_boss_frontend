@@ -65,7 +65,7 @@ const Page = () => {
   };
   const handleAdditionalSubmit = async (e: any) => {
     e.preventDefault();
-    if (!productName || !costPrice || !saleRate || !productQty) {
+    if (!category || !productName || !costPrice || !saleRate || !productQty) {
       toast.warning("All fields are required");
       return;
     }
@@ -131,7 +131,7 @@ const Page = () => {
             <div className="label">
               <span className="label-text-alt">CATEGORY NAME</span>
             </div>
-            <select className='select select-bordered bg-white text-black h-[38px]' onChange={(e: any) => { setCategory(e.target.value) }}>
+            <select className='select select-bordered rounded-md bg-white text-black h-[38px]' onChange={(e: any) => { setCategory(e.target.value) }}>
               <option selected disabled>Select . . .</option>
               <option value="Additional">Additional</option>
               <option value="Barista">Barista</option>
