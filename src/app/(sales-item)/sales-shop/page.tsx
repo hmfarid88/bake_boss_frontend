@@ -52,7 +52,7 @@ const Page: React.FC = () => {
     const [selectedProid, setSelectedProid] = useState("");
     const [selectedProidOption, setSelectedProidOption] = useState(null);
 
-    const [selectedQty, setSelectedQty] = useState("");
+    const [selectedQty, setSelectedQty] = useState<number | "">("");
     const numericProductQty: number = Number(selectedQty);
 
     const [customerName, setCustomerName] = useState("");
@@ -106,8 +106,12 @@ const Page: React.FC = () => {
 
     const handleProductSubmit = async (e: any) => {
         e.preventDefault();
-        if (!selectedProid || !selectedQty) {
-            toast.error("Field is empty!")
+        if (!selectedProid) {
+            toast.error("Select any product!")
+            return;
+        }
+        if (!selectedQty) {
+            toast.error("Need valid quantity!")
             return;
         }
         const data = await fetchProductData(selectedProid);
@@ -150,7 +154,7 @@ const Page: React.FC = () => {
     const handleUnitProductSubmit = async (e: any) => {
         e.preventDefault();
         if (!selectedProid) {
-            toast.error("Field is empty!")
+            toast.error("Select any product!")
             return;
         }
         const data = await fetchProductData(selectedProid);
@@ -264,7 +268,13 @@ const Page: React.FC = () => {
                 </div>
                 <div className="flex items-center justify-center gap-2 z-10">
                     <Select className="text-black h-[38px] w-64 md:w-96" ref={selectRef} value={selectedProidOption} autoFocus={true} onChange={handleProductSelect} options={productOption} />
-                    <input type="number" className="w-[100px] h-[38px] p-2 bg-white text-black border rounded-md" ref={inputRef} placeholder="Qty" value={selectedQty} onChange={(e) => setSelectedQty(e.target.value)} />
+                    <input type="number" className="w-[100px] h-[38px] p-2 bg-white text-black border rounded-md" ref={inputRef} placeholder="Qty" value={selectedQty}
+                        onChange={(e) => {
+                            const value = Number(e.target.value);
+                            if (value >= 0) {
+                                setSelectedQty(value);
+                            }
+                        }} />
                     <button onClick={handleProductSubmit} className='btn btn-outline btn-success btn-sm h-[38px]'>ADD</button>
                     <button onClick={handleUnitProductSubmit} className='btn btn-outline btn-info btn-sm h-[38px]'>UNIT</button>
                 </div>
@@ -292,6 +302,9 @@ const Page: React.FC = () => {
                                             <div className="flex gap-2">
                                                 <input type="number" step="any" name="qty" value={p.productQty} placeholder="0.00" onChange={(e) => {
                                                     let newQty = parseFloat(e.target.value) || 0;
+                                                    if (newQty < 0) {
+                                                        newQty = 0;
+                                                    }
                                                     if (newQty > p.tempRemain) {
                                                         swal("Oops!", "Insufficient Quantity!", "warning");
                                                         newQty = p.productQty;
@@ -303,8 +316,24 @@ const Page: React.FC = () => {
                                             </div>
                                         </td>
                                         <td>
-                                            <input type="number" name="discount" step="any" placeholder="0.00" onChange={(e) =>
-                                                dispatch(updateDiscount({ id: p.id, discount: parseFloat(e.target.value) || 0 }))} className="input input-sm w-20 input-bordered" />
+                                            {/* <input type="number" name="discount" step="any" placeholder="0.00" onChange={(e) =>
+                                                dispatch(updateDiscount({ id: p.id, discount: parseFloat(e.target.value) || 0 }))} className="input input-sm w-20 input-bordered" /> */}
+                                            <input
+                                                type="number"
+                                                name="discount"
+                                                step="any"
+                                                placeholder="0.00"
+                                                onChange={(e) => {
+                                                    let newDiscount = parseFloat(e.target.value) || 0;
+                                                    if (newDiscount < 0) {
+                                                        newDiscount = 0;
+                                                    }
+
+                                                    dispatch(updateDiscount({ id: p.id, discount: newDiscount }));
+                                                }}
+                                                className="input input-sm w-20 input-bordered"
+                                            />
+
                                         </td>
                                         <td>{Number(((p.saleRate * p.productQty) - (p.discount)).toFixed(2)).toLocaleString('en-IN')}</td>
                                         <td>

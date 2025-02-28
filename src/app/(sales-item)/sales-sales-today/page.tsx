@@ -37,8 +37,8 @@ const Page = () => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
   const [selectedProduct, setSelectedProduct] = useState<Product>();
-  const [updatedQty, setUpdatedQty] = useState("");
-  const [updatedDiscount, setUpdatedDiscount] = useState('');
+  const [updatedQty, setUpdatedQty] = useState<number | "">("");
+  const [updatedDiscount, setUpdatedDiscount] = useState<number | "">("");
 
   const handleEditClick = (product: any) => {
     setSelectedProduct(product);
@@ -229,13 +229,23 @@ const Page = () => {
               <p>Category: {selectedProduct.category}</p>
               <p>Sold Invoice: {selectedProduct.soldInvoice}</p>
               <p>Sale Rate: {selectedProduct.saleRate.toLocaleString('en-IN')}</p>
-              <p>Quantity: {selectedProduct.productQty.toFixed(2)}<input className="input input-sm input-bordered ml-2 w-[100px]" type="number" value={updatedQty} name="productQty" onChange={(e: any) => setUpdatedQty(e.target.value)} />
+              <p>Quantity: {selectedProduct.productQty.toFixed(2)}<input className="input input-sm input-bordered ml-2 w-[100px]" type="number" value={updatedQty} name="productQty" onChange={(e) => {
+                const value = Number(e.target.value);
+                if (value >= 0) {
+                  setUpdatedQty(value);
+                }
+              }} />
                 <button className="btn btn-sm btn-accent ml-3" onClick={() => {
                   if (window.confirm("Are you sure you want to update this item?")) {
                     handleQtyUpdate(selectedProduct.productId);
                   }
                 }} >Apply</button></p>
-              <p>Discount: {selectedProduct.discount.toFixed(2)}<input className="input input-sm input-bordered ml-2 w-[100px]" type="number" name="discount" value={updatedDiscount} onChange={(e: any) => setUpdatedDiscount(e.target.value)} />
+              <p>Discount: {selectedProduct.discount.toFixed(2)}<input className="input input-sm input-bordered ml-2 w-[100px]" type="number" name="discount" value={updatedDiscount} onChange={(e) => {
+                const value = Number(e.target.value);
+                if (value >= 0) {
+                  setUpdatedDiscount(value);
+                }
+              }} />
                 <button className="btn btn-sm btn-accent ml-3" onClick={() => {
                   if (window.confirm("Are you sure you want to update this item?")) {
                     handleDiscountUpdate(selectedProduct.productId);
