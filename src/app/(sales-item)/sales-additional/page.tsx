@@ -140,6 +140,7 @@ const Page = () => {
               <option value="Sweets">Sweets</option>
               <option value="Pastry">Pastry</option>
               <option value="Fast Food">Fast Food</option>
+              <option value="Iftar Item">Iftar Item</option>
               <option value="Others">Others</option>
             </select>
 
