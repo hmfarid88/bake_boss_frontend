@@ -143,7 +143,6 @@ const Page = () => {
               <option value="Iftar Item">Iftar Item</option>
               <option value="Others">Others</option>
             </select>
-
           </label>
 
           <label className="form-control w-full max-w-xs">
