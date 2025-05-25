@@ -44,17 +44,7 @@ const Page = () => {
   }, [apiBaseUrl, username, startDate, endDate]);
 
 
-  // useEffect(() => {
-  //   const filtered = allProducts.filter(product =>
-  //     (product.customer.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-  //     (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-  //     (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-  //     (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-  //     (product.invoiceNo.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
-  //   );
-  //   setFilteredProducts(filtered);
-  // }, [filterCriteria, allProducts]);
-
+ 
    useEffect(() => {
       const filtered = allProducts.filter(product =>
         (product.customer.toLowerCase().includes(` ${filterCriteria.toLowerCase()} `) ||
@@ -72,6 +62,9 @@ const Page = () => {
   };
   const totalValue = filteredProducts.reduce((total, product) => {
     return total + (product.dpRate * product.productQty);
+  }, 0);
+  const totalCost = filteredProducts.reduce((total, product) => {
+    return total + (product.costPrice * product.productQty);
   }, 0);
   const totalQty = filteredProducts.reduce((acc, item) => acc + item.productQty, 0);
   return (
@@ -124,8 +117,10 @@ const Page = () => {
               </tbody>
               <tfoot>
                 <tr className="font-semibold text-md">
-                  <td colSpan={8}></td>
+                  <td colSpan={6}></td>
                   <td>TOTAL</td>
+                  <td>{Number(totalCost.toFixed(2)).toLocaleString('en-IN')}</td>
+                  <td></td>
                   <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
                   <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
                 </tr>

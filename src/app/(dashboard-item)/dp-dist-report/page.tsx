@@ -58,6 +58,10 @@ const Page = () => {
   const totalValue = filteredProducts.reduce((total, product) => {
     return total + (product.dpRate * product.productQty);
   }, 0);
+
+  const totalCost = filteredProducts.reduce((total, product) => {
+    return total + (product.costPrice * product.productQty);
+  }, 0);
   const totalQty = filteredProducts.reduce((acc, item) => acc + item.productQty, 0);
   return (
     <div className="container-2xl">
@@ -112,8 +116,10 @@ const Page = () => {
               </tbody>
               <tfoot>
                 <tr className="font-semibold text-md">
-                  <td colSpan={8}></td>
+                  <td colSpan={6}></td>
                   <td>TOTAL</td>
+                  <td>{Number(totalCost.toFixed(2)).toLocaleString('en-IN')}</td>
+                  <td></td>
                   <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
                   <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
                 </tr>
