@@ -4,8 +4,12 @@ import { useAppSelector } from "@/app/store";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
 import CurrentDate from "@/app/components/CurrentDate";
+import { MdOutlineEditNote } from "react-icons/md";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 type Product = {
+    materialsId: number;
     date: string;
     supplierName: string;
     supplierInvoice: string;
@@ -20,7 +24,7 @@ const Page = () => {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
-
+    const router=useRouter();
     const contentToPrint = useRef(null);
     const handlePrint = useReactToPrint({
         content: () => contentToPrint.current,
@@ -39,7 +43,14 @@ const Page = () => {
             .catch(error => console.error('Error fetching products:', error));
     }, [apiBaseUrl, username]);
 
+ const handleEdit = (materialsId: number) => {
+        if (!materialsId) {
+            toast.warning("Product id is required !");
+            return;
+        }
+        router.push(`/materialsrate-edit?materialsId=${encodeURIComponent(materialsId)}`);
 
+    };
     useEffect(() => {
         const filtered = allProducts.filter(product =>
             (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
@@ -85,6 +96,7 @@ const Page = () => {
                                     <th>PURCHASE PRICE</th>
                                     <th>QUANTITY</th>
                                     <th>SUB TOTAL</th>
+                                    <th>EDIT</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -96,6 +108,7 @@ const Page = () => {
                                         <td>{Number(product.averageRate.toFixed(2)).toLocaleString('en-IN')}</td>
                                         <td>{product.remainingQty.toLocaleString('en-IN')}</td>
                                         <td>{Number((product.averageRate * product.remainingQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                                         <td><button onClick={() => handleEdit(product.materialsId)} className="btn btn-primary btn-sm"><MdOutlineEditNote size={24} /></button></td>
                                     </tr>
                                 ))}
                             </tbody>
