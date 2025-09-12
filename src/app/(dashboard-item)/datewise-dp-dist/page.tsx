@@ -56,21 +56,39 @@ const Page = () => {
   //     );
   //     setFilteredProducts(filtered);
   //   }, [filterCriteria, allProducts]);
+  
+
+  // useEffect(() => {
+  //   const searchWords = filterCriteria.toLowerCase().split(" ");
+  //   const filtered = allProducts.filter(product =>
+  //     searchWords.every(word =>
+  //       (product.customer?.toLowerCase() || "").includes(word) ||
+  //       (product.date?.toLowerCase() || "").includes(word) ||
+  //       (product.productName?.toLowerCase() || "").includes(word) ||
+  //       (product.category?.toLowerCase() || "").includes(word) ||
+  //       (product.invoiceNo?.toLowerCase() || "").includes(word)
+  //     )
+  //   );
+  
+  //   setFilteredProducts(filtered);
+  // }, [filterCriteria, allProducts]);
 
   useEffect(() => {
-    const searchWords = filterCriteria.toLowerCase().split(" ");
-    const filtered = allProducts.filter(product =>
-      searchWords.every(word =>
-        (product.customer?.toLowerCase() || "").includes(word) ||
-        (product.date?.toLowerCase() || "").includes(word) ||
-        (product.productName?.toLowerCase() || "").includes(word) ||
-        (product.category?.toLowerCase() || "").includes(word) ||
-        (product.invoiceNo?.toLowerCase() || "").includes(word)
-      )
-    );
-  
-    setFilteredProducts(filtered);
-  }, [filterCriteria, allProducts]);
+  const searchWords = filterCriteria.toLowerCase().trim().split(" ");
+
+  const filtered = allProducts.filter(product =>
+    searchWords.every(word =>
+      (product.customer?.toLowerCase() || "") === word ||
+      (product.date?.toLowerCase() || "") === word ||
+      (product.productName?.toLowerCase() || "") === word ||
+      (product.category?.toLowerCase() || "") === word ||
+      (product.invoiceNo?.toLowerCase() || "") === word
+    )
+  );
+
+  setFilteredProducts(filtered);
+}, [filterCriteria, allProducts]);
+
 
   const handleFilterChange = (e: any) => {
     setFilterCriteria(e.target.value);
