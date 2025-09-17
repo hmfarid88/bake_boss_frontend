@@ -2,7 +2,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAppSelector } from "@/app/store";
 import Print from "@/app/components/Print";
-import CurrentMonthYear from "@/app/components/CurrentMonthYear";
 import { useSearchParams } from "next/navigation";
 
 type Product = {
@@ -15,6 +14,7 @@ type Product = {
   dpRate: number;
   costPrice: number;
   productQty: number;
+  saleRate: number;
 };
 
 
@@ -44,57 +44,45 @@ const Page = () => {
   }, [apiBaseUrl, username, startDate, endDate]);
 
 
- 
-  //  useEffect(() => {
-  //     const filtered = allProducts.filter(product =>
-  //       (product.customer.toLowerCase().includes(` ${filterCriteria.toLowerCase()} `) ||
-  //        product.customer.toLowerCase() === filterCriteria.toLowerCase()) ||
-  //       (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-  //       (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-  //       (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-  //       (product.invoiceNo.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
-  //     );
-  //     setFilteredProducts(filtered);
-  //   }, [filterCriteria, allProducts]);
-  
+useEffect(() => {
+  const searchText = filterCriteria.toLowerCase().trim();
+  const searchWords = searchText.split(" ");
 
-  // useEffect(() => {
-  //   const searchWords = filterCriteria.toLowerCase().split(" ");
-  //   const filtered = allProducts.filter(product =>
-  //     searchWords.every(word =>
-  //       (product.customer?.toLowerCase() || "").includes(word) ||
-  //       (product.date?.toLowerCase() || "").includes(word) ||
-  //       (product.productName?.toLowerCase() || "").includes(word) ||
-  //       (product.category?.toLowerCase() || "").includes(word) ||
-  //       (product.invoiceNo?.toLowerCase() || "").includes(word)
-  //     )
-  //   );
-  
-  //   setFilteredProducts(filtered);
-  // }, [filterCriteria, allProducts]);
+  let filtered = allProducts;
 
-  useEffect(() => {
-  const searchWords = filterCriteria.toLowerCase().trim().split(" ");
+  if (searchText) {
+    // If customer matches exactly → only return that
+    const exactMatch = allProducts.filter(
+      product => product.customer?.toLowerCase() === searchText
+    );
 
-  const filtered = allProducts.filter(product =>
-    searchWords.every(word =>
-      (product.customer?.toLowerCase() || "") === word ||
-      (product.date?.toLowerCase() || "") === word ||
-      (product.productName?.toLowerCase() || "") === word ||
-      (product.category?.toLowerCase() || "") === word ||
-      (product.invoiceNo?.toLowerCase() || "") === word
-    )
-  );
+    if (exactMatch.length > 0) {
+      filtered = exactMatch;
+    } else {
+      // Otherwise → normal includes search
+      filtered = allProducts.filter(product =>
+        searchWords.every(word =>
+          (product.customer?.toLowerCase() || "").includes(word) ||
+          (product.date?.toLowerCase() || "").includes(word) ||
+          (product.productName?.toLowerCase() || "").includes(word) ||
+          (product.category?.toLowerCase() || "").includes(word) ||
+          (product.invoiceNo?.toLowerCase() || "").includes(word)
+        )
+      );
+    }
+  }
 
   setFilteredProducts(filtered);
 }, [filterCriteria, allProducts]);
-
 
   const handleFilterChange = (e: any) => {
     setFilterCriteria(e.target.value);
   };
   const totalValue = filteredProducts.reduce((total, product) => {
     return total + (product.dpRate * product.productQty);
+  }, 0);
+  const totalMrp = filteredProducts.reduce((total, product) => {
+    return total + (product.saleRate * product.productQty);
   }, 0);
   const totalCost = filteredProducts.reduce((total, product) => {
     return total + (product.costPrice * product.productQty);
@@ -115,7 +103,7 @@ const Page = () => {
         <div className="overflow-x-auto w-full">
           <div ref={contentToPrint} className="flex flex-col w-full p-5">
             <div className="flex flex-col items-center pb-5"><h4 className="font-bold">DISTRIBUTION REPORT</h4>{startDate} TO {endDate}</div>
-            <table className="table table-sm">
+           <table className="table table-sm">
               <thead>
                 <tr>
                   <th>SN</th>
@@ -126,9 +114,11 @@ const Page = () => {
                   <th>PRODUCT NAME</th>
                   <th>INVOICE NO</th>
                   <th>COST PRICE</th>
-                  <th>SALE PRICE</th>
+                  <th>DP PRICE</th>
+                  <th>MRP</th>
                   <th>QTY</th>
-                  <th>SUB TOTAL</th>
+                  <th>DP TOTAL</th>
+                  <th>MRP TOTAL</th>
                 </tr>
               </thead>
               <tbody>
@@ -143,8 +133,10 @@ const Page = () => {
                     <td className="uppercase">{product.invoiceNo}</td>
                     <td>{Number(product.costPrice.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.dpRate.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number(product.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number((product.dpRate * product.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number((product.saleRate * product.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
                   </tr>
                 ))}
               </tbody>
@@ -154,8 +146,10 @@ const Page = () => {
                   <td>TOTAL</td>
                   <td>{Number(totalCost.toFixed(2)).toLocaleString('en-IN')}</td>
                   <td></td>
+                  <td></td>
                   <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
                   <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
+                  <td>{Number(totalMrp.toFixed(2)).toLocaleString('en-IN')}</td>
                 </tr>
               </tfoot>
             </table>

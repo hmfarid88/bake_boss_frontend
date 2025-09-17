@@ -15,6 +15,7 @@ type Product = {
   dpRate: number;
   costPrice: number;
   productQty: number;
+  saleRate: number;
 };
 
 
@@ -40,27 +41,45 @@ const Page = () => {
   }, [apiBaseUrl, username]);
 
  
-  useEffect(() => {
-  const searchWords = filterCriteria.toLowerCase().split(" ");
-  const filtered = allProducts.filter(product =>
-    searchWords.every(word =>
-      (product.customer?.toLowerCase() || "").includes(word) ||
-      (product.date?.toLowerCase() || "").includes(word) ||
-      (product.productName?.toLowerCase() || "").includes(word) ||
-      (product.category?.toLowerCase() || "").includes(word) ||
-      (product.invoiceNo?.toLowerCase() || "").includes(word)
-    )
-  );
+useEffect(() => {
+  const searchText = filterCriteria.toLowerCase().trim();
+  const searchWords = searchText.split(" ");
+
+  let filtered = allProducts;
+
+  if (searchText) {
+    // If customer matches exactly → only return that
+    const exactMatch = allProducts.filter(
+      product => product.customer?.toLowerCase() === searchText
+    );
+
+    if (exactMatch.length > 0) {
+      filtered = exactMatch;
+    } else {
+      // Otherwise → normal includes search
+      filtered = allProducts.filter(product =>
+        searchWords.every(word =>
+          (product.customer?.toLowerCase() || "").includes(word) ||
+          (product.date?.toLowerCase() || "").includes(word) ||
+          (product.productName?.toLowerCase() || "").includes(word) ||
+          (product.category?.toLowerCase() || "").includes(word) ||
+          (product.invoiceNo?.toLowerCase() || "").includes(word)
+        )
+      );
+    }
+  }
 
   setFilteredProducts(filtered);
 }, [filterCriteria, allProducts]);
-
 
   const handleFilterChange = (e: any) => {
     setFilterCriteria(e.target.value);
   };
   const totalValue = filteredProducts.reduce((total, product) => {
     return total + (product.dpRate * product.productQty);
+  }, 0);
+  const totalMrp = filteredProducts.reduce((total, product) => {
+    return total + (product.saleRate * product.productQty);
   }, 0);
 
   const totalCost = filteredProducts.reduce((total, product) => {
@@ -96,9 +115,11 @@ const Page = () => {
                   <th>PRODUCT NAME</th>
                   <th>INVOICE NO</th>
                   <th>COST PRICE</th>
-                  <th>SALE PRICE</th>
+                  <th>DP PRICE</th>
+                  <th>MRP</th>
                   <th>QTY</th>
-                  <th>SUB TOTAL</th>
+                  <th>DP TOTAL</th>
+                  <th>MRP TOTAL</th>
                 </tr>
               </thead>
               <tbody>
@@ -113,8 +134,10 @@ const Page = () => {
                     <td className="uppercase">{product.invoiceNo}</td>
                     <td>{Number(product.costPrice.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.dpRate.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number(product.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number((product.dpRate * product.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number((product.saleRate * product.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
                   </tr>
                 ))}
               </tbody>
@@ -124,8 +147,10 @@ const Page = () => {
                   <td>TOTAL</td>
                   <td>{Number(totalCost.toFixed(2)).toLocaleString('en-IN')}</td>
                   <td></td>
+                  <td></td>
                   <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
                   <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
+                  <td>{Number(totalMrp.toFixed(2)).toLocaleString('en-IN')}</td>
                 </tr>
               </tfoot>
             </table>

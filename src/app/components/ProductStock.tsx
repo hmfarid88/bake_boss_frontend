@@ -144,7 +144,7 @@ const ProductStock = () => {
 
             if (response.ok) {
                 toast.success("Item deleted successfully!");
-          
+
             } else {
                 const data = await response.json();
                 toast.error(data.message || "Failed to delete item.");
@@ -380,9 +380,17 @@ const ProductStock = () => {
                                 </div>
                                 <div className="flex flex-col gap-2">
                                     <Select className="text-black" name="pname" onChange={(selectedOption: any) => setOldItemName(selectedOption.value)} options={itemOption} />
-                                    <input type="text" value={newItemName} name="colorItem" onChange={(e: any) => setNewItemName(e.target.value)} placeholder="Type here" className="input input-bordered max-w-xs" />
-                                    <button onClick={handleItemNameUpdate} disabled={pending} className="btn btn-success">{pending ? "Adding..." : "ADD"}</button>
-                                    <button onClick={handleItemNameDelete} className="btn btn-error">DELETE</button>
+                                    <input type="text" value={newItemName} name="product" onChange={(e: any) => setNewItemName(e.target.value)} placeholder="New Name" className="input input-bordered border-emerald-400 max-w-xs" />
+                                    <button className="btn btn-success" onClick={(e) => {
+                                        if (window.confirm("Are you sure you want to update this item?")) {
+                                            handleItemNameUpdate(e);
+                                        }
+                                    }}>UPDATE</button>
+                                    <button  onClick={(e) => {
+                                        if (window.confirm("Are you sure you want to delete this item?")) {
+                                            handleItemNameDelete(e);
+                                        }
+                                    }} className='btn btn-error' > DELETE</button>
                                 </div>
                             </label>
                         </div>
