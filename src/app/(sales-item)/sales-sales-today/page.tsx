@@ -8,6 +8,7 @@ import Link from "next/link";
 import CurrentDate from "@/app/components/CurrentDate";
 import { FiEdit } from "react-icons/fi";
 import { toast } from "react-toastify";
+import swal from 'sweetalert';
 
 type Product = {
   productId: number;
@@ -28,7 +29,31 @@ const Page = () => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const uname = useAppSelector((state) => state.username.username);
   const username = uname ? uname.username : 'Guest';
-
+const handleEditClickWithPassword = (product: any) => {
+  swal({
+    title: "Enter Password",
+    text: "Please enter the password to continue",
+    content: {
+      element: "input",
+      attributes: {
+        type: "password",
+        placeholder: "Enter password",
+      },
+    },
+    buttons: ["Cancel", "Submit"],
+  }).then((value) => {
+    if (value) {
+      if (value === "secretzone") {
+        // ✅ Open modal
+        handleEditClick(product);
+        const modal = document.getElementById("my_modal_edit_sale") as HTMLDialogElement;
+        modal?.showModal();
+      } else {
+        swal("Wrong Password!", "Access denied.", "error");
+      }
+    }
+  });
+};
   const contentToPrint = useRef(null);
   const handlePrint = useReactToPrint({
     content: () => contentToPrint.current,
@@ -203,7 +228,7 @@ const Page = () => {
                     <td>{Number(product.discount?.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(((product.saleRate * product.productQty) - (product.discount)).toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>
-                      <a href="#my_modal_edit_sale" className="btn btn-xs btn-ghost"> <FiEdit size={16} onClick={() => handleEditClick(product)} /> </a>
+                      <a href="#my_modal_edit_sale" className="btn btn-xs btn-ghost"> <FiEdit size={16} onClick={() => handleEditClickWithPassword(product)} /> </a>
                     </td>
                   </tr>
                 ))}
