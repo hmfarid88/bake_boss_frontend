@@ -55,7 +55,7 @@ const Page = () => {
 
                 <div className="flex w-full items-center justify-center">
                     <div className='flex-1 max-w-[794px] h-auto border border-slate-700'>
-                        <div ref={contentToPrint} className="flex-1 max-w-[794px] h-auto p-5 sm:p-8 text-black font-bold">
+                        <div ref={contentToPrint} className="flex-1 max-w-[794px] h-auto p-3 sm:p-5 text-black font-bold">
                             <div className="flex flex-col gap-3 pb-5"><h4 className="font-bold text-lg">RETURNED INVOICE</h4>
                             <h4 className="capitalize text-black">Return From: {username}</h4>
                             </div>
@@ -63,28 +63,24 @@ const Page = () => {
                                 <h4>Date: {allProducts[0]?.date}</h4>
                                 <h4>Time: {allProducts[0]?.time}</h4>
                             </div>
-                            <div className="flex justify-between p-3 capitalize">
+                            <div className="flex flex-col p-3 capitalize">
                                 <h4>Invoice No: {allProducts[0]?.invoiceNo}</h4>
                                 <h4>Return Cause: {allProducts[0]?.soldInvoice}</h4>
                             </div>
                             <table className="table table-sm">
                                 <thead>
-                                    <tr>
-                                        <th>SN</th>
-                                        <th>CATEGORY</th>
-                                        <th>PRODUCT NAME</th>
-                                        <th>COST PRICE</th>
-                                        <th>SALE PRICE</th>
-                                        <th>QTY</th>
-                                        <th>SUB TOTAL</th>
+                                    <tr className='border-b-base-content text-black text-xs md:text-md'>
+                                        <th>Description</th>
+                                        <th>P Price</th>
+                                        <th>S Price</th>
+                                        <th>Qty</th>
+                                        <th>Sub Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {allProducts?.map((product, index) => (
                                         <tr key={index}>
-                                            <td>{index + 1}</td>
-                                            <td className="capitalize">{product.category}</td>
-                                            <td className="capitalize">{product.productName}</td>
+                                            <td className="capitalize">{product.category}, {product.productName}</td>
                                             <td>{Number(product.costPrice.toFixed(2)).toLocaleString('en-IN')}</td>
                                             <td>{Number(product.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
                                             <td>{product.productQty.toLocaleString('en-IN')}</td>
@@ -93,8 +89,8 @@ const Page = () => {
                                     ))}
                                 </tbody>
                                 <tfoot>
-                                    <tr className="font-semibold text-lg">
-                                        <td colSpan={4}></td>
+                                    <tr className="font-bold text-black text-md border-b-base-content">
+                                        <td colSpan={2}></td>
                                         <td>TOTAL</td>
                                         <td>{totalQty}</td>
                                         <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
