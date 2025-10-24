@@ -55,9 +55,9 @@ const Page = () => {
 
                 <div className="flex w-full items-center justify-center">
                     <div className="overflow-x-auto">
-                        <div ref={contentToPrint} className="flex-1 p-5">
+                        <div ref={contentToPrint} className="flex-1 p-5 text-black font-bold">
                             <div className="flex flex-col gap-3 pb-5"><h4 className="font-bold text-lg">RETURNED INVOICE</h4>
-                            <h4 className="capitalize">Return From: {username}</h4>
+                            <h4 className="capitalize text-black">Return From: {username}</h4>
                             </div>
                             <div className="flex justify-between p-3">
                                 <h4>Date: {allProducts[0]?.date}</h4>
