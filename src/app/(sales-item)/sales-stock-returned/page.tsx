@@ -5,12 +5,14 @@ import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
 import DateToDate from "@/app/components/DateToDate";
 import CurrentMonthYear from "@/app/components/CurrentMonthYear";
+import { useRouter } from "next/navigation";
 
 type Product = {
   date: string;
   time: string;
   category: string;
   productName: string;
+  invoiceNo: string;
   soldInvoice: string;
   saleRate: number;
   costPrice: number;
@@ -22,7 +24,7 @@ const Page = () => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const uname = useAppSelector((state) => state.username.username);
   const username = uname ? uname.username : 'Guest';
-
+  const router = useRouter();
   const contentToPrint = useRef(null);
   const handlePrint = useReactToPrint({
     content: () => contentToPrint.current,
@@ -31,6 +33,9 @@ const Page = () => {
   const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
+  const handleInvoice = async (invoiceNo: string) => {
+    router.push(`/return-invoice?invoiceNo=${invoiceNo}`);
+  };
   useEffect(() => {
     fetch(`${apiBaseUrl}/sales/getOutletReturned?username=${username}`)
       .then(response => response.json())
@@ -63,10 +68,10 @@ const Page = () => {
     <div className="container-2xl min-h-[calc(100vh-228px)]">
       <div className="flex flex-col w-full">
         <div className="flex items-center justify-center">
-        <DateToDate routePath="/datewise-stock-returned" />
+          <DateToDate routePath="/datewise-stock-returned" />
         </div>
         <div className="flex w-full justify-between p-5">
-          
+
           <label className="input input-bordered flex max-w-xs  items-center gap-2">
             <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-4 w-4 opacity-70">
@@ -88,6 +93,7 @@ const Page = () => {
                     <th>TIME</th>
                     <th>CATEGORY</th>
                     <th>PRODUCT NAME</th>
+                    <th>INVOICE NO</th>
                     <th>REASON</th>
                     <th>COST PRICE</th>
                     <th>SALE PRICE</th>
@@ -103,6 +109,7 @@ const Page = () => {
                       <td>{product.time}</td>
                       <td className="capitalize">{product.category}</td>
                       <td className="capitalize">{product.productName}</td>
+                      <td className="uppercase"><button onClick={()=> handleInvoice(product.invoiceNo)} className="btn btn-link">{product.invoiceNo}</button></td>
                       <td className="capitalize">{product.soldInvoice}</td>
                       <td>{Number(product.costPrice.toFixed(2)).toLocaleString('en-IN')}</td>
                       <td>{Number(product.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
@@ -113,7 +120,7 @@ const Page = () => {
                 </tbody>
                 <tfoot>
                   <tr className="font-semibold text-lg">
-                    <td colSpan={7}></td>
+                    <td colSpan={8}></td>
                     <td>TOTAL</td>
                     <td>{totalQty}</td>
                     <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>

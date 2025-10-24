@@ -6,9 +6,11 @@ import Select from "react-select";
 import { uid } from 'uid';
 import { toast } from "react-toastify";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { useRouter } from "next/navigation";
 
 const Page: React.FC = () => {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
+    const router=useRouter();
     const [date, setDate] = useState("");
     const [pending, setPending] = useState(false);
     const [total, setTotal] = useState(0);
@@ -138,10 +140,10 @@ const Page: React.FC = () => {
                 toast.error("Return product not submitted !");
                 return;
             }
-            toast.success("Product returned successfully")
+         
             setReason("");
             dispatch(deleteAllProducts(username));
-
+            router.push(`/return-invoice?invoiceNo=${invoiceNo}`);
         } catch (error: any) {
             toast.error("An error occurred: " + error.message);
         } finally {
