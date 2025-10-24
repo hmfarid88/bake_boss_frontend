@@ -54,8 +54,8 @@ const Page = () => {
                 </div>
 
                 <div className="flex w-full items-center justify-center">
-                    <div className="overflow-x-auto">
-                        <div ref={contentToPrint} className="flex-1 p-5 text-black font-bold">
+                    <div className='flex-1 max-w-[794px] h-auto border border-slate-700'>
+                        <div ref={contentToPrint} className="flex-1 max-w-[794px] h-auto p-5 sm:p-8 text-black font-bold">
                             <div className="flex flex-col gap-3 pb-5"><h4 className="font-bold text-lg">RETURNED INVOICE</h4>
                             <h4 className="capitalize text-black">Return From: {username}</h4>
                             </div>
