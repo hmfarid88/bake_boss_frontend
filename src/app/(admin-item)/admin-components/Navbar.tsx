@@ -22,14 +22,7 @@ const Navbar = () => {
                         </div>
                         <ul tabIndex={0} className="menu menu-sm dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
                             <li><Link href="/adduser">ADD USER</Link></li>
-                            <li>
-                                <a>ITEM 2</a>
-                                <ul className="p-2">
-                                    <li><a>Submenu 1</a></li>
-                                    <li><a>Submenu 2</a></li>
-                                </ul>
-                            </li>
-                            <li><a>ITEM 3</a></li>
+                           
                         </ul>
                     </div>
                     <a className="btn btn-ghost text-lg font-bold"><Link href="/admin-dashboard">BILLING CRAFT</Link></a>
@@ -39,16 +32,7 @@ const Navbar = () => {
                     <li><Link href="/admin-dashboard">HOME</Link></li>
                     <li><Link href="/adduser">ADD USER</Link></li>
                     <li><Link href="/updateuser">UPDATE USER</Link></li>
-                        <li>
-                            <details>
-                                <summary>ITEM 2</summary>
-                                <ul className="p-2">
-                                    <li><a>Submenu 1</a></li>
-                                    <li><a>Submenu 2</a></li>
-                                </ul>
-                            </details>
-                        </li>
-                        <li><a>ITEM 3</a></li>
+                       
                     </ul>
                 </div>
                 <div className="navbar-end">
