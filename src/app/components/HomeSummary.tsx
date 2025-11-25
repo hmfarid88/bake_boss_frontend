@@ -46,7 +46,7 @@ const HomeSummary = () => {
 
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/sales/sales/today?username=${username}`)
+    fetch(`${apiBaseUrl}/sales/sales/today?username=${username}&percent=100`)
       .then(response => response.json())
       .then(data => {
         const total = data.reduce((total: number, product: { saleRate: number; productQty: number; discount: number; }) => {
@@ -64,7 +64,7 @@ const HomeSummary = () => {
 
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/sales/getOutletSale?username=${username}`)
+    fetch(`${apiBaseUrl}/sales/getOutletSale?username=${username}&percent=15`)
       .then(response => response.json())
       .then(data => {
         const total = data.reduce((total: number, product: { saleRate: number; productQty: number; discount: number; }) => {

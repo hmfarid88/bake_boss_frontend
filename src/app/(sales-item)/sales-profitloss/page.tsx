@@ -32,7 +32,7 @@ const Page = () => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/sales/getMonthlySalesProfit?username=${username}`)
+    fetch(`${apiBaseUrl}/sales/getMonthlySalesProfit?username=${username}&percent=15`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);

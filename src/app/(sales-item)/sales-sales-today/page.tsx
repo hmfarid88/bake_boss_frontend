@@ -141,7 +141,7 @@ const handleEditClickWithPassword = (product: any) => {
   };
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/sales/sales/today?username=${username}`)
+    fetch(`${apiBaseUrl}/sales/sales/today?username=${username}&percent=100`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);

@@ -12,7 +12,7 @@ const Areachart = () => {
   useEffect(() => {
     const fetchSalesData = async () => {
       try {
-        const response = await fetch(`${apiBaseUrl}/sales/current-month/saleprogress?username=${username}`);
+        const response = await fetch(`${apiBaseUrl}/sales/current-month/saleprogress?username=${username}&percent=15`);
         const salesData = await response.json();
         setData(salesData.map((item: { productName: any; saleAmount: any; }) => ({
           name: item.productName,
