@@ -31,7 +31,7 @@ const Page = () => {
 
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/api/getSoldProduct?username=${username}`)
+    fetch(`${apiBaseUrl}/api/getSoldProduct?username=${username}&percent=15`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);

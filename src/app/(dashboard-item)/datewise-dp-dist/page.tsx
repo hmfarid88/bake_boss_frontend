@@ -34,7 +34,7 @@ const Page = () => {
 
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/api/getDatewiseSoldProduct?username=${username}&startDate=${startDate}&endDate=${endDate}`)
+    fetch(`${apiBaseUrl}/api/getDatewiseSoldProduct?username=${username}&startDate=${startDate}&endDate=${endDate}&percent=15`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);
