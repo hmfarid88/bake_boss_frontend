@@ -22,21 +22,19 @@ const Page = () => {
     }, [apiBaseUrl]);
 
     const handleReport = async (e: any) => {
-    e.preventDefault();
+        e.preventDefault();
 
-    if (!outlet) {
-        toast.error("Field is empty!");
-        return;
-    }
+        if (!outlet) {
+            toast.error("Field is empty!");
+            return;
+        }
 
-    router.push(`/management-sale?outlet=${outlet}`);
-};
+        router.push(`/management-sale?outlet=${outlet}`);
+    };
 
-return (
-    <div className="container-2xl min-h-screen">
-        <div className="flex flex-col items-center justify-center p-5">
-            <h1 className='text-lg'>Welcome to Management Area</h1>
-            {/* <div className="flex flex-col items-center justify-center p-5">
+    return (
+        <div className="container-2xl min-h-screen">
+            <div className="flex flex-col items-center justify-center p-5">
                 <h4 className='text-lg p-5'>Sale Report</h4>
                 <div className="card shadow shadow-slate-500 max-w-lg gap-3 p-5">
                     <div className="card-title text-sm">Select Outlet</div>
@@ -44,17 +42,9 @@ return (
                     <button onClick={handleReport} className="btn w-xs h-[38px] btn-success btn-outline font-bold">GO</button>
                 </div>
             </div>
-            <div className="flex flex-col items-center justify-center p-5">
-                <h4>Profit Report</h4>
-                <div className="card shadow shadow-slate-500 max-w-lg gap-3 p-5">
-                    <div className="card-title text-sm">Select Outlet</div>
-                    <Select className="text-black h-[38px] w-64" onChange={(selectedOption: any) => setOutlet(selectedOption.value)} options={salesuser} />
-                    <button onClick={handleReport} className="btn w-xs h-[38px] btn-success btn-outline font-bold">GO</button>
-                </div>
-            </div> */}
+
         </div>
-    </div>
-)
+    )
 }
 
 export default Page

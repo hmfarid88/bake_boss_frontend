@@ -1,17 +1,24 @@
+import { ToastContainer } from "react-toastify"
+import Footer from "../components/Footer"
+import Sidebar from "./components/Sidebar"
 
 export default function ManagementLayout({
     children,
 }: {
     children: React.ReactNode
 }) {
-    return <section>
-        <div className="flex min-h-screen  md:flex-row md:overflow-hidden">
-            <div className="flex-grow p-0 md:overflow-y-auto md:p-0">
+    return<section>
+            <div className="flex h-screen flex-col md:flex-row md:overflow-hidden">
+                <div className="w-full flex-none md:w-64">
+                    <Sidebar />
+                </div>
+                <div className="flex-grow p-0 md:overflow-y-auto md:p-0">
             
-                {children}
+                    {children}
+                    <Footer />
+                </div>
             </div>
-        </div>
-
-    </section>
+            <ToastContainer autoClose={1000} theme='dark' />
+        </section>
 
 }

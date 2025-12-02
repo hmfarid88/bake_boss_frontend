@@ -95,7 +95,7 @@ const Page = () => {
   const totalQty = filteredProducts.reduce((acc, item) => acc + item.productQty, 0);
   const totalDis = filteredProducts.reduce((acc, item) => acc + item.discount, 0);
   return (
-    <div className="container-2xl min-h-[calc(100vh-228px)]">
+    <div className="container-2xl min-h-screen">
       <div className="flex flex-col w-full items-center p-5">
         <div className="flex">
           <div className='flex gap-3'>
