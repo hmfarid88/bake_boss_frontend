@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 
 interface DateToDateProps {
-  routePath: string; // Accept the dynamic route path as a prop
+  routePath: string; 
 }
 
 const DateToDate: React.FC<DateToDateProps> = ({ routePath }) => {
