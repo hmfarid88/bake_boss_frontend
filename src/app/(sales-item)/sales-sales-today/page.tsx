@@ -29,31 +29,31 @@ const Page = () => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const uname = useAppSelector((state) => state.username.username);
   const username = uname ? uname.username : 'Guest';
-const handleEditClickWithPassword = (product: any) => {
-  swal({
-    title: "Enter Password",
-    text: "Please enter the password to continue",
-    content: {
-      element: "input",
-      attributes: {
-        type: "password",
-        placeholder: "Enter password",
+  const handleEditClickWithPassword = (product: any) => {
+    swal({
+      title: "Enter Password",
+      text: "Please enter the password to continue",
+      content: {
+        element: "input",
+        attributes: {
+          type: "password",
+          placeholder: "Enter password",
+        },
       },
-    },
-    buttons: ["Cancel", "Submit"],
-  }).then((value) => {
-    if (value) {
-      if (value === "secretzone") {
-        // ✅ Open modal
-        handleEditClick(product);
-        const modal = document.getElementById("my_modal_edit_sale") as HTMLDialogElement;
-        modal?.showModal();
-      } else {
-        swal("Wrong Password!", "Access denied.", "error");
+      buttons: ["Cancel", "Submit"],
+    }).then((value) => {
+      if (value) {
+        if (value === "secretzone") {
+          // ✅ Open modal
+          handleEditClick(product);
+          const modal = document.getElementById("my_modal_edit_sale") as HTMLDialogElement;
+          modal?.showModal();
+        } else {
+          swal("Wrong Password!", "Access denied.", "error");
+        }
       }
-    }
-  });
-};
+    });
+  };
   const contentToPrint = useRef(null);
   const handlePrint = useReactToPrint({
     content: () => contentToPrint.current,
@@ -141,14 +141,33 @@ const handleEditClickWithPassword = (product: any) => {
   };
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/sales/sales/today?username=${username}&percent=100`)
+    const now = new Date();
+    const hour = now.getHours();
+    let percent = 15;
+
+    if (hour >= 20 || hour < 2) {
+      percent = 100;
+    }
+
+    fetch(`${apiBaseUrl}/sales/sales/today?username=${username}&percent=${percent}`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);
         setFilteredProducts(data);
       })
-      .catch(error => console.error('Error fetching products:', error));
+      .catch(error => console.error("Error fetching products:", error));
+
   }, [apiBaseUrl, username, updatedQty]);
+
+  // useEffect(() => {
+  //   fetch(`${apiBaseUrl}/sales/sales/today?username=${username}&percent=100`)
+  //     .then(response => response.json())
+  //     .then(data => {
+  //       setAllProducts(data);
+  //       setFilteredProducts(data);
+  //     })
+  //     .catch(error => console.error('Error fetching products:', error));
+  // }, [apiBaseUrl, username, updatedQty]);
 
 
   useEffect(() => {

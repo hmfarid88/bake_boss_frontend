@@ -46,7 +46,14 @@ const HomeSummary = () => {
 
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/sales/sales/today?username=${username}&percent=100`)
+    const now = new Date();
+    const hour = now.getHours();
+    let percent = 15;
+
+    if (hour >= 20 || hour < 2) {
+      percent = 100;
+    }
+    fetch(`${apiBaseUrl}/sales/sales/today?username=${username}&percent=${percent}`)
       .then(response => response.json())
       .then(data => {
         const total = data.reduce((total: number, product: { saleRate: number; productQty: number; discount: number; }) => {
