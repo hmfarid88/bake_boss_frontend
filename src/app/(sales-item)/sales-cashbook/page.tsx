@@ -129,7 +129,7 @@ const CashBook = () => {
                       <tr key={index}>
                         <td>{sold[0]}</td>
                         <td className='capitalize'>{sold[1]}</td>
-                        <td>{(sold[2]).toLocaleString('en-IN')}</td>
+                        <td>{(sold[2])?.toLocaleString('en-IN')}</td>
                       </tr>
                     ))}
                     {receives?.map((receive, index) => (
