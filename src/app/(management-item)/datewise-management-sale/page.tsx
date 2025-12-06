@@ -85,6 +85,7 @@ const Page = () => {
                     <div ref={contentToPrint} className="flex-1 p-5">
                         <div className="flex flex-col w-full items-center justify-center">
                             <h4 className="font-semibold text-lg">SALES REPORT</h4>
+                            <h4 className="uppercase">Outlet : {outlet}</h4>
                             <h4>DATE : {startDate} TO {endDate}</h4>
                         </div>
                         <div className="pt-5">

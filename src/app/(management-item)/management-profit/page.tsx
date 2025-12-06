@@ -29,13 +29,13 @@ const Page = () => {
             return;
         }
 
-        router.push(`/management-sale?outlet=${outlet}`);
+        router.push(`/management-profit-report?outlet=${outlet}`);
     };
 
     return (
         <div className="container-2xl min-h-screen">
             <div className="flex flex-col items-center justify-center p-5">
-                <h4 className='text-lg p-5'>Outlet Sale Report</h4>
+                <h4 className='text-lg p-5'>Outlet Profit Report</h4>
                 <div className="card shadow shadow-slate-500 max-w-lg gap-3 p-5">
                     <div className="card-title text-sm">Select Outlet</div>
                     <Select className="text-black h-[38px] w-64" onChange={(selectedOption: any) => setOutlet(selectedOption.value)} options={salesuser} />

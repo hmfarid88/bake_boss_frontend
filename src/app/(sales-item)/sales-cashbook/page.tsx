@@ -71,7 +71,14 @@ const CashBook = () => {
 
   const [saledata, setSaleData] = useState([]);
   useEffect(() => {
-    fetch(`${apiBaseUrl}/sales/cashbook/dateWiseSale?username=${username}&date=${date}&status=sold`)
+    const now = new Date();
+    const hour = now.getHours();
+    let percent = 15;
+
+    if (hour >= 20 || hour < 2) {
+      percent = 100;
+    }
+    fetch(`${apiBaseUrl}/sales/cashbook/dateWiseSale?username=${username}&date=${date}&status=sold&percent=${percent}`)
       .then(response => response.json())
       .then(data => {
         setSaleData(data);

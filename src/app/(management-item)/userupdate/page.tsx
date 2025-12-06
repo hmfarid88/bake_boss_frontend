@@ -46,7 +46,7 @@ const Page = () => {
         }
     };
     return (
-        <div className='container-2xl'>
+        <div className='container-2xl min-h-screen'>
             <div className="flex w-full items-center justify-center pt-10">
                 <div className="card shadow shadow-slate-700 w-full max-w-sm p-5">
                     <form onSubmit={handleUserUpdate}>

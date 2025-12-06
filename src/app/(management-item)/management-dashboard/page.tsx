@@ -1,60 +1,26 @@
 "use client"
-import { useRouter } from 'next/navigation';
-import React, { useEffect, useState } from 'react'
-import Select from "react-select";
-import { toast } from 'react-toastify';
+import { AiOutlineMail } from 'react-icons/ai';
+import { FaPhoneVolume } from 'react-icons/fa';
+import { IoLocationOutline } from 'react-icons/io5';
+
 const Page = () => {
-    const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
-    const [salesuser, setSalesuser] = useState([]);
-    const [outlet, setOutlet] = useState();
-    const router = useRouter();
-    useEffect(() => {
-        fetch(`${apiBaseUrl}/auth/user/getSalesUser`)
-            .then(response => response.json())
-            .then(data => {
-                const transformedData = data.map((item: any) => ({
-                    value: item.username,
-                    label: item.username
-                }));
-                setSalesuser(transformedData);
-            })
-            .catch(error => console.error('Error fetching products:', error));
-    }, [apiBaseUrl]);
+    
 
-    const handleReport = async (e: any) => {
-    e.preventDefault();
-
-    if (!outlet) {
-        toast.error("Field is empty!");
-        return;
-    }
-
-    router.push(`/management-sale?outlet=${outlet}`);
-};
-
-return (
-    <div className="container-2xl min-h-screen">
-        <div className="flex flex-col items-center justify-center p-5">
-            <h1 className='text-lg'>Welcome to Management Area</h1>
-            {/* <div className="flex flex-col items-center justify-center p-5">
-                <h4 className='text-lg p-5'>Sale Report</h4>
-                <div className="card shadow shadow-slate-500 max-w-lg gap-3 p-5">
-                    <div className="card-title text-sm">Select Outlet</div>
-                    <Select className="text-black h-[38px] w-64" onChange={(selectedOption: any) => setOutlet(selectedOption.value)} options={salesuser} />
-                    <button onClick={handleReport} className="btn w-xs h-[38px] btn-success btn-outline font-bold">GO</button>
+    return (
+        <div className="container-2xl min-h-screen">
+            <div className="flex flex-col items-center justify-center p-5">
+                <h1 className='text-xl'>Welcome to Management Area</h1>
+                <div className="flex flex-col items-center justify-center gap-5 pt-20">
+                    <h1 className="text-xl font-bold text-accent rounded shadow-lg shadow-slate-700 tracking-widest">AURORA FOOD & BEVERAGE LTD</h1>
+                    <div className="flex flex-col gap-2 items-center justify-center">
+                        <p className='flex gap-2'><IoLocationOutline className='mt-0.5' size={16} /> Jalkuri, Siddhirganj, Narayanganj, Dhaka</p>
+                        <p className='flex gap-2'><AiOutlineMail className='mt-0.5' size={16} /> info.bakeboss@gmail.com</p>
+                        <p className='flex gap-2'><FaPhoneVolume className='mt-0.5' size={16} /> 01947-832222</p>
+                    </div>
                 </div>
             </div>
-            <div className="flex flex-col items-center justify-center p-5">
-                <h4>Profit Report</h4>
-                <div className="card shadow shadow-slate-500 max-w-lg gap-3 p-5">
-                    <div className="card-title text-sm">Select Outlet</div>
-                    <Select className="text-black h-[38px] w-64" onChange={(selectedOption: any) => setOutlet(selectedOption.value)} options={salesuser} />
-                    <button onClick={handleReport} className="btn w-xs h-[38px] btn-success btn-outline font-bold">GO</button>
-                </div>
-            </div> */}
         </div>
-    </div>
-)
+    )
 }
 
 export default Page
