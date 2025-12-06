@@ -77,7 +77,7 @@ const CashBook = () => {
     if (hour >= 20 || hour < 2) {
       percent = 100;
     }
-    fetch(`${apiBaseUrl}/sales/cashbook/dateWiseSale?username=${username}&date=${date}&status=sold&percent=${percent}`)
+    fetch(`${apiBaseUrl}/sales/cashbook/dateWiseSale?username=${username}&date=${date}&status=sold&percent=100`)
       .then(response => response.json())
       .then(data => {
         setSaleData(data);
