@@ -18,6 +18,7 @@ type Product = {
   productName: string;
   soldInvoice: string;
   customerName: string;
+  soldBy: string;
   phoneNumber: string;
   saleRate: number;
   discount: number;
@@ -176,6 +177,7 @@ const Page = () => {
       (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
       (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
       (product.customerName?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+      (product.soldBy?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
       (product.phoneNumber?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
       (product.soldInvoice.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
     );
@@ -241,7 +243,7 @@ const Page = () => {
                     <td className="capitalize">{product.category}</td>
                     <td className="capitalize">{product.productName}</td>
                     <td className="uppercase">{product.soldInvoice}</td>
-                    <td className="capitalize">{product.customerName} {product.phoneNumber}</td>
+                    <td className="capitalize">{product.customerName} {product.phoneNumber}, {product.soldBy}</td>
                     <td>{Number(product.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.discount?.toFixed(2)).toLocaleString('en-IN')}</td>
