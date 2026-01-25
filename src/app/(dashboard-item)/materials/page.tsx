@@ -16,22 +16,24 @@ type Product = {
     materialsName: string;
     averageRate: number;
     remainingQty: number;
-
 };
-
 
 const Page = () => {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
-    const router=useRouter();
+    const router = useRouter();
     const contentToPrint = useRef(null);
     const handlePrint = useReactToPrint({
         content: () => contentToPrint.current,
     });
+    const [newprice, setNewprice] = useState('');
+    const [newQty, setNewQty] = useState('');
     const [filterCriteria, setFilterCriteria] = useState('');
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [allProducts, setAllProducts] = useState<Product[]>([]);
+    const [selectedMaterialId, setSelectedMaterialId] = useState<number | null>(null);
+
 
     useEffect(() => {
         fetch(`${apiBaseUrl}/api/getMaterialsStock?username=${username}`)
@@ -41,16 +43,66 @@ const Page = () => {
                 setFilteredProducts(data);
             })
             .catch(error => console.error('Error fetching products:', error));
-    }, [apiBaseUrl, username]);
+    }, [apiBaseUrl, username, newprice, newQty]);
 
- const handleEdit = (materialsId: number) => {
-        if (!materialsId) {
-            toast.warning("Product id is required !");
+    const handleRateEdit = async (materialsId: number) => {
+        if (!materialsId || !newprice) {
+            toast.warning("Product value is required!");
             return;
         }
-        router.push(`/materialsrate-edit?materialsId=${encodeURIComponent(materialsId)}`);
 
+        try {
+            const response = await fetch(
+                `${apiBaseUrl}/api/materials/average-rate/${materialsId}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ averageRate: newprice })
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error(await response.text());
+            }
+            setNewprice("")
+            toast.success("Price updated successfully!");
+        } catch (error: any) {
+            toast.error(error.message || "Error updating.");
+        }
     };
+
+    const handleQtyEdit = async (materialsId: number) => {
+        if (!materialsId || !newQty) {
+            toast.warning("Product value is required!");
+            return;
+        }
+
+        try {
+            const response = await fetch(
+                `${apiBaseUrl}/api/materials/materialsQty/${materialsId}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify({ materialsQty: newQty })
+                }
+            );
+
+            if (!response.ok) {
+                throw new Error(await response.text());
+            }
+            setNewQty("")
+            toast.success("Qty updated successfully!");
+        } catch (error: any) {
+            toast.error(error.message || "Error updating.");
+        }
+    };
+
+
+
     useEffect(() => {
         const filtered = allProducts.filter(product =>
             (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
@@ -85,7 +137,7 @@ const Page = () => {
                 <div className="overflow-x-auto">
                     <div ref={contentToPrint} className="flex-1 p-5">
                         <div className="flex flex-col items-center pb-5"><h4 className="font-bold">MATERIALS STOCK</h4>
-                        <h4><CurrentDate/></h4>
+                            <h4><CurrentDate /></h4>
                         </div>
                         <table className="table text-center">
                             <thead>
@@ -93,7 +145,7 @@ const Page = () => {
                                     <th>SN</th>
                                     <th>DATE</th>
                                     <th>MATERIALS NAME</th>
-                                    <th>PURCHASE PRICE</th>
+                                    <th>AVE RATE</th>
                                     <th>QUANTITY</th>
                                     <th>SUB TOTAL</th>
                                     <th>EDIT</th>
@@ -108,7 +160,7 @@ const Page = () => {
                                         <td>{Number(product.averageRate.toFixed(2)).toLocaleString('en-IN')}</td>
                                         <td>{product.remainingQty.toLocaleString('en-IN')}</td>
                                         <td>{Number((product.averageRate * product.remainingQty).toFixed(2)).toLocaleString('en-IN')}</td>
-                                         <td><button onClick={() => handleEdit(product.materialsId)} className="btn btn-primary btn-sm"><MdOutlineEditNote size={24} /></button></td>
+                                        <td><a href="#materialRateChange" onClick={() => setSelectedMaterialId(product.materialsId)} className="btn btn-primary btn-sm"><MdOutlineEditNote size={24} /></a></td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -121,6 +173,48 @@ const Page = () => {
                                 </tr>
                             </tfoot>
                         </table>
+                    </div>
+                </div>
+                <div className="modal sm:modal-middle" role="dialog" id="materialRateChange">
+                    <div className="modal-box">
+                        <div className="flex w-full p-2">
+
+                            <div className="flex flex-col w-full gap-3">
+                                <label className="flex flex-col gap-2">
+                                    <span className="label-text-alt">UPDATE AVE RATE</span>
+                                    <input type="number" value={newprice} name="price" onChange={(e: any) => setNewprice(e.target.value)} placeholder="Type here" className="input input-bordered w-3/4 max-w-xs" />
+                                   <label>
+                                    <button className="btn btn-success" disabled={selectedMaterialId === null} onClick={() => {
+                                        if (selectedMaterialId !== null) {
+                                            handleRateEdit(selectedMaterialId);
+                                        }
+                                    }}>Update
+                                    </button>
+                                    </label>
+                                </label>
+                                <label className="flex flex-col gap-2 pt-5">
+                                    <span className="label-text-alt">UPDATE QTY</span>
+                                    <input type="number" value={newQty} name="qty" onChange={(e: any) => setNewQty(e.target.value)} placeholder="Type here" className="input input-bordered w-3/4 max-w-xs" />
+                                    <label>
+                                    <button className="btn btn-success" disabled={selectedMaterialId === null} onClick={() => {
+                                        if (selectedMaterialId !== null) {
+                                            handleQtyEdit(selectedMaterialId);
+                                        }
+                                    }}>Update
+                                    </button>
+                                    </label>
+                                </label>
+
+                            </div>
+
+                        </div>
+                        <div className="modal-action">
+                            <a href="#" className="btn btn-square btn-ghost">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-10 h-10">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                </svg>
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
