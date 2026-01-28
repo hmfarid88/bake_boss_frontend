@@ -4,8 +4,12 @@ import { useAppSelector } from "@/app/store";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
 import { useSearchParams } from "next/navigation";
+import { FiEdit } from "react-icons/fi";
+import { toast } from "react-toastify";
+import { updateDiscount } from "@/app/store/salesProductSaleSlice";
 
 type Product = {
+    productId: number;
     date: string;
     time: string;
     category: string;
@@ -28,11 +32,86 @@ const Page = () => {
     const startDate = searchParams.get('startDate');
     const endDate = searchParams.get('endDate');
     const outlet = searchParams.get('outlet');
+    const [selectedProduct, setSelectedProduct] = useState<Product>();
+    const [updatedQty, setUpdatedQty] = useState<number | "">("");
+    const [updatedDiscount, setUpdatedDiscount] = useState<number | "">("");
 
     const contentToPrint = useRef(null);
     const handlePrint = useReactToPrint({
         content: () => contentToPrint.current,
     });
+    const handleEditClick = (product: any) => {
+        setSelectedProduct(product);
+    };
+    const handleQtyUpdate = async (productId: number) => {
+
+        if (!updatedQty) {
+            toast.warning("Quantity is empty !");
+            return;
+        }
+        try {
+            const response = await fetch(`${apiBaseUrl}/sales/update-quantity/${productId}?username=${username}&newQty=${updatedQty}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                setUpdatedQty("");
+                toast.success("Update Successful!");
+            } else {
+                const data = await response.json();
+                toast.warning(data.message || "Something went wrong!");
+            }
+        } catch (error: any) {
+            toast.error("Failed to update quantity: " + error.message);
+        }
+    };
+
+    const handleDiscountUpdate = async (productId: number) => {
+        if (!updatedDiscount) {
+            toast.warning("Discount is empty!");
+            return;
+        }
+
+        try {
+            const response = await fetch(`${apiBaseUrl}/sales/update-discount/${productId}?newDiscount=${updatedDiscount}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                setUpdatedDiscount('');
+                toast.success("Discount updated successfully!");
+            } else {
+                const data = await response.json();
+                toast.warning(data.message || "Something went wrong!");
+            }
+        } catch (error: any) {
+            toast.error("Failed to update discount: " + error.message);
+        }
+    };
+
+
+    const handleProductDelete = async (productId: number) => {
+        try {
+            const response = await fetch(`${apiBaseUrl}/sales/delete/${productId}?username=${username}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                toast.success("Product deleted successfully !");
+            } else {
+                const data = await response.json();
+                toast.warning(data.message || "Failed to delete product!");
+            }
+        } catch (error: any) {
+            toast.error("Error deleting product: " + error.message);
+        }
+    };
     const [filterCriteria, setFilterCriteria] = useState('');
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [allProducts, setAllProducts] = useState<Product[]>([]);
@@ -45,7 +124,7 @@ const Page = () => {
                 setFilteredProducts(data);
             })
             .catch(error => console.error('Error fetching products:', error));
-    }, [apiBaseUrl, startDate, endDate, outlet]);
+    }, [apiBaseUrl, startDate, endDate, outlet, updatedQty]);
 
 
     useEffect(() => {
@@ -103,6 +182,7 @@ const Page = () => {
                                         <th>QUANTITY</th>
                                         <th>DISCOUNT</th>
                                         <th>SUB TOTAL</th>
+                                        <th>ACTION</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -119,6 +199,9 @@ const Page = () => {
                                             <td>{Number(product.productQty?.toFixed(2)).toLocaleString('en-IN')}</td>
                                             <td>{Number(product.discount?.toFixed(2)).toLocaleString('en-IN')}</td>
                                             <td>{Number(((product.saleRate * product.productQty) - (product.discount)).toFixed(2)).toLocaleString('en-IN')}</td>
+                                            <td>
+                                                <a href="#edit_sale" className="btn btn-xs btn-ghost"> <FiEdit size={16} onClick={() => handleEditClick(product)} /> </a>
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>
@@ -135,6 +218,55 @@ const Page = () => {
                         </div>
                     </div>
                 </div>
+                {selectedProduct && (
+                    <div className="modal sm:modal-middle" role="dialog" id="edit_sale">
+                        <div className="modal-box gap-5">
+                            <h3 className="font-bold text-lg">Edit Product: {selectedProduct.productName}</h3>
+                            <div className="flex flex-col gap-2 p-3">
+                                <p>Category: {selectedProduct.category}</p>
+                                <p>Sold Invoice: {selectedProduct.soldInvoice}</p>
+                                <p>Sale Rate: {selectedProduct.saleRate.toLocaleString('en-IN')}</p>
+                                <p>Quantity: {selectedProduct.productQty.toFixed(2)}<input className="input input-sm input-bordered ml-2 w-[100px]" type="number" value={updatedQty} name="productQty" onChange={(e) => {
+                                    const value = Number(e.target.value);
+                                    if (value >= 0) {
+                                        setUpdatedQty(value);
+                                    }
+                                }} />
+                                    <button className="btn btn-sm btn-accent ml-3" onClick={() => {
+                                        if (window.confirm("Are you sure you want to update this item?")) {
+                                            handleQtyUpdate(selectedProduct.productId);
+                                        }
+                                    }} >Apply</button></p>
+                                <p>Discount: {selectedProduct.discount.toFixed(2)}<input className="input input-sm input-bordered ml-2 w-[100px]" type="number" name="discount" value={updatedDiscount} onChange={(e) => {
+                                    const value = Number(e.target.value);
+                                    if (value >= 0) {
+                                        setUpdatedDiscount(value);
+                                    }
+                                }} />
+                                    <button className="btn btn-sm btn-accent ml-3" onClick={() => {
+                                        if (window.confirm("Are you sure you want to update this item?")) {
+                                            handleDiscountUpdate(selectedProduct.productId);
+                                        }
+                                    }} >Apply</button></p>
+                                <p>Total: {((selectedProduct.saleRate * selectedProduct.productQty) - (selectedProduct.discount)).toLocaleString('en-IN')}</p>
+                            </div>
+                            <div className="flex gap-3 p-3">
+                                <button className="btn btn-sm btn-error ml-3" onClick={() => {
+                                    if (window.confirm("Are you sure you want to delete this item?")) {
+                                        handleProductDelete(selectedProduct.productId);
+                                    }
+                                }} >Delete This Item</button>
+                            </div>
+                            <div className="modal-action">
+                                <a href="#" className="btn btn-square btn-ghost">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-10 h-10">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     )

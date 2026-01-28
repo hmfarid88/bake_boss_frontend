@@ -143,12 +143,18 @@ const Page = () => {
 
   useEffect(() => {
     const now = new Date();
-    const hour = now.getHours();
+    const hour = Number(
+      new Intl.DateTimeFormat('en-US', {
+        timeZone: 'Asia/Dhaka',
+        hour: '2-digit',
+        hour12: false,
+      }).format(now)
+    );
     let percent = 15;
-
     if (hour >= 20 || hour < 2) {
       percent = 100;
     }
+
 
     fetch(`${apiBaseUrl}/sales/sales/today?username=${username}&percent=${percent}`)
       .then(response => response.json())
