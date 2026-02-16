@@ -97,7 +97,7 @@ export const SalesSidebar = () => {
                                 </ul>
                             </details>
                         </li>
-                        <li><Link href="/sales-profitloss"><MdOutlineInterests size={20} /> PROFIT / LOSS</Link></li>
+                        {/* <li><Link href="/sales-profitloss"><MdOutlineInterests size={20} /> PROFIT / LOSS</Link></li> */}
                         <li><Link href="/sales-admin"><GrUserAdmin size={20} /> ADMINSTRATION</Link></li>
 
                     </ul>

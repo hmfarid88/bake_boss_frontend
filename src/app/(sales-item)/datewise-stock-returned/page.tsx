@@ -95,7 +95,7 @@ const Page = () => {
                                         <th>PRODUCT NAME</th>
                                         <th>INVOICE NO</th>
                                         <th>REASON</th>
-                                        <th>COST PRICE</th>
+                                        {/* <th>COST PRICE</th> */}
                                         <th>SALE PRICE</th>
                                         <th>QUANTITY</th>
                                         <th>SUB TOTAL</th>
@@ -111,7 +111,7 @@ const Page = () => {
                                             <td className="capitalize">{product.productName}</td>
                                             <td className="uppercase"><button onClick={() => handleInvoice(product.invoiceNo)} className="btn btn-link">{product.invoiceNo}</button></td>
                                             <td className="capitalize">{product.soldInvoice}</td>
-                                            <td>{Number(product.costPrice.toFixed(2)).toLocaleString('en-IN')}</td>
+                                            {/* <td>{Number(product.costPrice.toFixed(2)).toLocaleString('en-IN')}</td> */}
                                             <td>{Number(product.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
                                             <td>{product.productQty.toLocaleString('en-IN')}</td>
                                             <td>{Number((product.saleRate * product.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
@@ -120,7 +120,7 @@ const Page = () => {
                                 </tbody>
                                 <tfoot>
                                     <tr className="font-semibold text-lg">
-                                        <td colSpan={8}></td>
+                                        <td colSpan={7}></td>
                                         <td>TOTAL</td>
                                         <td>{totalQty}</td>
                                         <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>

@@ -20,7 +20,6 @@ type Product = {
   productQty: number;
 };
 
-
 const Page = () => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const uname = useAppSelector((state) => state.username.username);

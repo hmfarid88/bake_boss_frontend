@@ -95,9 +95,9 @@ const Page = () => {
                                 <th>SUPPLIER</th>
                                 <th>CATEGORY</th>
                                 <th>PRODUCT NAME</th>
-                                <th>P.PRICE</th>
+                                {/* <th>P.PRICE</th> */}
                                 <th>QTY</th>
-                                <th>TOTAL</th>
+                                {/* <th>TOTAL</th> */}
                             </tr>
                         </thead>
                         <tbody>
@@ -110,18 +110,18 @@ const Page = () => {
                                     <td className="capitalize">{product.supplier}</td>
                                     <td className="capitalize">{product.category}</td>
                                     <td className="capitalize">{product.productName}</td>
-                                    <td>{product.costPrice.toFixed(2)}</td>
+                                    {/* <td>{product.costPrice.toFixed(2)}</td> */}
                                     <td>{product.productQty.toFixed(2)}</td>
-                                    <td>{(product.productQty*product.costPrice).toFixed(2)}</td>
+                                    {/* <td>{(product.productQty*product.costPrice).toFixed(2)}</td> */}
                                 </tr>
                             ))}
                         </tbody>
                         <tfoot>
                             <tr className="font-semibold text-lg">
-                                <td colSpan={7}></td>
+                                <td colSpan={6}></td>
                                 <td>TOTAL</td>
                                 <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                                <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
+                                {/* <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td> */}
                             </tr>
                         </tfoot>
                     </table>

@@ -95,7 +95,7 @@ const Page = () => {
                                 <th>INVOICE NO</th>
                                 <th>CATEGORY</th>
                                 <th>PRODUCT NAME</th>
-                                <th>PURCHASE PRICE</th>
+                                {/* <th>PURCHASE PRICE</th> */}
                                 <th>STATUS</th>
                                 <th>QTY</th>
                                 <th>REMAINING</th>
@@ -111,7 +111,7 @@ const Page = () => {
                                     <td className="uppercase">{product.invoiceNo}</td>
                                     <td>{product.category}</td>
                                     <td>{product.productName}</td>
-                                    <td>{product.costPrice.toFixed(2)}</td>
+                                    {/* <td>{product.costPrice.toFixed(2)}</td> */}
                                     <td>{product.status}</td>
                                     <td>{product.productQty.toFixed(2)}</td>
                                     <td>{product.remainingQty.toFixed(2)}</td>

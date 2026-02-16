@@ -95,7 +95,7 @@ const Page = () => {
     setFilterCriteria(e.target.value);
   };
   const totalValue = filteredProducts.reduce((total, product) => {
-    return total + product.costPrice * product.remainingQty;
+    return total + product.saleRate * product.remainingQty;
   }, 0);
 
   const totalQty = filteredProducts.reduce((total, product) => {
@@ -190,7 +190,7 @@ const Page = () => {
                   <th>INVOICE NO</th>
                   <th>CATEGORY</th>
                   <th>PRODUCT NAME</th>
-                  <th>PURCHASE PRICE</th>
+                  {/* <th>PURCHASE PRICE</th> */}
                   <th>SALE PRICE</th>
                   <th>QUANTITY</th>
                   <th>SUB TOTAL</th>
@@ -204,16 +204,16 @@ const Page = () => {
                     <td className="uppercase">{product.invoiceNo}</td>
                     <td className="capitalize">{product.category}</td>
                     <td className="capitalize">{product.productName}</td>
-                    <td>{Number((product.costPrice).toFixed(2)).toLocaleString('en-IN')}</td>
+                    {/* <td>{Number((product.costPrice).toFixed(2)).toLocaleString('en-IN')}</td> */}
                     <td>{Number((product.saleRate).toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number((product.remainingQty).toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{Number((product.costPrice * product.remainingQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number((product.saleRate * product.remainingQty).toFixed(2)).toLocaleString('en-IN')}</td>
                   </tr>
                 ))}
               </tbody>
               <tfoot>
                 <tr className="font-semibold text-lg">
-                  <td colSpan={6}></td>
+                  <td colSpan={5}></td>
                   <td>TOTAL</td>
                   <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
                   <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
