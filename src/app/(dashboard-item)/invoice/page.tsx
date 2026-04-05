@@ -28,7 +28,7 @@ const Invoice = () => {
         time: string,
         category: string,
         productName: string,
-        dpRate: number,
+        rpRate: number,
         productQty: number,
         customer: string,
         invoiceNo: number,
@@ -72,7 +72,7 @@ const Invoice = () => {
         return <div><Loading /></div>;
     }
 
-    const subtotal = invoiceData.reduce((acc, item) => acc + item.dpRate*item.productQty, 0);
+    const subtotal = invoiceData.reduce((acc, item) => acc + item.rpRate*item.productQty, 0);
     const totalQty = invoiceData.reduce((acc, item) => acc + item.productQty, 0);
 
     return (
@@ -122,9 +122,9 @@ const Invoice = () => {
                                     <tr key={index}>
                                         <td className='text-left p-0'>{index+1}</td>
                                         <td>{products.category}, {products.productName}</td>
-                                        <td>{Number(products.dpRate.toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td>{Number(products.rpRate.toFixed(2)).toLocaleString('en-IN')}</td>
                                         <td>{Number(products.productQty.toFixed(2))}</td>
-                                        <td className='text-right pr-0'>{Number((products.dpRate * products.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td className='text-right pr-0'>{Number((products.rpRate * products.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
                                     </tr>
                                 ))}
                             </tbody>
