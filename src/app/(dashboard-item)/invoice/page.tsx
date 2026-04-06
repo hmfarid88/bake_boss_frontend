@@ -28,9 +28,9 @@ const Invoice = () => {
         time: string,
         category: string,
         productName: string,
-        rpRate: number,
+        saleRate: number,
         productQty: number,
-        customer: string,
+        customerNme: string,
         invoiceNo: number,
 
     }
@@ -72,7 +72,7 @@ const Invoice = () => {
         return <div><Loading /></div>;
     }
 
-    const subtotal = invoiceData.reduce((acc, item) => acc + item.rpRate*item.productQty, 0);
+    const subtotal = invoiceData.reduce((acc, item) => acc + item.saleRate*item.productQty, 0);
     const totalQty = invoiceData.reduce((acc, item) => acc + item.productQty, 0);
 
     return (
@@ -97,7 +97,7 @@ const Invoice = () => {
                    
                     <div className="flex w-full justify-between pt-5">
                         <div className="flex flex-col">
-                            <h2 className='uppercase text-black font-bold text-xs md:text-md'>{invoiceData[0]?.customer}</h2>
+                            <h2 className='uppercase text-black font-bold text-xs md:text-md'>{invoiceData[0]?.customerNme}</h2>
 
                         </div>
                         <div className="flex flex-col items-end">
@@ -122,9 +122,9 @@ const Invoice = () => {
                                     <tr key={index}>
                                         <td className='text-left p-0'>{index+1}</td>
                                         <td>{products.category}, {products.productName}</td>
-                                        <td>{Number(products.rpRate.toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td>{Number(products.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
                                         <td>{Number(products.productQty.toFixed(2))}</td>
-                                        <td className='text-right pr-0'>{Number((products.rpRate * products.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td className='text-right pr-0'>{Number((products.saleRate * products.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
                                     </tr>
                                 ))}
                             </tbody>

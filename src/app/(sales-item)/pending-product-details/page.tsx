@@ -11,7 +11,7 @@ type Product = {
     date: string;
     category: string;
     productName: string;
-    rpRate: number;
+    saleRate: number;
     productQty: number;
     invoiceNo: string;
 };
@@ -61,7 +61,7 @@ const Page = () => {
         setFilterCriteria(e.target.value);
     };
     const totalValue = filteredProducts.reduce((total, product) => {
-        return total + product.rpRate * product.productQty;
+        return total + product.saleRate * product.productQty;
     }, 0);
 
     const totalQty = filteredProducts.reduce((total, product) => {
@@ -135,7 +135,7 @@ const Page = () => {
                                         <th>INVOICE NO</th>
                                         <th>CATEGORY</th>
                                         <th>PRODUCT NAME</th>
-                                        <th>PURCHASE RATE</th>
+                                        <th>SALE RATE</th>
                                         <th>QTY (KG/PS)</th>
                                         <th>SUB TOTAL</th>
                                     </tr>
@@ -148,9 +148,9 @@ const Page = () => {
                                             <td className="uppercase">{product.invoiceNo}</td>
                                             <td className="capitalize">{product.category}</td>
                                             <td className="capitalize">{product.productName}</td>
-                                            <td>{Number(product.rpRate.toFixed(2)).toLocaleString('en-IN')}</td>
+                                            <td>{Number(product.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
                                             <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                                            <td>{Number((product.rpRate * product.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                                            <td>{Number((product.saleRate * product.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
                                         </tr>
                                     ))}
                                 </tbody>
