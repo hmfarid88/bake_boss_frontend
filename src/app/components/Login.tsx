@@ -46,6 +46,8 @@ const Login = () => {
                     router.push("/sales-dashboard");
                 } else if (data.roles === 'ROLE_MANAGEMENT') {
                     router.push("/management-dashboard");
+                } else if (data.roles === 'ROLE_MATERIALS') {
+                    router.push("/materials-dashboard");
                 }
 
                 toast.success("Congrats, login successful!");

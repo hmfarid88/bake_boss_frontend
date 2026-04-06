@@ -77,6 +77,7 @@ const Page = () => {
                                     <option value="ROLE_USER">USER</option>
                                     <option value="ROLE_ADMIN">ADMIN</option>
                                     <option value="ROLE_MANAGEMENT">MANAGEMENT</option>
+                                    <option value="ROLE_MATERIALS">MATERIALS</option>
                                 </select>
                             </div>
                             <div className="flex p-2">

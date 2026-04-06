@@ -61,7 +61,7 @@ const Page = () => {
         setFilterCriteria(e.target.value);
     };
     const totalValue = filteredProducts.reduce((total, product) => {
-        return total + product.saleRate * product.productQty;
+        return total + product?.saleRate * product.productQty;
     }, 0);
 
     const totalQty = filteredProducts.reduce((total, product) => {
@@ -148,9 +148,9 @@ const Page = () => {
                                             <td className="uppercase">{product.invoiceNo}</td>
                                             <td className="capitalize">{product.category}</td>
                                             <td className="capitalize">{product.productName}</td>
-                                            <td>{Number(product.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
+                                            <td>{Number(product?.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
                                             <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                                            <td>{Number((product.saleRate * product.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                                            <td>{Number((product?.saleRate * product.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
                                         </tr>
                                     ))}
                                 </tbody>
