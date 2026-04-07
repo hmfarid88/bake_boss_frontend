@@ -67,7 +67,6 @@ const Invoice = () => {
         }
     }, [apiBaseUrl, username, invoiceNo]);
 
-
     if (!invoiceData) {
         return <div><Loading /></div>;
     }
