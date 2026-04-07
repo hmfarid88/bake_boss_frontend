@@ -98,7 +98,6 @@ const Invoice = () => {
                     <div className="flex w-full justify-between pt-5">
                         <div className="flex flex-col">
                             <h2 className='uppercase text-black font-bold text-xs md:text-md'>{invoiceData[0]?.customerNme}</h2>
-
                         </div>
                         <div className="flex flex-col items-end">
                             <h4 className='font-semibold text-xs md:text-md uppercase'>Invoice No : {invoiceData[0]?.invoiceNo}</h4>
