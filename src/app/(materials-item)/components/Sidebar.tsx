@@ -28,8 +28,8 @@ export const Sidebar = () => {
                         <li><Link href="/add-materials"><MdOutlineInterests size={20} /> ADD MATERIALS</Link></li>
                         <li><Link href="/add-damage"><MdOutlineInterests size={20} /> ADD DAMAGE</Link></li>
                         <li><Link href="/materials-stock"><GoDatabase size={20} /> MATERIALS STOCK</Link></li>
-                        <li><Link href="/materials-ledger"><GoDatabase size={20} /> MATERIALS LEDGER</Link></li>
-                        <li><Link href="/materials-purse-ledger"><GoDatabase size={20} /> PURSE LEDGER</Link></li>
+                        <li><Link href="/material-ledger"><GoDatabase size={20} /> MATERIALS LEDGER</Link></li>
+                        <li><Link href="/purse-ledger"><GoDatabase size={20} /> PURSE LEDGER</Link></li>
                         <li><Link href="/used-materials"><HiOutlineShoppingBag size={20} /> USED LEDGER</Link></li>
                         <li><Link href="/damaged-materials"><HiOutlineShoppingBag size={20} /> DAMAGE STOCK</Link></li>
                       

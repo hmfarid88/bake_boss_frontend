@@ -11,7 +11,7 @@ type Product = {
     date: string;
     category: string;
     productName: string;
-    dpRate: number;
+    saleRate: number;
     productQty: number;
     invoiceNo: string;
 };
@@ -61,7 +61,7 @@ const Page = () => {
         setFilterCriteria(e.target.value);
     };
     const totalValue = filteredProducts.reduce((total, product) => {
-        return total + product?.dpRate * product.productQty;
+        return total + (product?.saleRate ?? 0) * product.productQty;
     }, 0);
 
     const totalQty = filteredProducts.reduce((total, product) => {
@@ -148,9 +148,9 @@ const Page = () => {
                                             <td className="uppercase">{product.invoiceNo}</td>
                                             <td className="capitalize">{product.category}</td>
                                             <td className="capitalize">{product.productName}</td>
-                                            <td>{Number(product?.dpRate.toFixed(2)).toLocaleString('en-IN')}</td>
+                                            <td>{Number((product?.saleRate ?? 0).toFixed(2)).toLocaleString('en-IN')}</td>
                                             <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                                            <td>{Number((product?.dpRate * product.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                                            <td>{Number((product?.saleRate ?? 0 * product.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
                                         </tr>
                                     ))}
                                 </tbody>
