@@ -26,9 +26,13 @@ export const Sidebar = () => {
                     <ul className="menu p-4 w-60 min-h-full bg-base-200 text-base-content">
                         <li><Link href="/management-dashboard"><IoHomeOutline size={20} /> HOME</Link></li>
                         <li><Link href="/add-materials"><MdOutlineInterests size={20} /> ADD MATERIALS</Link></li>
+                        <li><Link href="/add-damage"><MdOutlineInterests size={20} /> ADD DAMAGE</Link></li>
                         <li><Link href="/materials-stock"><GoDatabase size={20} /> MATERIALS STOCK</Link></li>
-                        <li><Link href="/materials-dist"><HiOutlineShoppingBag size={20} /> MATERIALS DIST</Link></li>
-                        <li><Link href="/materials-dist-report"><TbReportSearch size={20} /> DIST REPORT</Link></li>
+                        <li><Link href="/materials-ledger"><GoDatabase size={20} /> MATERIALS LEDGER</Link></li>
+                        <li><Link href="/materials-purse-ledger"><GoDatabase size={20} /> PURSE LEDGER</Link></li>
+                        <li><Link href="/used-materials"><HiOutlineShoppingBag size={20} /> USED LEDGER</Link></li>
+                        <li><Link href="/damaged-materials"><HiOutlineShoppingBag size={20} /> DAMAGE STOCK</Link></li>
+                      
                     </ul>
                 </div>
             </div>
