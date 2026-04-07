@@ -16,12 +16,12 @@ const Page: React.FC = () => {
           <div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
             <ItemMake />
           </div>
-          <input type="radio" name="my_tabs_2" role="tab" className="tab" aria-label="MATERIALS STOCK" />
+          {/* <input type="radio" name="my_tabs_2" role="tab" className="tab" aria-label="MATERIALS STOCK" />
           <div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
             <div className="flex w-full">
               <Materials />
             </div>
-          </div>
+          </div> */}
 
           <input type="radio" name="my_tabs_2" role="tab" className="tab" aria-label="PRODUCT STOCK" />
           <div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">

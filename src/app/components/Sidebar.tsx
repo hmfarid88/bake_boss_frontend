@@ -34,7 +34,7 @@ export const Sidebar = () => {
                         <li><Link href="/dashboard"><IoHomeOutline size={20} /> HOME</Link></li>
                         <li><Link href="/purchase"><BsDatabaseAdd size={20} /> PRODUCT STOCK</Link></li>
                         <li><Link href="/damage-product"><RiFileDamageLine size={20} /> DAMAGE PRODUCT</Link></li>
-                        <li><Link href="/damage-material"><RiFileDamageLine size={20} /> DAMAGE MATERIAL</Link></li>
+                        {/* <li><Link href="/damage-material"><RiFileDamageLine size={20} /> DAMAGE MATERIAL</Link></li> */}
                         <li>
                             <details>
                                 <summary><HiOutlineShoppingBag size={20} /> DISTRIBUTION</summary>
