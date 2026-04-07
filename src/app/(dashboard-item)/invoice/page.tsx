@@ -70,7 +70,6 @@ const Invoice = () => {
     if (!invoiceData) {
         return <div><Loading /></div>;
     }
-
     const subtotal = invoiceData.reduce((acc, item) => acc + (item?.saleRate ?? 0)*item.productQty, 0);
     const totalQty = invoiceData.reduce((acc, item) => acc + item.productQty, 0);
 
