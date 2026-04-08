@@ -30,8 +30,8 @@ const Invoice = () => {
         productName: string,
         saleRate: number,
         productQty: number,
-        customerNme: string,
-        invoiceNo: number,
+        customerName: string,
+        soldInvoice: number,
 
     }
     interface shopData{
@@ -95,10 +95,10 @@ const Invoice = () => {
                    
                     <div className="flex w-full justify-between pt-5">
                         <div className="flex flex-col">
-                            <h2 className='uppercase text-black font-bold text-xs md:text-md'>{invoiceData[0]?.customerNme}</h2>
+                            <h2 className='uppercase text-black font-bold text-xs md:text-md'>{invoiceData[0]?.customerName}</h2>
                         </div>
                         <div className="flex flex-col items-end">
-                            <h4 className='font-semibold text-xs md:text-md uppercase'>Invoice No : {invoiceData[0]?.invoiceNo}</h4>
+                            <h4 className='font-semibold text-xs md:text-md uppercase'>Invoice No : {invoiceData[0]?.soldInvoice}</h4>
                             <h4 className='font-semibold text-xs md:text-md uppercase pt-1'>Date : {invoiceData[0]?.date}</h4>
                             <h4 className='font-semibold text-xs md:text-md uppercase pt-1'>Time : {invoiceData[0]?.time}</h4>
                         </div>

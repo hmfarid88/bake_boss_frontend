@@ -148,7 +148,7 @@ const Page = () => {
                                     <th>AVE RATE</th>
                                     <th>QUANTITY</th>
                                     <th>SUB TOTAL</th>
-                                    {/* <th>EDIT</th> */}
+                                    <th>EDIT</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -160,13 +160,13 @@ const Page = () => {
                                         <td>{Number(product.averageRate.toFixed(2)).toLocaleString('en-IN')}</td>
                                         <td>{product.remainingQty.toLocaleString('en-IN')}</td>
                                         <td>{Number((product.averageRate * product.remainingQty).toFixed(2)).toLocaleString('en-IN')}</td>
-                                        {/* <td><a href="#materialRateChange" onClick={() => setSelectedMaterialId(product.materialsId)} className="btn btn-primary btn-sm"><MdOutlineEditNote size={24} /></a></td> */}
+                                        <td><a href="#materialRateChange" onClick={() => setSelectedMaterialId(product.materialsId)} className="btn btn-primary btn-sm"><MdOutlineEditNote size={24} /></a></td>
                                     </tr>
                                 ))}
                             </tbody>
                             <tfoot>
                                 <tr className="font-semibold text-lg">
-                                    <td colSpan={2}></td>
+                                    <td colSpan={3}></td>
                                     <td>TOTAL</td>
                                     <td>{totalQty.toLocaleString('en-IN')}</td>
                                     <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
