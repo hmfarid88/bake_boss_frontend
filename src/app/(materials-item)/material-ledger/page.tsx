@@ -32,7 +32,7 @@ const Page = () => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/api/getAllMaterials?username=${username}`)
+    fetch(`${apiBaseUrl}/api/getAllRawMaterials?username=${username}`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);
@@ -96,7 +96,7 @@ const Page = () => {
                     <td>{product.materialsName}</td>
                     <td>{product.supplierName}</td>
                     <td>{product.supplierInvoice}</td>
-                    <td>{Number(product.materialsRate.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number(product.materialsRate?.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{product.status}</td>
                     <td>{Number(product.materialsQty.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.remainingQty.toFixed(2)).toLocaleString('en-IN')}</td>

@@ -33,7 +33,7 @@ const Page = () => {
     const [allProducts, setAllProducts] = useState<Product[]>([]);
 
     useEffect(() => {
-        fetch(`${apiBaseUrl}/api/datewiseStoredMaterialsLedger?username=${username}&startDate=${startDate}&endDate=${endDate}`)
+        fetch(`${apiBaseUrl}/api/datewiseStoredRawMaterialsLedger?username=${username}&startDate=${startDate}&endDate=${endDate}`)
             .then(response => response.json())
             .then(data => {
                 setAllProducts(data);

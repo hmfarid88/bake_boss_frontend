@@ -3,11 +3,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAppSelector } from "@/app/store";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
-import CurrentMonthYear from "@/app/components/CurrentMonthYear";
 import { useSearchParams } from "next/navigation";
 
 type Product = {
+    date: string;
     materialsName: string;
+    supplierName: string;
+    supplierInvoice: string;
+    materialsRate: number;
     materialsQty: number;
 
 };
@@ -30,15 +33,11 @@ const Page = () => {
     const [allProducts, setAllProducts] = useState<Product[]>([]);
 
     useEffect(() => {
-        fetch(`${apiBaseUrl}/api/materials/datewise-used-quantity?username=${username}&startDate=${startDate}&endDate=${endDate}`)
+        fetch(`${apiBaseUrl}/api/datewiseSoldRawMaterialsLedger?username=${username}&startDate=${startDate}&endDate=${endDate}`)
             .then(response => response.json())
             .then(data => {
-                const transformedData = data.map((item: [string, number]) => ({
-                    materialsName: item[0],
-                    materialsQty: item[1],
-                }));
-                setAllProducts(transformedData);
-                setFilteredProducts(transformedData);
+                setAllProducts(data);
+                setFilteredProducts(data);
             })
             .catch(error => console.error('Error fetching products:', error));
     }, [apiBaseUrl, username, startDate, endDate]);
@@ -46,7 +45,10 @@ const Page = () => {
 
     useEffect(() => {
         const filtered = allProducts.filter(product =>
-            (product.materialsName.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
+            (product.date?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+            (product.materialsName?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+            (product.supplierName?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+            (product.supplierInvoice?.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
 
         );
         setFilteredProducts(filtered);
@@ -55,11 +57,18 @@ const Page = () => {
     const handleFilterChange = (e: any) => {
         setFilterCriteria(e.target.value);
     };
+    const totalQty = filteredProducts.reduce((total, product) => {
+        return total + product.materialsQty;
+    }, 0);
+
+    const totalValue = filteredProducts.reduce((total, product) => {
+        return total + product.materialsQty * product.materialsRate;
+    }, 0);
 
     return (
         <div className="container-2xl">
             <div className="flex flex-col w-full min-h-[calc(100vh-228px)] p-4 items-center justify-center">
-                <div className="flex w-full justify-between gap-5 pl-5 pr-5 pt-1">
+                <div className="flex w-full justify-between pl-5 pr-5 pt-1">
                     <label className="input input-bordered flex max-w-xs  items-center gap-2">
                         <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
                         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-4 w-4 opacity-70">
@@ -70,25 +79,42 @@ const Page = () => {
                 </div>
                 <div className="overflow-x-auto">
                     <div ref={contentToPrint} className="flex-1 p-5">
-                        <div className="flex flex-col items-center gap-3 pb-5"><h4 className="font-bold">USED MATERIALS</h4>DATE : {startDate} TO {endDate}</div>
+                        <div className="flex flex-col items-center pb-5"><h4 className="font-bold">MATERIALS DISTRIBUTION</h4>Date: {startDate} TO {endDate}</div>
                         <table className="table table-sm text-center">
                             <thead>
                                 <tr>
                                     <th>SN</th>
+                                    <th>DATE</th>
                                     <th>MATERIALS NAME</th>
+                                    <th>SUPPLIER NAME</th>
+                                    <th>INVOICE NO</th>
+                                    <th>COST PRICE</th>
                                     <th>QTY</th>
+                                    <th>SUB TOTAL</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {filteredProducts?.map((product, index) => (
                                     <tr key={index} className="capitalize">
                                         <td>{index + 1}</td>
+                                        <td>{product.date}</td>
                                         <td>{product.materialsName}</td>
-                                        <td>{Number(product.materialsQty.toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td>{product.supplierName}</td>
+                                        <td>{product.supplierInvoice}</td>
+                                        <td>{Number(product.materialsRate?.toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td>{Number(product.materialsQty?.toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td>{Number((product.materialsRate * product.materialsQty)?.toFixed(2)).toLocaleString('en-IN')}</td>
                                     </tr>
                                 ))}
                             </tbody>
-
+                            <tfoot>
+                                <tr className="font-semibold text-lg">
+                                    <td colSpan={5}></td>
+                                    <td>TOTAL</td>
+                                    <td>{Number(totalQty?.toFixed(2)).toLocaleString('en-IN')}</td>
+                                    <td>{Number(totalValue?.toFixed(2)).toLocaleString('en-IN')}</td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>

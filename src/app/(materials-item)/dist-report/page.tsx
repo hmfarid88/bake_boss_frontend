@@ -30,7 +30,7 @@ const Page = () => {
     const [allProducts, setAllProducts] = useState<Product[]>([]);
 
     useEffect(() => {
-        fetch(`${apiBaseUrl}/api/getAllStoredRawMaterials?username=${username}`)
+        fetch(`${apiBaseUrl}/api/getAllSoldRawMaterials?username=${username}`)
             .then(response => response.json())
             .then(data => {
                 setAllProducts(data);
@@ -66,7 +66,7 @@ const Page = () => {
     return (
         <div className="container-2xl">
             <div className="flex flex-col w-full min-h-[calc(100vh-228px)] p-4 items-center justify-center">
-                <div className="flex w-full justify-center p-5"><DateToDate routePath="/datewise-purse-ledger" /></div>
+                <div className="flex w-full justify-center p-5"><DateToDate routePath="/datewise-dist-report" /></div>
                 <div className="flex w-full justify-between pl-5 pr-5 pt-1">
                     <label className="input input-bordered flex max-w-xs  items-center gap-2">
                         <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
@@ -78,7 +78,7 @@ const Page = () => {
                 </div>
                 <div className="overflow-x-auto">
                     <div ref={contentToPrint} className="flex-1 p-5">
-                        <div className="flex flex-col items-center pb-5"><h4 className="font-bold">MATERIALS LEDGER</h4><CurrentMonthYear /></div>
+                        <div className="flex flex-col items-center pb-5"><h4 className="font-bold">MATERIALS DISTRIBUTION</h4><CurrentMonthYear /></div>
                         <table className="table table-sm text-center">
                             <thead>
                                 <tr>
@@ -101,9 +101,9 @@ const Page = () => {
                                         <td>{product.materialsName}</td>
                                         <td>{product.supplierName}</td>
                                         <td>{product.supplierInvoice}</td>
-                                        <td>{Number(product.materialsRate.toFixed(2)).toLocaleString('en-IN')}</td>
-                                        <td>{Number(product.materialsQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                                        <td>{Number((product.materialsRate * product.materialsQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td>{Number(product.materialsRate?.toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td>{Number(product.materialsQty?.toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td>{Number((product.materialsRate * product.materialsQty)?.toFixed(2)).toLocaleString('en-IN')}</td>
 
                                     </tr>
                                 ))}
@@ -112,8 +112,8 @@ const Page = () => {
                                 <tr className="font-semibold text-lg">
                                     <td colSpan={5}></td>
                                     <td>TOTAL</td>
-                                    <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                                    <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
+                                    <td>{Number(totalQty?.toFixed(2)).toLocaleString('en-IN')}</td>
+                                    <td>{Number(totalValue?.toFixed(2)).toLocaleString('en-IN')}</td>
                                 </tr>
                             </tfoot>
                         </table>

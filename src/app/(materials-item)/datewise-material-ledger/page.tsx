@@ -35,7 +35,7 @@ const Page = () => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/api/datewiseMaterialsLedger?username=${username}&startDate=${startDate}&endDate=${endDate}`)
+    fetch(`${apiBaseUrl}/api/datewiseRawMaterialsLedger?username=${username}&startDate=${startDate}&endDate=${endDate}`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);
@@ -98,10 +98,10 @@ const Page = () => {
                     <td>{product.materialsName}</td>
                     <td>{product.supplierName}</td>
                     <td>{product.supplierInvoice}</td>
-                    <td>{Number(product.materialsRate.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number(product.materialsRate?.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{product.status}</td>
-                    <td>{Number(product.materialsQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{Number(product.remainingQty.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number(product.materialsQty?.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number(product.remainingQty?.toFixed(2)).toLocaleString('en-IN')}</td>
                   </tr>
                 ))}
               </tbody>

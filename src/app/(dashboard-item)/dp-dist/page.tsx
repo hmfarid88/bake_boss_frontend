@@ -145,7 +145,7 @@ const Page: React.FC = () => {
       }
 
     } catch (error) {
-      console.error('Error fetching product:', error);
+      // console.error('Error fetching product:', error);
       toast.error("An error occurred while processing the request.");
     }
   };

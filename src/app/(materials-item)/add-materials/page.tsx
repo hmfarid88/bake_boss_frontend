@@ -61,7 +61,7 @@ const Page = () => {
         }
         setPending(true);
         try {
-            const response = await fetch(`${apiBaseUrl}/api/addAllMaterials`, {
+            const response = await fetch(`${apiBaseUrl}/api/addRawMaterials`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

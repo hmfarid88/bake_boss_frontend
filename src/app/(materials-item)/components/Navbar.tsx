@@ -1,12 +1,13 @@
 "use client"
 import Link from 'next/link'
 import React from 'react'
-import { useAppDispatch } from "@/app/store";
+import { useAppDispatch, useAppSelector } from "@/app/store";
 import { deleteUser } from "@/app/store/usernameSlice"
 import { deleteSession } from '@/app/lib/auth';
 import { RiLogoutCircleRLine } from "react-icons/ri";
 
 const Navbar = () => {
+    const username = useAppSelector((state) => state.username.username);
     const dispatch = useAppDispatch();
     const handleLogout = () => {
         dispatch(deleteUser());
@@ -22,7 +23,7 @@ const Navbar = () => {
                         </div>
 
                     </div>
-                    <a className="btn btn-ghost text-lg font-bold"><Link href="/management-dashboard">AURORA FOOD & BEVERAGE</Link></a>
+                    <a className="btn btn-ghost text-lg font-bold uppercase"><Link href="/management-dashboard">{username ? username.username : 'Guest'}</Link></a>
                 </div>
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1">

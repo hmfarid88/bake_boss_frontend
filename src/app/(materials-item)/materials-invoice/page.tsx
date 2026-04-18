@@ -10,7 +10,7 @@ import { IoLocationOutline } from 'react-icons/io5';
 import { FaPhoneVolume } from 'react-icons/fa';
 import { AiOutlineMail } from 'react-icons/ai';
 
-const Invoice = () => {
+const Page = () => {
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -25,14 +25,11 @@ const Invoice = () => {
 
     interface invoiceData {
         date: string,
-        time: string,
-        category: string,
-        productName: string,
-        saleRate: number,
-        productQty: number,
-        customerName: string,
-        soldInvoice: number,
-
+        madeItem: string,
+        materialsName: string,
+        averageRate: number,
+        materialsQty: number,
+        supplierInvoice: string,
     }
     interface shopData{
         shopName:string,
@@ -56,9 +53,10 @@ const Invoice = () => {
             })
             .catch(error => console.error('Error fetching products:', error));
     }, [apiBaseUrl, username]);
+
     useEffect(() => {
         if (username && invoiceNo) {
-            fetch(`${apiBaseUrl}/invoice/getInvoiceData?username=${username}&invoiceNo=${invoiceNo}`)
+            fetch(`${apiBaseUrl}/invoice/getMaterialsInvoiceData?invoiceNo=${invoiceNo}`) 
                 .then(response => response.json())
                 .then(data => {
                     setInvoiceData(data);
@@ -70,13 +68,13 @@ const Invoice = () => {
     if (!invoiceData) {
         return <div><Loading /></div>;
     }
-    const subtotal = invoiceData.reduce((acc, item) => acc + (item?.saleRate ?? 0)*item.productQty, 0);
-    const totalQty = invoiceData.reduce((acc, item) => acc + item.productQty, 0);
+    const subtotal = invoiceData.reduce((acc, item) => acc + (item?.averageRate ?? 0)*item.materialsQty, 0);
+    const totalQty = invoiceData.reduce((acc, item) => acc + item.materialsQty, 0);
 
     return (
         <div className="container min-h-[calc(100vh-228px)]">
             <div className="flex justify-end pr-10 pt-5 gap-3">
-                <Link href="/dp-dist">  <button className='btn btn-ghost btn-square'><FcPlus size={36} /></button></Link>
+                <Link href="/add-distribution">  <button className='btn btn-ghost btn-square'><FcPlus size={36} /></button></Link>
                 <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
             </div>
             <div className="flex justify-center pb-5">
@@ -95,12 +93,12 @@ const Invoice = () => {
                    
                     <div className="flex w-full justify-between pt-5">
                         <div className="flex flex-col">
-                            <h2 className='uppercase text-black font-bold text-xs md:text-md'>{invoiceData[0]?.customerName}</h2>
+                            <h2 className='uppercase text-black font-bold text-xs md:text-md'>{invoiceData[0]?.madeItem}</h2>
                         </div>
                         <div className="flex flex-col items-end">
-                            <h4 className='font-semibold text-xs md:text-md uppercase'>Invoice No : {invoiceData[0]?.soldInvoice}</h4>
+                            <h4 className='font-semibold text-xs md:text-md uppercase'>Invoice No : {invoiceData[0]?.supplierInvoice}</h4>
                             <h4 className='font-semibold text-xs md:text-md uppercase pt-1'>Date : {invoiceData[0]?.date}</h4>
-                            <h4 className='font-semibold text-xs md:text-md uppercase pt-1'>Time : {invoiceData[0]?.time}</h4>
+                            
                         </div>
                     </div>
                     <div className="w-full pt-2">
@@ -118,10 +116,10 @@ const Invoice = () => {
                                 {invoiceData?.map((products, index) => (
                                     <tr key={index}>
                                         <td className='text-left p-0'>{index+1}</td>
-                                        <td>{products.category}, {products.productName}</td>
-                                        <td>{Number((products?.saleRate ?? 0).toFixed(2)).toLocaleString('en-IN')}</td>
-                                        <td>{Number(products.productQty.toFixed(2))}</td>
-                                        <td className='text-right pr-0'>{Number((products?.saleRate ?? 0 * products.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td>{products.materialsName}</td>
+                                        <td>{Number((products?.averageRate ?? 0).toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td>{Number(products.materialsQty.toFixed(2))}</td>
+                                        <td className='text-right pr-0'>{Number((products?.averageRate ?? 0 * products.materialsQty).toFixed(2)).toLocaleString('en-IN')}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -151,4 +149,4 @@ const Invoice = () => {
     )
 };
 
-export default Invoice
+export default Page

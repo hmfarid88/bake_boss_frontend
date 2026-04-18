@@ -36,21 +36,20 @@ const Page = () => {
 
 
     useEffect(() => {
-        fetch(`${apiBaseUrl}/api/getMaterialsStock?username=${username}`)
+        fetch(`${apiBaseUrl}/api/getRawMaterialsStock`)
             .then(response => response.json())
             .then(data => {
                 setAllProducts(data);
                 setFilteredProducts(data);
             })
             .catch(error => console.error('Error fetching products:', error));
-    }, [apiBaseUrl, username, newprice, newQty]);
+    }, [apiBaseUrl, newprice, newQty]);
 
     const handleRateEdit = async (materialsId: number) => {
         if (!materialsId || !newprice) {
             toast.warning("Product value is required!");
             return;
         }
-
         try {
             const response = await fetch(
                 `${apiBaseUrl}/api/materials/average-rate/${materialsId}`,
@@ -100,8 +99,6 @@ const Page = () => {
             toast.error(error.message || "Error updating.");
         }
     };
-
-
 
     useEffect(() => {
         const filtered = allProducts.filter(product =>
