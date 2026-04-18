@@ -201,8 +201,9 @@ const Page = () => {
   return (
     <div className="container-2xl min-h-[calc(100vh-228px)]">
       <div className="flex flex-col w-full p-5">
-        <div className="flex justify-between">
-          <DateToDate routePath="/datewise-salereport" /><div className="pt-7"><Link className="btn btn-success" href='/sales-salereport'>This Month Sale</Link></div>
+        <div className="flex justify-center w-full p-5 gap-5">
+          <DateToDate routePath="/datewise-salereport" />
+          <div className="pt-8"><Link className="btn btn-success" href='/sales-salereport'>This Month Sale</Link></div>
         </div>
         <div className="flex w-full justify-between">
           <div className="pt-5">

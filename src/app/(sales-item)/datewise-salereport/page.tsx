@@ -36,7 +36,39 @@ const Page = () => {
     const [filterCriteria, setFilterCriteria] = useState('');
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [allProducts, setAllProducts] = useState<Product[]>([]);
+    const [isMonthView, setIsMonthView] = useState(false);
 
+    type MonthlyData = {
+        month: string;
+        amount: number;
+        sortDate: Date;
+    };
+
+    const monthwiseData: MonthlyData[] = Object.values(
+        filteredProducts.reduce((acc: Record<string, MonthlyData>, product) => {
+            const dateObj = new Date(product.date);
+            const monthKey = dateObj.toLocaleString('en-US', {
+                month: 'long',
+                year: 'numeric'
+            });
+
+            if (!acc[monthKey]) {
+                acc[monthKey] = {
+                    month: monthKey,
+                    amount: 0,
+                    sortDate: new Date(dateObj.getFullYear(), dateObj.getMonth(), 1) // 👈 important
+                };
+            }
+
+            acc[monthKey].amount +=
+                (product.saleRate * product.productQty) - product.discount;
+
+            return acc;
+        }, {} as Record<string, MonthlyData>)
+    );
+
+    // ✅ SORT HERE
+    monthwiseData.sort((a: any, b: any) => a.sortDate - b.sortDate);
     useEffect(() => {
         fetch(`${apiBaseUrl}/sales/getDatewiseOutletSale?username=${username}&startDate=${startDate}&endDate=${endDate}&percent=15`)
             .then(response => response.json())
@@ -69,6 +101,7 @@ const Page = () => {
     }, 0);
     const totalQty = filteredProducts.reduce((acc, item) => acc + item.productQty, 0);
     const totalDis = filteredProducts.reduce((acc, item) => acc + item.discount, 0);
+    const monthTotal = monthwiseData.reduce((sum, item: any) => sum + item.amount, 0);
     return (
         <div className="container-2xl min-h-[calc(100vh-228px)]">
             <div className="flex flex-col w-full  p-4 items-center justify-center">
@@ -80,17 +113,24 @@ const Page = () => {
                             <path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" />
                         </svg>
                     </label>
+                    <button
+                        onClick={() => setIsMonthView(!isMonthView)}
+                        className="btn btn-sm btn-primary"
+                    >
+                        {isMonthView ? "Detailed View" : "Monthwise View"}
+                    </button>
                     <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
                 </div>
                 <div className="overflow-x-auto">
                     <div ref={contentToPrint} className="flex-1 p-5">
                         <div className="flex flex-col w-full items-center justify-center">
+                            <h4 className="font-bold text-lg uppercase">{username}</h4>
                             <h4 className="font-semibold text-lg">SALES REPORT</h4>
                             <h4>DATE : {startDate} TO {endDate}</h4>
                         </div>
                         <div className="pt-5">
                             <table className="table table-sm">
-                                <thead>
+                                {/* <thead>
                                     <tr>
                                         <th>SN</th>
                                         <th>DATE</th>
@@ -104,8 +144,8 @@ const Page = () => {
                                         <th>DISCOUNT</th>
                                         <th>SUB TOTAL</th>
                                     </tr>
-                                </thead>
-                                <tbody>
+                                </thead> */}
+                                {/* <tbody>
                                     {filteredProducts?.map((product, index) => (
                                         <tr key={index}>
                                             <td>{index + 1}</td>
@@ -130,6 +170,82 @@ const Page = () => {
                                         <td>{Number(totalDis.toFixed(2)).toLocaleString('en-IN')}</td>
                                         <td>{Number((totalValue - totalDis).toFixed(2)).toLocaleString('en-IN')}</td>
                                     </tr>
+                                </tfoot> */}
+                                <thead>
+                                    {!isMonthView ? (
+                                        <tr>
+                                            <th>SN</th>
+                                            <th>DATE</th>
+                                            <th>TIME</th>
+                                            <th>CATEGORY</th>
+                                            <th>PRODUCT NAME</th>
+                                            <th>INVOICE NO</th>
+                                            <th>CUSTOMER INFO</th>
+                                            <th>SALE RATE</th>
+                                            <th>QUANTITY</th>
+                                            <th>DISCOUNT</th>
+                                            <th>SUB TOTAL</th>
+                                        </tr>
+                                    ) : (
+                                        <tr>
+                                            <th>SN</th>
+                                            <th colSpan={8}>MONTH NAME</th>
+                                            <th colSpan={2}>AMOUNT</th>
+                                        </tr>
+                                    )}
+                                </thead>
+                                <tbody>
+                                    {!isMonthView ? (
+                                        filteredProducts.map((product, index) => (
+                                            <tr key={index}>
+                                                <td>{index + 1}</td>
+                                                <td>{product.date}</td>
+                                                <td>{product.time}</td>
+                                                <td className="capitalize">{product.category}</td>
+                                                <td className="capitalize">{product.productName}</td>
+                                                <td className="uppercase">{product.soldInvoice}</td>
+                                                <td className="capitalize">
+                                                    {product.customerName} {product.phoneNumber}, {product.soldBy}
+                                                </td>
+                                                <td>{Number(product.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
+                                                <td>{Number(product.productQty?.toFixed(2)).toLocaleString('en-IN')}</td>
+                                                <td>{Number(product.discount?.toFixed(2)).toLocaleString('en-IN')}</td>
+                                                <td>
+                                                    {Number(
+                                                        ((product.saleRate * product.productQty) - product.discount).toFixed(2)
+                                                    ).toLocaleString('en-IN')}
+                                                </td>
+                                            </tr>
+                                        ))
+                                    ) : (
+                                        monthwiseData.map((item: any, index: number) => (
+                                            <tr key={index}>
+                                                <td>{index + 1}</td>
+                                                <td colSpan={8}>{item.month}</td>
+                                                <td colSpan={2}>
+                                                    {Number(item.amount.toFixed(2)).toLocaleString('en-IN')}
+                                                </td>
+                                            </tr>
+                                        ))
+                                    )}
+                                </tbody>
+                                <tfoot>
+                                    {!isMonthView ? (
+                                        <tr className="font-semibold text-lg">
+                                            <td colSpan={7}></td>
+                                            <td>TOTAL</td>
+                                            <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
+                                            <td>{Number(totalDis.toFixed(2)).toLocaleString('en-IN')}</td>
+                                            <td>{Number((totalValue - totalDis).toFixed(2)).toLocaleString('en-IN')}</td>
+                                        </tr>
+                                    ) : (
+                                        <tr className="font-semibold text-lg">
+                                            <td colSpan={9}>TOTAL</td>
+                                            <td colSpan={2}>
+                                                {Number(monthTotal.toFixed(2)).toLocaleString('en-IN')}
+                                            </td>
+                                        </tr>
+                                    )}
                                 </tfoot>
                             </table>
                         </div>

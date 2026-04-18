@@ -69,7 +69,7 @@ const Page = () => {
   return (
     <div className="container-2xl min-h-[calc(100vh-228px)]">
       <div className="flex flex-col w-full items-center p-5">
-        <div className="flex">
+        <div className="flex items-center justify-center w-full p-5">
           <DateToDate routePath="/datewise-salereport" />
         </div>
         <div className="flex w-full justify-between">
