@@ -23,7 +23,7 @@ const Navbar = () => {
                         </div>
 
                     </div>
-                    <a className="btn btn-ghost text-lg font-bold uppercase"><Link href="/management-dashboard">{username ? username.username : 'Guest'}</Link></a>
+                    <a className="btn btn-ghost text-lg font-bold uppercase"><Link href="/materials-dashboard">{username ? username.username : 'Guest'}</Link></a>
                 </div>
                 <div className="navbar-center hidden lg:flex">
                     <ul className="menu menu-horizontal px-1">
