@@ -148,7 +148,7 @@ const Page = () => {
                                     <th>AVE RATE</th>
                                     <th>QUANTITY</th>
                                     <th>SUB TOTAL</th>
-                                    <th>EDIT</th>
+                                    {/* <th>EDIT</th> */}
                                 </tr>
                             </thead>
                             <tbody>

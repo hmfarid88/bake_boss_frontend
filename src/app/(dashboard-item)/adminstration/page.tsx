@@ -1,4 +1,5 @@
 import DistEdit from "@/app/components/DistEdit"
+import ProductMrp from "@/app/components/ProductMrp"
 import ProfitSetup from "@/app/components/ProfitSetup"
 import ShopInfo from "@/app/components/ShopInfo"
 
@@ -18,6 +19,10 @@ const Page = () => {
           <input type="radio" name="my_tabs_2" role="tab" className="tab" aria-label="DISTRIBUTION EDIT" />
           <div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
             <DistEdit />
+          </div>
+          <input type="radio" name="my_tabs_2" role="tab" className="tab" aria-label="PRODUCT MRP" />
+          <div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
+            <ProductMrp />
           </div>
          
         </div>

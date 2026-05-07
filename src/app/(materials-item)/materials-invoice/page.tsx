@@ -29,7 +29,7 @@ const Page = () => {
         materialsName: string,
         averageRate: number,
         materialsQty: number,
-        supplierInvoice: string,
+        supplierInvoice: string
     }
     interface shopData{
         shopName:string,

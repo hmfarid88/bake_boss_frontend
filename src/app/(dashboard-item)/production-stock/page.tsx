@@ -59,7 +59,7 @@ const Page = () => {
   return (
     <div className="container-2xl">
       <div className="flex flex-col w-full min-h-[calc(100vh-228px)] gap-5 p-4 items-center justify-center">
-        <div className="flex w-full justify-end"><DateToDate routePath="/datewise-production-materials" /></div>
+        <div className="flex w-full justify-center"><DateToDate routePath="/datewise-production-materials" /></div>
         <div className="flex w-full justify-between pl-5 pr-5 pt-1">
           <label className="input input-bordered flex max-w-xs  items-center gap-2">
             <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
@@ -71,7 +71,7 @@ const Page = () => {
         </div>
         <div className="overflow-x-auto">
           <div ref={contentToPrint} className="flex-1 p-5">
-            <div className="flex flex-col items-center gap-2 pb-5"><h4 className="font-bold">Production Materials Stock</h4>
+            <div className="flex flex-col items-center gap-2 pb-5"><h4 className="font-bold uppercase">Production Stock</h4>
               <h4><CurrentDate /></h4>
             </div>
             <table className="table text-center">

@@ -2,10 +2,11 @@
 import Link from 'next/link'
 import { IoHomeOutline } from "react-icons/io5";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
-import { TbReportSearch } from "react-icons/tb";
 import { MdOutlineInterests } from "react-icons/md";
 import { GoDatabase } from 'react-icons/go';
-import { GrUserAdmin } from 'react-icons/gr';
+import { RiSecurePaymentLine } from 'react-icons/ri';
+import { VscRepo } from 'react-icons/vsc';
+import Cashbook from './Cashbook';
 
 
 export const Sidebar = () => {
@@ -24,16 +25,34 @@ export const Sidebar = () => {
                 <div className="drawer-side">
                     <label htmlFor="my-drawer-3" aria-label="close sidebar" className="drawer-overlay"></label>
                     <ul className="menu p-4 w-60 min-h-full bg-base-200 text-base-content">
-                        <li><Link href="/management-dashboard"><IoHomeOutline size={20} /> HOME</Link></li>
+                        <li><Link href="/materials-dashboard"><IoHomeOutline size={20} /> HOME</Link></li>
                         <li><Link href="/add-materials"><MdOutlineInterests size={20} /> ADD MATERIALS</Link></li>
                         {/* <li><Link href="/add-damage"><MdOutlineInterests size={20} /> ADD DAMAGE</Link></li> */}
                         <li><Link href="/add-distribution"><MdOutlineInterests size={20} /> ADD DISTRIBUTION</Link></li>
+                        <li>
+                            <details>
+                                <summary><RiSecurePaymentLine size={20} /> TRANSACTION</summary>
+                                <ul>
+                                    <li><Link href="/materials-payment">PAYMENT</Link></li>
+                                    <li><Link href="/materials-receive">RECEIVE</Link></li>
+                                </ul>
+                            </details>
+                        </li>
                         <li><Link href="/materials-stock"><GoDatabase size={20} /> MATERIALS STOCK</Link></li>
                         <li><Link href="/material-ledger"><GoDatabase size={20} /> MATERIALS LEDGER</Link></li>
                         <li><Link href="/purse-ledger"><GoDatabase size={20} /> PURSE LEDGER</Link></li>
                         <li><Link href="/dist-report"><HiOutlineShoppingBag size={20} /> DIST LEDGER</Link></li>
                         {/* <li><Link href="/damaged-materials"><HiOutlineShoppingBag size={20} /> DAMAGE STOCK</Link></li> */}
-                      
+                        <li>
+                            <details>
+                                <summary><a className='flex gap-2'><VscRepo size={20} /> CASH BOOK </a></summary>
+                                <ul>
+                                    <li>
+                                        <Cashbook />
+                                    </li>
+                                </ul>
+                            </details>
+                        </li>
                     </ul>
                 </div>
             </div>
