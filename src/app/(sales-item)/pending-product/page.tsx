@@ -2,6 +2,7 @@
 import React from "react";
 import FactoryPending from "@/app/components/FactoryPending";
 import VendorPending from "@/app/components/VendorPending";
+import AdditionalPending from "@/app/components/AdditionalPending";
 
 const Page = () => {
    
@@ -19,6 +20,10 @@ const Page = () => {
                     <input type="radio" name="my_tabs_2" role="tab" className="tab" aria-label="VENDOR PENDING" />
                     <div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
                         <VendorPending />
+                    </div>
+                    <input type="radio" name="my_tabs_2" role="tab" className="tab" aria-label="ADDITIONAL PENDING" />
+                    <div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
+                        {/* <AdditionalPending /> */}
                     </div>
                 </div>
 

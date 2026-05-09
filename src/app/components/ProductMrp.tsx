@@ -45,25 +45,91 @@ const ProductMrp = () => {
             setQtyPerKg("");
         }
     };
-     const [itemOption, setItemOption] = useState([]);
-        useEffect(() => {
+
+
+    // const [itemOption, setItemOption] = useState([]);
+    //   useEffect(() => {
+    //     const fetchMadeProducts = () => {
+    //       fetch(`${apiBaseUrl}/api/getAdditionalName`)
+    //         .then(response => response.json())
+    //         .then(data => {
+    //           const transformedData = data.map((item: any) => ({
+    //             value: item.additionalName,
+    //             label: item.additionalName
+    //           }));
+    //           setItemOption(transformedData);
+    //         })
+    //         .catch(error => console.error('Error fetching products:', error));
+    //     };
     
-            const fetchMadeProducts = () => {
-                fetch(`${apiBaseUrl}/api/getMadeProducts`)
-                    .then(response => response.json())
-                    .then(data => {
-                        const transformedData = data.map((madeItem: any) => ({
-                            value: madeItem,
-                            label: madeItem
-                        }));
-                        setItemOption(transformedData);
-                    })
-                    .catch(error => console.error('Error fetching products:', error));
-            };
+    //     // Fetch data initially
+    //     fetchMadeProducts();
+    //   }, [apiBaseUrl]);
+
+    //  const [itemOption, setItemOption] = useState([]);
+    //     useEffect(() => {
     
-            // Fetch data initially
-            fetchMadeProducts();
-        }, [apiBaseUrl, itemOption]);
+    //         const fetchMadeProducts = () => {
+    //             fetch(`${apiBaseUrl}/api/getMadeProducts`)
+    //                 .then(response => response.json())
+    //                 .then(data => {
+    //                     const transformedData = data.map((madeItem: any) => ({
+    //                         value: madeItem,
+    //                         label: madeItem
+    //                     }));
+    //                     setItemOption(transformedData);
+    //                 })
+    //                 .catch(error => console.error('Error fetching products:', error));
+    //         };
+    
+    //         // Fetch data initially
+    //         fetchMadeProducts();
+    //     }, [apiBaseUrl, itemOption]);
+
+type OptionType = {
+  value: string;
+  label: string;
+};
+
+const [itemOption, setItemOption] = useState<OptionType[]>([]);
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      // fetch both APIs together
+      const [additionalRes, madeProductsRes] = await Promise.all([
+        fetch(`${apiBaseUrl}/api/getAdditionalName`),
+        fetch(`${apiBaseUrl}/api/getMadeProducts`)
+      ]);
+
+      const additionalData = await additionalRes.json();
+      const madeProductsData = await madeProductsRes.json();
+
+      // transform first API
+      const additionalOptions = additionalData.map((item: any) => ({
+        value: item.additionalName,
+        label: item.additionalName
+      }));
+
+      // transform second API
+      const madeProductOptions = madeProductsData.map((madeItem: any) => ({
+        value: madeItem,
+        label: madeItem
+      }));
+
+      // merge both arrays
+      setItemOption([
+        ...additionalOptions,
+        ...madeProductOptions
+      ]);
+
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    }
+  };
+
+  fetchData();
+}, [apiBaseUrl]);
+
     return (
         <div className="flex flex-col gap-3 w-full items-center justify-center p-2">
             <label className="form-control w-full max-w-xs pt-5">
