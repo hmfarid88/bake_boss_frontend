@@ -79,12 +79,12 @@ const Page = () => {
         }
         setPending(true);
         try {
-            const response = await fetch(`${apiBaseUrl}/api/transferToAdditionnal?madeItem=${username}&supplierInvoice=${invoiceNo}`, {
+            const response = await fetch(`${apiBaseUrl}/api/materialsToSalesStock?madeItem=${username}&supplierInvoice=${invoiceNo}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
                 },
-
+               
             });
 
             if (!response.ok) {
@@ -93,7 +93,7 @@ const Page = () => {
             } else {
                 toast.success("Products added successfully !");
                 router.push('/pending-product');
-               
+
             }
 
         } catch (error: any) {
@@ -139,7 +139,11 @@ const Page = () => {
                                             <td>{products.materialsName}</td>
                                             <td>{Number((products?.averageRate ?? 0).toFixed(2)).toLocaleString('en-IN')}</td>
                                             <td>{Number(products.materialsQty.toFixed(2))}</td>
-                                            <td className='text-right pr-0'>{Number((products?.averageRate ?? 0 * products.materialsQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                                            <td className='text-right pr-0'>
+                                                {Number(
+                                                    ((products?.averageRate ?? 0) * (products?.materialsQty ?? 0)).toFixed(2)
+                                                ).toLocaleString('en-IN')}
+                                            </td>
                                         </tr>
                                     ))}
                                 </tbody>

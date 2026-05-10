@@ -60,7 +60,7 @@ const AdditionalPending = () => {
 
     return (
 
-        <div className="overflow-x-auto min-h-screen">
+        <div className="overflow-x-auto">
             <div className="flex justify-between pl-5 pr-5 pt-1">
                 <label className="input input-bordered flex max-w-xs  items-center gap-2">
                     <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />

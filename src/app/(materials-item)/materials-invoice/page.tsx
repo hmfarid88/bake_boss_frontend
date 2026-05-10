@@ -2,7 +2,7 @@
 import React, { useRef, useEffect, useState } from 'react'
 import { useAppSelector } from "@/app/store";
 import { useReactToPrint } from 'react-to-print';
-import { FcPrint, FcPlus, FcDataSheet} from "react-icons/fc";
+import { FcPrint, FcPlus, FcDataSheet } from "react-icons/fc";
 import Link from 'next/link';
 import Loading from '@/app/loading';
 import { useSearchParams } from 'next/navigation';
@@ -31,11 +31,11 @@ const Page = () => {
         materialsQty: number,
         supplierInvoice: string
     }
-    interface shopData{
-        shopName:string,
-        phoneNumber:string,
-        address:string,
-        email:string
+    interface shopData {
+        shopName: string,
+        phoneNumber: string,
+        address: string,
+        email: string
     }
 
     useEffect(() => {
@@ -43,7 +43,7 @@ const Page = () => {
             handlePrint();
         }
     }, [invoiceData]);
-    
+
     const [shopInfo, setShopInfo] = useState<shopData>();
     useEffect(() => {
         fetch(`${apiBaseUrl}/invoice/getShopInfo?username=${username}`)
@@ -56,7 +56,7 @@ const Page = () => {
 
     useEffect(() => {
         if (username && invoiceNo) {
-            fetch(`${apiBaseUrl}/invoice/getMaterialsInvoiceData?invoiceNo=${invoiceNo}`) 
+            fetch(`${apiBaseUrl}/invoice/getMaterialsInvoiceData?invoiceNo=${invoiceNo}`)
                 .then(response => response.json())
                 .then(data => {
                     setInvoiceData(data);
@@ -68,7 +68,7 @@ const Page = () => {
     if (!invoiceData) {
         return <div><Loading /></div>;
     }
-    const subtotal = invoiceData.reduce((acc, item) => acc + (item?.averageRate ?? 0)*item.materialsQty, 0);
+    const subtotal = invoiceData.reduce((acc, item) => acc + (item?.averageRate ?? 0) * item.materialsQty, 0);
     const totalQty = invoiceData.reduce((acc, item) => acc + item.materialsQty, 0);
 
     return (
@@ -79,70 +79,74 @@ const Page = () => {
             </div>
             <div className="flex justify-center pb-5">
                 <div className='flex-1 max-w-[794px] h-auto border border-slate-700'>
-                <div ref={contentToPrint} className="flex-1 max-w-[794px] h-auto p-5 sm:p-10">
-                    <div className="flex w-full justify-between">
-                        <h1><FcDataSheet className='text-black' size={50} /></h1>
-                        <h1 className='tracking-widest text-black font-bold text-sm md:text-xl'>INVOICE</h1>
-                    </div>
-                    <div className="flex flex-col w-full justify-end items-end">
+                    <div ref={contentToPrint} className="flex-1 max-w-[794px] h-auto p-5 sm:p-10">
+                        <div className="flex w-full justify-between">
+                            <h1><FcDataSheet className='text-black' size={50} /></h1>
+                            <h1 className='tracking-widest text-black font-bold text-sm md:text-xl'>INVOICE</h1>
+                        </div>
+                        <div className="flex flex-col w-full justify-end items-end">
                             <h1 className='uppercase text-black text-sm md:text-md'>{shopInfo?.shopName}</h1>
-                            <h4 className='flex font-sans text-xs md:text-md'><IoLocationOutline className='mt-0.5 mr-1'/> {shopInfo?.address}</h4>
+                            <h4 className='flex font-sans text-xs md:text-md'><IoLocationOutline className='mt-0.5 mr-1' /> {shopInfo?.address}</h4>
                             <h4 className='flex font-sans text-xs md:text-md'><FaPhoneVolume className='mt-0.5 mr-1' /> {shopInfo?.phoneNumber}</h4>
-                            <h4 className='flex font-sans text-xs md:text-md'><AiOutlineMail className='mt-0.5 mr-1'/> {shopInfo?.email}</h4>
+                            <h4 className='flex font-sans text-xs md:text-md'><AiOutlineMail className='mt-0.5 mr-1' /> {shopInfo?.email}</h4>
                         </div>
-                   
-                    <div className="flex w-full justify-between pt-5">
-                        <div className="flex flex-col">
-                            <h2 className='uppercase text-black font-bold text-xs md:text-md'>{invoiceData[0]?.madeItem}</h2>
+
+                        <div className="flex w-full justify-between pt-5">
+                            <div className="flex flex-col">
+                                <h2 className='uppercase text-black font-bold text-xs md:text-md'>{invoiceData[0]?.madeItem}</h2>
+                            </div>
+                            <div className="flex flex-col items-end">
+                                <h4 className='font-semibold text-xs md:text-md uppercase'>Invoice No : {invoiceData[0]?.supplierInvoice}</h4>
+                                <h4 className='font-semibold text-xs md:text-md uppercase pt-1'>Date : {invoiceData[0]?.date}</h4>
+
+                            </div>
                         </div>
-                        <div className="flex flex-col items-end">
-                            <h4 className='font-semibold text-xs md:text-md uppercase'>Invoice No : {invoiceData[0]?.supplierInvoice}</h4>
-                            <h4 className='font-semibold text-xs md:text-md uppercase pt-1'>Date : {invoiceData[0]?.date}</h4>
-                            
-                        </div>
-                    </div>
-                    <div className="w-full pt-2">
-                        <table className="table">
-                            <thead>
-                                <tr className='border-b-base-content text-xs md:text-md text-black'>
-                                    <th className='text-left p-0'>SN</th>
-                                    <th>DESCRIPTION</th>
-                                    <th>VALUE</th>
-                                    <th>QTY(KG/PS)</th>
-                                    <th className='text-right pt-3 pr-0'>TOTAL</th>
-                                </tr>
-                            </thead>
-                            <tbody className='text-xs md:text-md capitalize'>
-                                {invoiceData?.map((products, index) => (
-                                    <tr key={index}>
-                                        <td className='text-left p-0'>{index+1}</td>
-                                        <td>{products.materialsName}</td>
-                                        <td>{Number((products?.averageRate ?? 0).toFixed(2)).toLocaleString('en-IN')}</td>
-                                        <td>{Number(products.materialsQty.toFixed(2))}</td>
-                                        <td className='text-right pr-0'>{Number((products?.averageRate ?? 0 * products.materialsQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                        <div className="w-full pt-2">
+                            <table className="table">
+                                <thead>
+                                    <tr className='border-b-base-content text-xs md:text-md text-black'>
+                                        <th className='text-left p-0'>SN</th>
+                                        <th>DESCRIPTION</th>
+                                        <th>VALUE</th>
+                                        <th>QTY(KG/PS)</th>
+                                        <th className='text-right pt-3 pr-0'>TOTAL</th>
                                     </tr>
-                                ))}
-                            </tbody>
-                            <tfoot>
-                                <tr className='text-md text-black'>
-                                    <td></td>
-                                    <td></td>
-                                    <td>TOTAL</td>
-                                    <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                                    <td className='text-end pr-0'>{Number(subtotal.toFixed(2)).toLocaleString('en-IN')}</td>
-                                </tr>
-                            </tfoot>
-                        </table>
-                    </div>
-                   
-                    <div className="flex w-full justify-between">
-                        <div className="flex flex-col w-1/2 justify-start pt-10">
-                            <div className="font-semibold tracking-widest text-xs md:text-sm mb-0">Signature --------</div>
+                                </thead>
+                                <tbody className='text-xs md:text-md capitalize'>
+                                    {invoiceData?.map((products, index) => (
+                                        <tr key={index}>
+                                            <td className='text-left p-0'>{index + 1}</td>
+                                            <td>{products.materialsName}</td>
+                                            <td>{Number((products?.averageRate ?? 0).toFixed(2)).toLocaleString('en-IN')}</td>
+                                            <td>{Number((products?.materialsQty ?? 0).toFixed(2))}</td>
+                                            <td className='text-right pr-0'>
+                                                {Number(
+                                                    ((products?.averageRate ?? 0) * (products?.materialsQty ?? 0)).toFixed(2)
+                                                ).toLocaleString('en-IN')}
+                                            </td>
+                                        </tr>
+                                    ))}
+                                </tbody>
+                                <tfoot>
+                                    <tr className='text-md text-black'>
+                                        <td></td>
+                                        <td></td>
+                                        <td>TOTAL</td>
+                                        <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td className='text-end pr-0'>{Number(subtotal.toFixed(2)).toLocaleString('en-IN')}</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                        <div className="flex w-full justify-between">
+                            <div className="flex flex-col w-1/2 justify-start pt-10">
+                                <div className="font-semibold tracking-widest text-xs md:text-sm mb-0">Signature --------</div>
+                            </div>
+
                         </div>
 
                     </div>
-
-                </div>
                 </div>
             </div>
         </div>

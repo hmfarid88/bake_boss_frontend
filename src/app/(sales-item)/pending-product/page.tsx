@@ -23,7 +23,7 @@ const Page = () => {
                     </div>
                     <input type="radio" name="my_tabs_2" role="tab" className="tab" aria-label="ADDITIONAL PENDING" />
                     <div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
-                        {/* <AdditionalPending /> */}
+                        <AdditionalPending />
                     </div>
                 </div>
 
