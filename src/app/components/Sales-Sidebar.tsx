@@ -33,7 +33,7 @@ export const SalesSidebar = () => {
                         <li><Link href="/pending-product"><MdPendingActions size={20} /> PRODUCT PENDING</Link></li>
                         <li><Link href="/sales-stock"><BsDatabaseCheck size={20} /> PRODUCT STOCK</Link></li>
                         <li><Link href="/sales-additional"><MdReadMore size={20} /> ADDITIONAL STOCK</Link></li>
-                        <li><Link href="/product-return"><MdOutlineAssignmentReturn size={20} /> PRODUCT RETURN</Link></li>
+                        {/* <li><Link href="/product-return"><MdOutlineAssignmentReturn size={20} /> PRODUCT RETURN</Link></li> */}
                         <li><Link href="/sales-shop" className='text-success'><MdAddShoppingCart size={20} />CUSTOMER SALE</Link></li>
                         <li><Link href="/vendor-sale"><CiShop size={20} />VENDOR SALE</Link></li>
                         {/* <li><Link href="/sales-requisition"><PiNotebook size={20} />REQUISITION</Link></li> */}
