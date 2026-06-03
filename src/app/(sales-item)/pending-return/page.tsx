@@ -3,9 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAppSelector } from "@/app/store";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
-import DateToDate from "@/app/components/DateToDate";
-import CurrentMonthYear from "@/app/components/CurrentMonthYear";
 import { useRouter } from "next/navigation";
+import CurrentDate from "@/app/components/CurrentDate";
 
 type Product = {
   date: string;
@@ -37,7 +36,7 @@ const Page = () => {
     router.push(`/return-invoice?invoiceNo=${invoiceNo}`);
   };
   useEffect(() => {
-    fetch(`${apiBaseUrl}/sales/getOutletReturned?username=${username}`)
+    fetch(`${apiBaseUrl}/sales/getpendingreturned?username=${username}`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);
@@ -67,9 +66,7 @@ const Page = () => {
   return (
     <div className="container-2xl min-h-[calc(100vh-228px)]">
       <div className="flex flex-col w-full">
-        <div className="flex items-center justify-center">
-          <DateToDate routePath="/datewise-stock-returned" />
-        </div>
+       
         <div className="flex w-full justify-between p-5">
 
           <label className="input input-bordered flex max-w-xs  items-center gap-2">
@@ -84,7 +81,7 @@ const Page = () => {
         <div className="flex w-full items-center justify-center">
           <div className="overflow-x-auto">
             <div ref={contentToPrint} className="flex-1 p-5">
-              <div className="flex flex-col gap-2 items-center"><h4 className="font-bold text-lg">RETURNED PRODUCT</h4><CurrentMonthYear /></div>
+              <div className="flex flex-col gap-2 items-center"><h4 className="font-bold text-lg">RETURNED PENDING PRODUCT</h4><CurrentDate /></div>
               <table className="table table-sm">
                 <thead>
                   <tr>

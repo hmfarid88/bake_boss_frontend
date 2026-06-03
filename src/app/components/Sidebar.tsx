@@ -33,6 +33,7 @@ export const Sidebar = () => {
                     <ul className="menu p-4 w-60 min-h-full bg-base-200 text-base-content">
                         <li><Link href="/dashboard"><IoHomeOutline size={20} /> HOME</Link></li>
                         <li><Link href="/pending-materials"><BsDatabaseAdd size={20} /> PENDING MATERIALS</Link></li>
+                        <li><Link href="/outlet-return-pending"><BsDatabaseAdd size={20} /> PENDING RETURNS</Link></li>
                         <li><Link href="/purchase"><BsDatabaseAdd size={20} /> PRODUCT STOCK</Link></li>
                         <li><Link href="/damage-product"><RiFileDamageLine size={20} /> DAMAGE PRODUCT</Link></li>
                         <li><Link href="/damage-material"><RiFileDamageLine size={20} /> DAMAGE MATERIAL</Link></li>

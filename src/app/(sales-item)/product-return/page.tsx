@@ -97,7 +97,7 @@ const Page: React.FC = () => {
                 costPrice: productData.costPrice,
                 saleRate: productData.saleRate,
                 productQty: numericProductQty,
-                status: 'Returned',
+                status: 'return-pending',
                 username: username
             };
             if (data.remainingQty < numericProductQty) {
@@ -128,7 +128,7 @@ const Page: React.FC = () => {
         }
         setPending(true);
         try {
-            const response = await fetch(`${apiBaseUrl}/sales/outletStockReturn`, {
+            const response = await fetch(`${apiBaseUrl}/sales/outlet-return-pending`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
