@@ -87,7 +87,7 @@ const ProductionStock = () => {
     const [materialsOption, setMaterialsOption] = useState([]);
     useEffect(() => {
 
-        fetch(`${apiBaseUrl}/api/getMaterialsName?username=${username}`)
+        fetch(`${apiBaseUrl}/api/getMaterialsName`)
             .then(response => response.json())
             .then(data => {
                 const transformedData = data.map((item: any) => ({
