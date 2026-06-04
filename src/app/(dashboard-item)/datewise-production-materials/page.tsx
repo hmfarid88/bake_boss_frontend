@@ -44,7 +44,6 @@ const Page = () => {
             .catch(error => console.error('Error fetching products:', error));
     }, [apiBaseUrl, startDate, endDate, username]);
 
-
     useEffect(() => {
         const filtered = allProducts.filter(product =>
             (product.materialsName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
