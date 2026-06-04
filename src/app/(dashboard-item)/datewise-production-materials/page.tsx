@@ -10,6 +10,7 @@ type Product = {
     category: string;
     materialsName: string;
     status: string;
+    receivedBy: string;
     materialsQty: number;
     remainingQty: number;
 
@@ -49,6 +50,7 @@ const Page = () => {
             (product.materialsName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.status.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+            (product?.receivedBy?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
 
         );
@@ -86,6 +88,7 @@ const Page = () => {
                                         <th>CATEGORY</th>
                                         <th>MATERIALS NAME</th>
                                         <th>STATUS</th>
+                                        <th>RECEIVED BY</th>
                                         <th>QUANTITY</th>
                                         <th>REMAINING</th>
                                     </tr>
@@ -98,6 +101,7 @@ const Page = () => {
                                             <td className="capitalize">{product.category}</td>
                                             <td className="capitalize">{product.materialsName}</td>
                                             <td className="capitalize">{product.status}</td>
+                                            <td className="capitalize">{product?.receivedBy}</td>
                                             <td>{Number((product.materialsQty).toFixed(2)).toLocaleString('en-IN')}</td>
                                             <td>{Number((product.remainingQty).toFixed(2)).toLocaleString('en-IN')}</td>
                                         </tr>

@@ -15,6 +15,7 @@ const ProductionStock = () => {
     const [category, setCategory] = useState("");
     const [materialsName, setMaterialsName] = useState("");
     const [materialsQty, setMaterialsQty] = useState("");
+    const [receivedBy, setReceivedBy] = useState("");
 
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
@@ -36,11 +37,11 @@ const ProductionStock = () => {
 
     const handleAddMaterials = (e: any) => {
         e.preventDefault();
-        if (!materialDate ||!category ||!materialsName ||!materialsQty) {
+        if (!materialDate ||!category ||!materialsName ||!materialsQty ||!receivedBy) {
             toast.warning("Item is empty !");
             return;
         }
-        const materialsItem = { id: uid(), date: materialDate, category, materialsName, materialsQty, username, status: 'stored' };
+        const materialsItem = { id: uid(), date: materialDate, category, materialsName, materialsQty, receivedBy, username, status: 'stored' };
         dispatch(addMaterials(materialsItem))
         setMaterialsQty('');
     };
@@ -151,6 +152,13 @@ const ProductionStock = () => {
                         <input type="number" name="item" value={materialsQty} onChange={(e: any) => setMaterialsQty(e.target.value)} placeholder="Type here" className="border rounded-md p-2 w-full max-w-xs h-[40px] bg-white text-black" required />
                     </label>
 
+                    <label className="form-control w-full max-w-xs">
+                        <div className="label">
+                            <span className="label-text-alt">RECEIVED BY</span>
+                        </div>
+                        <input type="text" name="by" value={receivedBy} onChange={(e: any) => setReceivedBy(e.target.value)} placeholder="Type here" className="border rounded-md p-2 w-full max-w-xs h-[40px] bg-white text-black" required />
+                    </label>
+
                     <label className="form-control w-full max-w-xs pt-3">
                         <button onClick={handleAddMaterials} className="btn btn-accent btn-sm h-[40px] w-full max-w-xs" >Add Material</button>
                     </label>
@@ -166,6 +174,7 @@ const ProductionStock = () => {
                                     <th>CATEGORY</th>
                                     <th>MATERIALS</th>
                                     <th>QTY</th>
+                                    <th>RECEIVED BY</th>
                                     <th>ACTION</th>
                                 </tr>
                             </thead>
@@ -177,6 +186,7 @@ const ProductionStock = () => {
                                         <td>{item.category}</td>
                                         <td>{item.materialsName}</td>
                                         <td>{item.materialsQty}</td>
+                                        <td>{item.receivedBy}</td>
                                         <td>
                                             <button onClick={() => {
                                                 handleDeleteMaterials(item.id);

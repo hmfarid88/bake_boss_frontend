@@ -7,6 +7,7 @@ interface Product {
     category: string;
     materialsName: string;
     materialsQty: string;
+    receivedBy: string;
     username: string;
     status: string
 
