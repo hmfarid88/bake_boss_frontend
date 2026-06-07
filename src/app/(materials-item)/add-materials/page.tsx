@@ -118,7 +118,6 @@ const Page = () => {
             toast.warning("Name is empty !");
             return;
         }
-
         try {
             const response = await fetch(`${apiBaseUrl}/api/deleteMaterialsName?username=${encodeURIComponent(username)}&materialsName=${encodeURIComponent(oldMaterialsName)}`, {
                 method: 'DELETE',
