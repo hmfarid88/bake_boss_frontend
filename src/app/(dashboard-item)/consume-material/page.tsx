@@ -104,7 +104,11 @@ const Page: React.FC = () => {
     const handleFinalSubmit = async (e: any) => {
         e.preventDefault();
         if (!reason) {
-            toast.error("Cause of damage is empty !");
+            toast.error("Note is empty !");
+            return;
+        }
+        if (!consumeType) {
+            toast.error("Consumption type is empty !");
             return;
         }
         if (productInfo.length === 0) {
