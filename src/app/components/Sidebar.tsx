@@ -14,7 +14,6 @@ import CashBook from './CashBook';
 import Invoice from './Invoice';
 import { BsDatabaseAdd } from 'react-icons/bs';
 
-
 export const Sidebar = () => {
 
     return (
