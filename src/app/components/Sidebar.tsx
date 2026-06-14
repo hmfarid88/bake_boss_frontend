@@ -36,13 +36,14 @@ export const Sidebar = () => {
                         <li><Link href="/outlet-return-pending"><BsDatabaseAdd size={20} /> PENDING RETURNS</Link></li>
                         <li><Link href="/purchase"><BsDatabaseAdd size={20} /> PRODUCT STOCK</Link></li>
                         <li><Link href="/damage-product"><RiFileDamageLine size={20} /> DAMAGE PRODUCT</Link></li>
-                        <li><Link href="/damage-material"><RiFileDamageLine size={20} /> DAMAGE MATERIAL</Link></li>
+                        <li><Link href="/consume-material"><RiFileDamageLine size={20} /> CONSUME MATERIAL</Link></li>
                         <li>
                             <details>
                                 <summary><HiOutlineShoppingBag size={20} /> DISTRIBUTION</summary>
                                 <ul>
                                     <li><Link href="/dp-dist">DP DISTRIBUTION</Link></li>
                                     <li><Link href="/rp-dist">RP DISTRIBUTION</Link></li>
+                                    {/* <li><Link href="/materials-dist">MATERIALS DIST</Link></li> */}
                                     
                                 </ul>
                             </details>
@@ -78,6 +79,9 @@ export const Sidebar = () => {
                                 <ul>
                                     <li><Link href="/dp-dist-report">DP DISTRIBUTION</Link></li>
                                     <li><Link href="/rp-dist-report">RP DISTRIBUTION</Link></li>
+                                    <li><Link href="/fancy-goods">FANCY GOODS</Link></li>
+                                    <li><Link href="/packaging-products">PACKAGING GOODS</Link></li>
+                                    <li><Link href="/staff-consumed-materials">STAFF CONSUMED</Link></li>
                                 </ul>
                             </details>
                             </li>

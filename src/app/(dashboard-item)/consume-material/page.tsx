@@ -19,6 +19,7 @@ const Page: React.FC = () => {
     const [selectedQty, setSelectedQty] = useState("");
     const numericProductQty: number = Number(selectedQty);
     const [reason, setReason] = useState("");
+    const [consumeType, setType] = useState("");
     const [maxDate, setMaxDate] = useState("");
     useEffect(() => {
         const today = new Date();
@@ -82,7 +83,7 @@ const Page: React.FC = () => {
                 averageRate: data.averageRate,
                 materialsQty: numericProductQty,
                 remainingQty: (data.remainingQty -  numericProductQty),
-                status: 'damaged',
+                status: consumeType,
                 username: username
             };
             if (data.remainingQty < numericProductQty) {
@@ -156,7 +157,7 @@ const Page: React.FC = () => {
                     <input type="date" name="date" onChange={(e: any) => setDate(e.target.value)} max={maxDate} value={date} className="input input-ghost" />
                 </div>
                 <div className="flex flex-col w-full">
-                    <div className="divider divider-accent tracking-widest font-bold p-5">DAMAGE MATERIAL</div>
+                    <div className="divider divider-accent tracking-widest font-bold p-5">CONSUME MATERIAL</div>
                 </div>
                 <div className="flex items-center justify-center gap-2 z-10">
                     <Select className="text-black h-[38px] w-64 md:w-96" autoFocus={true} onChange={(selectedOption: any) => setSelectedProid(selectedOption.value)} options={productOption} />
@@ -210,7 +211,15 @@ const Page: React.FC = () => {
             <div className="flex flex-col md:flex-row justify-between">
                 <div className="flex w-full justify-center p-5">
                     <div className="card shadow shadow-slate-500 max-w-lg gap-3 p-5">
-                        <div className="card-title text-sm">Add Reason</div>
+                        <select className="select select-bordered w-full max-w-xs" onChange={(e) => setType(e.target.value)}>
+                            <option value="">Select Consume Type</option>
+                            <option value="staff consumed">Staff Consume</option>
+                            <option value="fancy goods">Fancy Goods</option>
+                            <option value="packaging">Packaging</option>
+                            <option value="damaged">Damage</option>
+                  
+                        </select>
+                        <div className="card-title text-sm">Add Note</div>
                         <input type="text" value={reason} className="input input-sm input-bordered" onChange={(e) => setReason(e.target.value)} />
                         <button onClick={handleFinalSubmit} disabled={pending} className="btn btn-sm w-xs h-[38px] btn-success btn-outline font-bold">{pending ? <span className="loading loading-ring loading-md text-accent"></span> : "SUBMIT"}</button>
                     </div>
