@@ -73,7 +73,7 @@ const Page = () => {
     // ✅ SORT HERE
     monthwiseData.sort((a: any, b: any) => a.sortDate - b.sortDate);
     useEffect(() => {
-        fetch(`${apiBaseUrl}/sales/getDatewiseOutletSale?username=${username}&startDate=${startDate}&endDate=${endDate}&percent=19.08`)
+        fetch(`${apiBaseUrl}/sales/getDatewiseOutletSale?username=${username}&startDate=${startDate}&endDate=${endDate}&percent=19`)
             .then(response => response.json())
             .then(data => {
                 setAllProducts(data);

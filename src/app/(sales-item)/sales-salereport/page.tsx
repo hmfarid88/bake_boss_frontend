@@ -38,7 +38,7 @@ const Page = () => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/sales/getOutletSale?username=${username}&percent=19.08`)
+    fetch(`${apiBaseUrl}/sales/getOutletSale?username=${username}&percent=19`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);

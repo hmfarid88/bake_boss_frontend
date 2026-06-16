@@ -153,7 +153,7 @@ const Page = () => {
         hour12: false,
       }).format(now)
     );
-    let percent = 19.08;
+    let percent = 19;
     if (hour >= 20 || hour < 2) {
       percent = 100;
     }
