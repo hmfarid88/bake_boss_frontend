@@ -73,7 +73,7 @@ const Page = () => {
     // ✅ SORT HERE
     monthwiseData.sort((a: any, b: any) => a.sortDate - b.sortDate);
     useEffect(() => {
-        fetch(`${apiBaseUrl}/sales/getDatewiseOutletSale?username=${username}&startDate=${startDate}&endDate=${endDate}&percent=15`)
+        fetch(`${apiBaseUrl}/sales/getDatewiseOutletSale?username=${username}&startDate=${startDate}&endDate=${endDate}&percent=19.08`)
             .then(response => response.json())
             .then(data => {
                 setAllProducts(data);
@@ -225,9 +225,9 @@ const Page = () => {
                                                 <td>{product.date}</td>
                                                 <td>{product.time}</td>
                                                 <td className="capitalize">{product.category}</td>
-                                                <td className="capitalize max-w-32">{product.productName}</td>
+                                                <td className="capitalize max-w-48">{product.productName}</td>
                                                 <td className="uppercase">{product.soldInvoice}</td>
-                                                <td className="capitalize max-w-10">
+                                                <td className="capitalize max-w-20">
                                                     {product.customerName} {product.phoneNumber}, {product.soldBy}
                                                 </td>
                                                 <td>{Number(product.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>

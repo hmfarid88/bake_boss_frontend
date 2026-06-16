@@ -153,7 +153,7 @@ const Page = () => {
         hour12: false,
       }).format(now)
     );
-    let percent = 15;
+    let percent = 19.08;
     if (hour >= 20 || hour < 2) {
       percent = 100;
     }
@@ -271,9 +271,9 @@ const Page = () => {
                     <td>{product.date}</td>
                     <td>{product.time}</td>
                     <td className="capitalize">{product.category}</td>
-                    <td className="capitalize max-w-32">{product.productName}</td>
+                    <td className="capitalize max-w-48">{product.productName}</td>
                     <td className="uppercase">{product.soldInvoice}</td>
-                    <td className="capitalize max-w-10">{product.customerName} {product.phoneNumber}, {product.soldBy}</td>
+                    <td className="capitalize max-w-20">{product.customerName} {product.phoneNumber}, {product.soldBy}</td>
                     <td>{Number(product.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.discount?.toFixed(2)).toLocaleString('en-IN')}</td>

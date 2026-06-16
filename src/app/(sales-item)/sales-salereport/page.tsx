@@ -38,7 +38,7 @@ const Page = () => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/sales/getOutletSale?username=${username}&percent=15`)
+    fetch(`${apiBaseUrl}/sales/getOutletSale?username=${username}&percent=19.08`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);
@@ -135,9 +135,9 @@ const Page = () => {
                     <td>{product.date}</td>
                     <td>{product.time}</td>
                     <td className="capitalize">{product.category}</td>
-                    <td className="capitalize max-w-32">{product.productName}</td>
+                    <td className="capitalize max-w-48">{product.productName}</td>
                     <td className="uppercase">{product.soldInvoice}</td>
-                    <td className="capitalize max-w-10">{product.customerName} {product.phoneNumber}, {product.soldBy}</td>
+                    <td className="capitalize max-w-20">{product.customerName} {product.phoneNumber}, {product.soldBy}</td>
                     <td>{Number(product.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number(product.discount?.toFixed(2)).toLocaleString('en-IN')}</td>
