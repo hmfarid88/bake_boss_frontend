@@ -227,7 +227,7 @@ const Page = () => {
                                                 <td className="capitalize">{product.category}</td>
                                                 <td className="capitalize">{product.productName}</td>
                                                 <td className="uppercase">{product.soldInvoice}</td>
-                                                <td className="capitalize">
+                                                <td className="capitalize max-w-10">
                                                     {product.customerName} {product.phoneNumber}, {product.soldBy}
                                                 </td>
                                                 <td>{Number(product.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
