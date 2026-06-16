@@ -32,6 +32,7 @@ const ProductStock = () => {
     const [stockDate, setStockDate] = useState("");
     const [category, setCategory] = useState("");
     const [productName, setProductName] = useState("");
+    const [productQty, setProductQty] = useState("");
 
     interface items {
         itemName: string,
@@ -200,7 +201,7 @@ const ProductStock = () => {
             toast.warning('DP Rate & RP Rate not added !');
             return;
         }
-        const product = { id: pid, date: stockDate, category, productName, costPrice: calculateCost().toFixed(2), dpRate: calculateDp().toFixed(2), rpRate: calculateRp().toFixed(2), productQty: '0', username, status: 'stored' }
+        const product = { id: pid, date: stockDate, category, productName, costPrice: calculateCost().toFixed(2), dpRate: calculateDp().toFixed(2), rpRate: calculateRp().toFixed(2), productQty, username, status: 'stored' }
         dispatch(addProducts(product));
 
     }
@@ -304,6 +305,15 @@ const ProductStock = () => {
                         <p className="text-xs pt-2">Cost: {calculateCost().toFixed(2)} | Dp: {calculateDp().toFixed(2)} | Rp: {calculateRp().toFixed(2)}</p>
                     </label>
 
+                    <label className="form-control w-full max-w-xs">
+                        <div className="label">
+                            <span className="label-text-alt">QUANTITY</span>
+                        </div>
+                        <input type="number" name="qty" placeholder="Quantity" className="border rounded-md p-2 mt-1.5 bg-white text-black  w-full max-w-xs h-[40px]" onChange={(e: any) => {
+                        setProductQty((e.target.value));   
+                        }} />
+                    </label>
+
                     <label className="form-control w-full max-w-xs pt-5">
                         <button onClick={handleProductStock} className="btn btn-accent btn-sm h-[40px] w-full max-w-xs" >Add Product</button>
                     </label>
@@ -321,6 +331,7 @@ const ProductStock = () => {
                                     <th>Cost</th>
                                     <th>DP</th>
                                     <th>RP</th>
+                                    <th>QTY</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -334,6 +345,7 @@ const ProductStock = () => {
                                         <td>{item.costPrice}</td>
                                         <td>{item.dpRate}</td>
                                         <td>{item.rpRate}</td>
+                                        <td>{item.productQty}</td>
                                         <td>
                                             <button onClick={() => {
                                                 handleDeleteProduct(item.id);

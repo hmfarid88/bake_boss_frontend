@@ -9,6 +9,9 @@ import CurrentDate from "@/app/components/CurrentDate";
 import { FiEdit } from "react-icons/fi";
 import { toast } from "react-toastify";
 import swal from 'sweetalert';
+import { IoLocationOutline } from "react-icons/io5";
+import { FaPhoneVolume } from "react-icons/fa";
+import { AiOutlineMail } from "react-icons/ai";
 
 type Product = {
   productId: number;
@@ -175,7 +178,21 @@ const Page = () => {
   //     })
   //     .catch(error => console.error('Error fetching products:', error));
   // }, [apiBaseUrl, username, updatedQty]);
-
+  interface shopData {
+    shopName: string,
+    phoneNumber: string,
+    address: string,
+    email: string
+  }
+  const [shopInfo, setShopInfo] = useState<shopData>();
+  useEffect(() => {
+    fetch(`${apiBaseUrl}/invoice/getShopInfo?username=${username}`)
+      .then(response => response.json())
+      .then(data => {
+        setShopInfo(data);
+      })
+      .catch(error => console.error('Error fetching products:', error));
+  }, [apiBaseUrl, username]);
 
   useEffect(() => {
     const filtered = allProducts.filter(product =>
@@ -221,6 +238,12 @@ const Page = () => {
       <div className="flex w-full items-center justify-center">
         <div className="overflow-x-auto">
           <div ref={contentToPrint} className="flex-1 p-5">
+            <div className="flex flex-col w-full justify-center items-center p-3">
+              <h1 className='uppercase text-black font-bold'>{shopInfo?.shopName}</h1>
+              <h4 className='flex font-sans text-black text-sm md:text-md capitalize'><IoLocationOutline className='mt-0.5 mr-1' /> {shopInfo?.address}</h4>
+              <h4 className='flex font-sans text-black text-sm md:text-md'><FaPhoneVolume className='mt-0.5 mr-1' /> {shopInfo?.phoneNumber}</h4>
+              <h4 className='flex font-sans text-black text-sm md:text-md'><AiOutlineMail className='mt-0.5 mr-1' /> {shopInfo?.email}</h4>
+            </div>
             <div className="flex flex-col gap-2 items-center"><h4 className="font-bold">SALES REPORT</h4>
               <h4><CurrentDate /></h4>
             </div>
