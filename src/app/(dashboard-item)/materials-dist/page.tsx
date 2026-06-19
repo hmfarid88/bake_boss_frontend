@@ -126,7 +126,7 @@ const Page: React.FC = () => {
             });
 
             if (!response.ok) {
-                toast.error("Damage product not submitted !");
+                toast.error("Distribution product not submitted !");
                 return;
             }
             router.push(`/materials-dist-invoice?invoiceNo=${invoiceNo}`);

@@ -182,7 +182,7 @@ const Page: React.FC = () => {
         return;
       }
 
-      const materialsResponse = await fetch(`${apiBaseUrl}/api/updateMaterialsStock`, {
+      const materialsResponse = await fetch(`${apiBaseUrl}/api/updateProductionStock`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
