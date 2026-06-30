@@ -43,17 +43,33 @@ const Page = () => {
     }, [apiBaseUrl, username, startDate, endDate]);
 
 
-    useEffect(() => {
-        const filtered = allProducts.filter(product =>
-            (product.date?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-            (product.materialsName?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-            (product.madeItem?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-            (product.supplierInvoice?.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
-
-        );
-        setFilteredProducts(filtered);
-    }, [filterCriteria, allProducts]);
-
+   useEffect(() => {
+           const searchText = filterCriteria.toLowerCase().trim();
+           let filtered = allProducts;
+           if (searchText) {
+               // If exact customer match
+               const exactMatch = allProducts.filter(
+                   product => product.madeItem?.toLowerCase() === searchText
+               );
+               if (exactMatch.length > 0) {
+                   filtered = exactMatch;
+               } else {
+                   // Build one string containing outlet + product details
+                   filtered = allProducts.filter(product => {
+                       const combinedText = [
+                           product.madeItem,
+                           product.materialsName,
+                           product.supplierInvoice,
+                           product.date
+                       ]
+                           .map(f => f?.toLowerCase() || "")
+                           .join(" ");
+                       return combinedText.includes(searchText);
+                   });
+               }
+           }
+           setFilteredProducts(filtered);
+       }, [filterCriteria, allProducts]);
     const handleFilterChange = (e: any) => {
         setFilterCriteria(e.target.value);
     };
