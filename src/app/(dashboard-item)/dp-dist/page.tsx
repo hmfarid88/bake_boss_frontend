@@ -267,7 +267,7 @@ const Page: React.FC = () => {
                     <td>{index + 1}</td>
                     <td>{p.productName} </td>
                     <td>{Number(p.dpRate?.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{p.productQty}</td>
+                    <td>{Number((p.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
                     <td>{Number((p.dpRate * p.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
                     <td className="flex justify-between gap-3">
                       <button onClick={() => {

@@ -8,7 +8,7 @@ import { useSearchParams } from "next/navigation";
 type Product = {
     date: string;
     materialsName: string;
-    supplierName: string;
+    madeItem: string;
     supplierInvoice: string;
     materialsRate: number;
     materialsQty: number;
@@ -47,7 +47,7 @@ const Page = () => {
         const filtered = allProducts.filter(product =>
             (product.date?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.materialsName?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-            (product.supplierName?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+            (product.madeItem?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
             (product.supplierInvoice?.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
 
         );
@@ -86,7 +86,7 @@ const Page = () => {
                                     <th>SN</th>
                                     <th>DATE</th>
                                     <th>MATERIALS NAME</th>
-                                    <th>SUPPLIER NAME</th>
+                                    <th>OUTLET NAME</th>
                                     <th>INVOICE NO</th>
                                     <th>COST PRICE</th>
                                     <th>QTY</th>
@@ -99,8 +99,8 @@ const Page = () => {
                                         <td>{index + 1}</td>
                                         <td>{product.date}</td>
                                         <td>{product.materialsName}</td>
-                                        <td>{product.supplierName}</td>
-                                        <td>{product.supplierInvoice}</td>
+                                        <td>{product.madeItem}</td>
+                                        <td className="uppercase">{product.supplierInvoice}</td>
                                         <td>{Number(product.materialsRate?.toFixed(2)).toLocaleString('en-IN')}</td>
                                         <td>{Number(product.materialsQty?.toFixed(2)).toLocaleString('en-IN')}</td>
                                         <td>{Number((product.materialsRate * product.materialsQty)?.toFixed(2)).toLocaleString('en-IN')}</td>
