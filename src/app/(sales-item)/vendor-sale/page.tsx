@@ -7,6 +7,7 @@ import Select from "react-select";
 import { uid } from 'uid';
 import { toast, ToastContainer } from "react-toastify";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import CreatableSelect from "react-select/creatable";
 
 const Page: React.FC = () => {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -270,7 +271,7 @@ const Page: React.FC = () => {
                 <div className="flex w-full justify-center p-5">
                     <div className="card shadow shadow-slate-500 max-w-lg gap-3 p-5">
                         <div className="card-title text-sm">Select Outlet</div>
-                        <Select className="text-black h-[38px] w-64" onChange={(selectedOption: any) => setCustomerName(selectedOption.value)} options={salesuser} />
+                        <CreatableSelect isClearable className="text-black h-[38px] w-64" onChange={(selectedOption: any) => setCustomerName(selectedOption ? selectedOption.value : "")} options={salesuser} />
                         <button onClick={handleFinalSubmit} disabled={pending} className="btn w-xs h-[38px] btn-success btn-outline font-bold">{pending ? <span className="loading loading-ring loading-md text-accent"></span> : "SUBMIT"}</button>
                     </div>
                 </div>
