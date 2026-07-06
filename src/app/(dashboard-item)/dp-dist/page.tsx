@@ -20,7 +20,7 @@ const Page: React.FC = () => {
 
   const [productOption, setProductOption] = useState([]);
   const [selectedProid, setSelectedProid] = useState("");
-  const [selectedQty, setSelectedQty] = useState("");
+  const [selectedQty, setSelectedQty] = useState<number | "">("");
   const [selectedProidOption, setSelectedProidOption] = useState(null);
 
   const [retailer, setRetailer] = useState("");
@@ -245,7 +245,13 @@ const Page: React.FC = () => {
         </div>
         <div className="flex items-center justify-center gap-2 z-10">
           <Select className="text-black h-[38px] w-64 md:w-96" ref={selectRef}  value={selectedProidOption} autoFocus={true} onChange={handleProductSelect} options={productOption} />
-          <input type="number" className="w-[100px] h-[38px] p-2 bg-white text-black border rounded-md" placeholder="Qty" ref={inputRef} value={selectedQty} onChange={(e) => setSelectedQty(e.target.value)} />
+          <input type="number" className="w-[100px] h-[38px] p-2 bg-white text-black border rounded-md" placeholder="Qty" ref={inputRef} value={selectedQty} 
+          onChange={(e) => {
+                            const value = Number(e.target.value);
+                            if (value >= 0) {
+                                setSelectedQty(value);
+                            }
+                        }} />
           <button onClick={handleProductSubmit} className='btn btn-outline btn-success btn-sm h-[38px]'>ADD</button>
         </div>
         <div className="flex items-center justify-center w-full p-5">
