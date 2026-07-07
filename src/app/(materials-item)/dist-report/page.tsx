@@ -178,7 +178,7 @@ const Page = () => {
                                     <tr>
                                         <th>SN</th>
                                         <th colSpan={4}>MATERIALS NAME</th>
-                                        <th></th>
+                                        <th>TOTAL QTY</th>
                                         <th>TOTAL VALUE</th>
                                     </tr>
                                 )}
@@ -217,24 +217,23 @@ const Page = () => {
                                 )}
                             </tbody>
                             <tfoot>
-                                <tfoot>
-                                    {!groupView ? (
-                                        <tr className="font-semibold text-lg">
-                                            <td colSpan={5}></td>
-                                            <td>TOTAL</td>
-                                            <td>{Number(totalQty?.toFixed(2)).toLocaleString('en-IN')}</td>
-                                            <td>{Number(totalValue?.toFixed(2)).toLocaleString('en-IN')}</td>
-                                        </tr>
-                                    ) : (
-                                        <tr className="font-semibold text-lg">
-                                            <td colSpan={4}></td>
-                                            <td>TOTAL</td>
-                                            <td>{Number(totalQty?.toFixed(2)).toLocaleString('en-IN')}</td>
-                                            <td>{Number(totalValue?.toFixed(2)).toLocaleString('en-IN')}</td>
-                                        </tr>
-                                    )}
-                                </tfoot>
+                                {!groupView ? (
+                                    <tr className="font-semibold text-lg">
+                                        <td colSpan={5}></td>
+                                        <td>TOTAL</td>
+                                        <td>{Number(totalQty?.toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td>{Number(totalValue?.toFixed(2)).toLocaleString('en-IN')}</td>
+                                    </tr>
+                                ) : (
+                                    <tr className="font-semibold text-lg">
+                                        <td colSpan={4}></td>
+                                        <td>TOTAL</td>
+                                        <td>{Number(totalQty?.toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td>{Number(totalValue?.toFixed(2)).toLocaleString('en-IN')}</td>
+                                    </tr>
+                                )}
                             </tfoot>
+
                         </table>
                     </div>
                 </div>
