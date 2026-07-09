@@ -42,7 +42,6 @@ const Page = () => {
                     <button onClick={handleReport} className="btn w-xs h-[38px] btn-success btn-outline font-bold">GO</button>
                 </div>
             </div>
-
         </div>
     )
 }
