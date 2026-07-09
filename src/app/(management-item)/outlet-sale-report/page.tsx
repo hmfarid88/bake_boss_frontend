@@ -28,7 +28,6 @@ const Page = () => {
             toast.error("Field is empty!");
             return;
         }
-
         router.push(`/management-sale?outlet=${outlet}`);
     };
 
