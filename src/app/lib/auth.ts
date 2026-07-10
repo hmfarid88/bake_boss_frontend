@@ -30,7 +30,8 @@ export async function createSession(username: string, roles:string) {
 
   cookies().set('session', session, {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === "production", 
+    // secure: true,
     expires: expiresAt,
     sameSite: 'lax',
     path: '/',
@@ -48,7 +49,8 @@ export async function updateSession() {
   const expires = new Date(Date.now() + 24 * 60 * 60 * 1000)
   cookies().set('session', session, {
     httpOnly: true,
-    secure: true,
+    secure: process.env.NODE_ENV === "production", 
+    // secure: true,
     expires: expires,
     sameSite: 'lax',
     path: '/',
@@ -101,9 +103,10 @@ export async function deleteSession() {
 //   // Setting the session cookie
 //   cookies().set("session", session, {
 //     httpOnly: true,
-//     secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+//     // secure: process.env.NODE_ENV === "production", 
+//     secure: true, 
 //     expires: expiresAt,
-//     sameSite: "strict", // Use 'strict' for better security
+//     sameSite: "lax", // Use 'strict' for better security
 //     path: "/",
 //   });
 // }
@@ -123,9 +126,10 @@ export async function deleteSession() {
 //   // Update the session cookie with new expiration
 //   cookies().set("session", updatedSession, {
 //     httpOnly: true,
-//     secure: process.env.NODE_ENV === "production",
+//     // secure: process.env.NODE_ENV === "production",
+//     secure: true,
 //     expires: expiresAt,
-//     sameSite: "strict",
+//     sameSite: "lax",
 //     path: "/",
 //   });
 // }
