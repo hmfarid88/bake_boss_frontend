@@ -31,6 +31,7 @@ const Page = () => {
     const [filterCriteria, setFilterCriteria] = useState('');
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [allProducts, setAllProducts] = useState<Product[]>([]);
+    const [groupView, setGroupView] = useState(false);
 
     useEffect(() => {
         fetch(`${apiBaseUrl}/api/datewiseStoredRawMaterialsLedger?username=${username}&startDate=${startDate}&endDate=${endDate}`)
@@ -64,7 +65,23 @@ const Page = () => {
     const totalValue = filteredProducts.reduce((total, product) => {
         return total + product.materialsQty * product.materialsRate;
     }, 0);
+    const groupedProducts = Object.values(
+        filteredProducts.reduce((acc: any, product) => {
+            if (!acc[product.materialsName]) {
+                acc[product.materialsName] = {
+                    materialsName: product.materialsName,
+                    totalQty: 0,
+                    totalValue: 0,
+                };
+            }
 
+            acc[product.materialsName].totalQty += Number(product.materialsQty);
+            acc[product.materialsName].totalValue +=
+                Number(product.materialsQty) * Number(product.materialsRate);
+
+            return acc;
+        }, {})
+    );
     return (
         <div className="container-2xl">
             <div className="flex flex-col w-full min-h-[calc(100vh-228px)] p-4 items-center justify-center">
@@ -75,45 +92,100 @@ const Page = () => {
                             <path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" />
                         </svg>
                     </label>
-                    <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
+                    <div className="flex gap-2">
+                        <button
+                            className={`btn btn-sm ${!groupView ? "btn-primary" : "btn-outline"}`}
+                            onClick={() => setGroupView(false)}
+                        >
+                            Details
+                        </button>
+
+                        <button
+                            className={`btn btn-sm ${groupView ? "btn-primary" : "btn-outline"}`}
+                            onClick={() => setGroupView(true)}
+                        >
+                            Group
+                        </button>
+
+                        <button
+                            onClick={handlePrint}
+                            className="btn btn-ghost btn-square"
+                        >
+                            <FcPrint size={36} />
+                        </button>
+                    </div>
                 </div>
                 <div className="overflow-x-auto">
                     <div ref={contentToPrint} className="flex-1 p-5">
                         <div className="flex flex-col items-center pb-5"><h4 className="font-bold">MATERIALS LEDGER</h4>Date: {startDate} TO {endDate}</div>
                         <table className="table table-sm text-center">
                             <thead>
-                                <tr>
-                                    <th>SN</th>
-                                    <th>DATE</th>
-                                    <th>MATERIALS NAME</th>
-                                    <th>SUPPLIER NAME</th>
-                                    <th>INVOICE NO</th>
-                                    <th>COST PRICE</th>
-                                    <th>QTY</th>
-                                    <th>SUB TOTAL</th>
-                                </tr>
+                                {!groupView ? (
+                                    <tr>
+                                        <th>SN</th>
+                                        <th>DATE</th>
+                                        <th>MATERIALS NAME</th>
+                                        <th>SUPPLIER NAME</th>
+                                        <th>INVOICE NO</th>
+                                        <th>COST PRICE</th>
+                                        <th>QTY</th>
+                                        <th>SUB TOTAL</th>
+                                    </tr>
+                                ) : (
+                                    <tr>
+                                        <th>SN</th>
+                                        <th colSpan={4}>MATERIALS NAME</th>
+                                        <th>TOTAL QTY</th>
+                                        <th>TOTAL VALUE</th>
+                                    </tr>
+                                )}
                             </thead>
                             <tbody>
-                                {filteredProducts?.map((product, index) => (
-                                    <tr key={index} className="capitalize">
-                                        <td>{index + 1}</td>
-                                        <td>{product.date}</td>
-                                        <td>{product.materialsName}</td>
-                                        <td>{product.supplierName}</td>
-                                        <td>{product.supplierInvoice}</td>
-                                        <td>{Number(product.materialsRate.toFixed(2)).toLocaleString('en-IN')}</td>
-                                        <td>{Number(product.materialsQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                                        <td>{Number((product.materialsRate * product.materialsQty).toFixed(2)).toLocaleString('en-IN')}</td>
-                                    </tr>
-                                ))}
+                                {!groupView ? (
+                                    filteredProducts?.map((product, index) => (
+                                        <tr key={index} className="capitalize">
+                                            <td>{index + 1}</td>
+                                            <td>{product.date}</td>
+                                            <td>{product.materialsName}</td>
+                                            <td>{product.supplierName}</td>
+                                            <td>{product.supplierInvoice}</td>
+                                            <td>{Number(product.materialsRate.toFixed(2)).toLocaleString('en-IN')}</td>
+                                            <td>{Number(product.materialsQty.toFixed(2)).toLocaleString('en-IN')}</td>
+                                            <td>{Number((product.materialsRate * product.materialsQty).toFixed(2)).toLocaleString('en-IN')}</td>
+
+                                        </tr>
+                                    ))
+                                ) : (
+                                    groupedProducts.map((product: any, index) => (
+                                        <tr key={index}>
+                                            <td>{index + 1}</td>
+                                            <td colSpan={4}>{product.materialsName}</td>
+                                            <td>
+                                                {Number(product.totalQty.toFixed(2)).toLocaleString("en-IN")}
+                                            </td>
+                                            <td>
+                                                {Number(product.totalValue.toFixed(2)).toLocaleString("en-IN")}
+                                            </td>
+                                        </tr>
+                                    ))
+                                )}
                             </tbody>
                             <tfoot>
-                                <tr className="font-semibold text-lg">
-                                    <td colSpan={5}></td>
-                                    <td>TOTAL</td>
-                                    <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                                    <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
-                                </tr>
+                                {!groupView ? (
+                                    <tr className="font-semibold text-lg">
+                                        <td colSpan={5}></td>
+                                        <td>TOTAL</td>
+                                        <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
+                                    </tr>
+                                ) : (
+                                    <tr className="font-semibold text-lg">
+                                        <td colSpan={4}></td>
+                                        <td>TOTAL</td>
+                                        <td>{Number(totalQty?.toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td>{Number(totalValue?.toFixed(2)).toLocaleString('en-IN')}</td>
+                                    </tr>
+                                )}
                             </tfoot>
                         </table>
                     </div>

@@ -134,34 +134,6 @@ const Page = () => {
                     <div ref={contentToPrint} className="flex-1 p-5">
                         <div className="flex flex-col items-center pb-5"><h4 className="font-bold">MATERIALS DISTRIBUTION</h4><CurrentMonthYear /></div>
                         <table className="table table-sm text-center">
-                            {/* <thead>
-                                <tr>
-                                    <th>SN</th>
-                                    <th>DATE</th>
-                                    <th>MATERIALS NAME</th>
-                                    <th>OUTLET NAME</th>
-                                    <th>INVOICE NO</th>
-                                    <th>COST PRICE</th>
-                                    <th>QTY</th>
-                                    <th>SUB TOTAL</th>
-
-                                </tr>
-                            </thead> */}
-                            {/* <tbody>
-                                {filteredProducts?.map((product, index) => (
-                                    <tr key={index} className="capitalize">
-                                        <td>{index + 1}</td>
-                                        <td>{product.date}</td>
-                                        <td>{product.materialsName}</td>
-                                        <td>{product.madeItem}</td>
-                                        <td className="uppercase">{product.supplierInvoice}</td>
-                                        <td>{Number(product.materialsRate?.toFixed(2)).toLocaleString('en-IN')}</td>
-                                        <td>{Number(product.materialsQty?.toFixed(2)).toLocaleString('en-IN')}</td>
-                                        <td>{Number((product.materialsRate * product.materialsQty)?.toFixed(2)).toLocaleString('en-IN')}</td>
-
-                                    </tr>
-                                ))}
-                            </tbody> */}
                             <thead>
                                 {!groupView ? (
                                     <tr>
