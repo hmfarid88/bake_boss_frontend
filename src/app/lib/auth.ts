@@ -24,7 +24,7 @@ export async function decrypt(session: string | undefined = '') {
   }
 }
 
-export async function createSession(username: string, roles:string) {
+export async function createSession(username: string, roles: string) {
   const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000)
   const session = await encrypt({ username, roles, expiresAt })
 
@@ -33,7 +33,6 @@ export async function createSession(username: string, roles:string) {
     secure: false,
     expires: expiresAt,
     sameSite: 'lax',
-    domain:".iyadsoft.com",
     path: '/',
   })
 }
@@ -52,7 +51,6 @@ export async function updateSession() {
     secure: false,
     expires: expires,
     sameSite: 'lax',
-    domain:".iyadsoft.com",
     path: '/',
   })
 }
@@ -103,8 +101,8 @@ export async function deleteSession() {
 //   // Setting the session cookie
 //   cookies().set("session", session, {
 //     httpOnly: true,
-//     // secure: process.env.NODE_ENV === "production", 
-//     secure: true, 
+//     // secure: process.env.NODE_ENV === "production",
+//     secure: true,
 //     expires: expiresAt,
 //     sameSite: "lax", // Use 'strict' for better security
 //     path: "/",
