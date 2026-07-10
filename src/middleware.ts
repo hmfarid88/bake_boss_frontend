@@ -216,7 +216,8 @@ export default async function middleware(req: NextRequest) {
   );
 
   const cookie = cookies().get('session')?.value;
-
+  console.log("Middleware path:", req.nextUrl.pathname);
+  console.log("Session cookie:", cookie);
   // If no session cookie is found and the route is protected, redirect to the home page
   if (!cookie && protectingRoles.length > 0) {
     return NextResponse.redirect(new URL('/', req.nextUrl));
