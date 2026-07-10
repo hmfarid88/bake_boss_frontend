@@ -33,6 +33,7 @@ export async function createSession(username: string, roles:string) {
     secure: false,
     expires: expiresAt,
     sameSite: 'lax',
+    domain:".iyadsoft.com",
     path: '/',
   })
 }
@@ -51,6 +52,7 @@ export async function updateSession() {
     secure: false,
     expires: expires,
     sameSite: 'lax',
+    domain:".iyadsoft.com",
     path: '/',
   })
 }

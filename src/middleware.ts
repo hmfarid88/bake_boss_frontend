@@ -71,7 +71,6 @@
 
 import { NextRequest, NextResponse } from 'next/server';
 import { decrypt } from '@/app/lib/auth';
-import { cookies } from 'next/headers';
 
 // Define the roles as a union type
 type UserRole = 'ROLE_ADMIN' | 'ROLE_PRODUCTION' | 'ROLE_SALES' | 'ROLE_MANAGEMENT' | 'ROLE_MATERIALS';
@@ -215,9 +214,11 @@ export default async function middleware(req: NextRequest) {
     roleRouteMap[role].includes(path)
   );
 
-  const cookie = cookies().get('session')?.value;
+  const cookie = req.cookies.get('session')?.value;
+
   console.log("Middleware path:", req.nextUrl.pathname);
   console.log("Session cookie:", cookie);
+
   // If no session cookie is found and the route is protected, redirect to the home page
   if (!cookie && protectingRoles.length > 0) {
     return NextResponse.redirect(new URL('/', req.nextUrl));
