@@ -1,6 +1,5 @@
 'use client'
 import React, { useState, useEffect, useRef } from "react";
-import { useAppSelector } from "@/app/store";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
 import CurrentMonthYear from "@/app/components/CurrentMonthYear";
@@ -14,11 +13,10 @@ type Product = {
   productName: string;
   soldInvoice: string;
   customerName: string;
-  phoneNumber: string;
   saleRate: number;
-  discount: number;
   productQty: number;
 };
+
 
 const Page = () => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
@@ -44,13 +42,13 @@ const Page = () => {
       return;
     }
     // Use the dynamic routePath for navigation
-    router.push(`/datewise-management-sale?startDate=${startDate}&endDate=${endDate}&outlet=${outlet}`);
+    router.push(`/datewise-management-vendor-sale?startDate=${startDate}&endDate=${endDate}&outlet=${outlet}`);
     setStartDate("");
     setEndDate("");
   };
-
   const searchParams = useSearchParams();
   const outlet = searchParams.get('outlet');
+
   const contentToPrint = useRef(null);
   const handlePrint = useReactToPrint({
     content: () => contentToPrint.current,
@@ -60,7 +58,7 @@ const Page = () => {
   const [allProducts, setAllProducts] = useState<Product[]>([]);
 
   useEffect(() => {
-    fetch(`${apiBaseUrl}/sales/getOutletSale?username=${outlet}&percent=100`)
+    fetch(`${apiBaseUrl}/sales/getVendorSale?username=${outlet}&percent=100`)
       .then(response => response.json())
       .then(data => {
         setAllProducts(data);
@@ -74,9 +72,8 @@ const Page = () => {
     const filtered = allProducts.filter(product =>
       (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
       (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+      (product.customerName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
       (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-      (product.customerName?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-      (product.phoneNumber?.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
       (product.soldInvoice.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
     );
     setFilteredProducts(filtered);
@@ -86,13 +83,12 @@ const Page = () => {
     setFilterCriteria(e.target.value);
   };
   const totalValue = filteredProducts.reduce((total, product) => {
-    return total + ((product.saleRate * product.productQty));
+    return total + (product.saleRate * product.productQty);
   }, 0);
   const totalQty = filteredProducts.reduce((acc, item) => acc + item.productQty, 0);
-  const totalDis = filteredProducts.reduce((acc, item) => acc + item.discount, 0);
   return (
-    <div className="container-2xl min-h-screen">
-      <div className="flex flex-col w-full items-center p-5">
+    <div className="container-2xl min-h-[calc(100vh-228px)]">
+      <div className="flex items-center justify-center">
         <div className="flex">
           <div className='flex gap-3'>
             <label className="form-control w-full max-w-xs">
@@ -131,25 +127,23 @@ const Page = () => {
             </label>
           </div>
         </div>
-        <div className="flex w-full justify-between">
-          <div className="pt-7">
-            <label className="input input-bordered flex max-w-xs  items-center gap-2">
-              <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-4 w-4 opacity-70">
-                <path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" />
-              </svg>
-            </label>
-          </div>
-          <div className="pt-5"><button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button></div>
-        </div>
+      </div>
+      <div className="flex w-full justify-between p-5">
+
+        <label className="input input-bordered flex max-w-xs  items-center gap-2">
+          <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-4 w-4 opacity-70">
+            <path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" />
+          </svg>
+        </label>
+        <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
+
       </div>
 
       <div className="flex w-full items-center justify-center">
         <div className="overflow-x-auto">
           <div ref={contentToPrint} className="flex-1 p-5">
-            <div className="flex flex-col gap-2 items-center"><h4 className="font-bold">SALES REPORT</h4>
-              <h4 className="uppercase">Outlet : {outlet}</h4>
-              <CurrentMonthYear /></div>
+            <div className="flex flex-col gap-2 items-center"><h4 className="font-bold">VENDOR SALES REPORT</h4><CurrentMonthYear /></div>
             <table className="table table-sm">
               <thead>
                 <tr>
@@ -159,10 +153,9 @@ const Page = () => {
                   <th>CATEGORY</th>
                   <th>PRODUCT NAME</th>
                   <th>INVOICE NO</th>
-                  <th>CUSTOMER INFO</th>
-                  <th>SALE RATE</th>
+                  <th>CUSTOMER</th>
+                  <th>SALE PRICE</th>
                   <th>QUANTITY</th>
-                  <th>DISCOUNT</th>
                   <th>SUB TOTAL</th>
                 </tr>
               </thead>
@@ -175,11 +168,10 @@ const Page = () => {
                     <td className="capitalize">{product.category}</td>
                     <td className="capitalize">{product.productName}</td>
                     <td className="uppercase">{product.soldInvoice}</td>
-                    <td className="capitalize">{product.customerName} {product.phoneNumber}</td>
+                    <td className="capitalize">{product.customerName}</td>
                     <td>{Number(product.saleRate.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{Number(product.productQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{Number(product.discount?.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{Number(((product.saleRate * product.productQty) - (product.discount)).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{product.productQty.toLocaleString('en-IN')}</td>
+                    <td>{Number((product.saleRate * product.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
                   </tr>
                 ))}
               </tbody>
@@ -187,9 +179,8 @@ const Page = () => {
                 <tr className="font-semibold text-lg">
                   <td colSpan={7}></td>
                   <td>TOTAL</td>
-                  <td>{Number(totalQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                  <td>{Number(totalDis.toFixed(2)).toLocaleString('en-IN')}</td>
-                  <td>{Number((totalValue - totalDis).toFixed(2)).toLocaleString('en-IN')}</td>
+                  <td>{totalQty}</td>
+                  <td>{Number(totalValue.toFixed(2)).toLocaleString('en-IN')}</td>
                 </tr>
               </tfoot>
             </table>

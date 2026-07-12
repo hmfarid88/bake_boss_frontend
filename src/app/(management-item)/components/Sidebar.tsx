@@ -27,6 +27,7 @@ export const Sidebar = () => {
                         <li><Link href="/management-dashboard"><IoHomeOutline size={20} /> HOME</Link></li>
                         <li><Link href="/management-dist-report"><TbReportSearch size={20} /> DIST REPORT</Link></li>
                         <li><Link href="/outlet-sale-report"><HiOutlineShoppingBag size={20} /> OUTLET SALE</Link></li>
+                        <li><Link href="/outlet-vendor-sale-report"><HiOutlineShoppingBag size={20} /> VENDOR SALE</Link></li>
                         <li><Link href="/management-profit"><MdOutlineInterests size={20} /> OUTLET PROFIT</Link></li>
                         <li><Link href="/outlet-stock"><GoDatabase size={20} /> OUTLET STOCK</Link></li>
                         <li><Link href="/userupdate"><GrUserAdmin size={20} /> USER UPDATE</Link></li>

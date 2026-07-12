@@ -40,71 +40,67 @@ const Page = () => {
       .catch(error => console.error('Error fetching products:', error));
   }, [apiBaseUrl, username]);
 
- 
-// useEffect(() => {
-//   const searchText = filterCriteria.toLowerCase().trim();
-//   const searchWords = searchText.split(" ");
 
-//   let filtered = allProducts;
+  // useEffect(() => {
+  //   const searchText = filterCriteria.toLowerCase().trim();
+  //   const searchWords = searchText.split(" ");
 
-//   if (searchText) {
-//     // If customer matches exactly → only return that
-//     const exactMatch = allProducts.filter(
-//       product => product.customer?.toLowerCase() === searchText
-//     );
+  //   let filtered = allProducts;
 
-//     if (exactMatch.length > 0) {
-//       filtered = exactMatch;
-//     } else {
-//       // Otherwise → normal includes search
-//       filtered = allProducts.filter(product =>
-//         searchWords.every(word =>
-//           (product.customer?.toLowerCase() || "").includes(word) ||
-//           (product.date?.toLowerCase() || "").includes(word) ||
-//           (product.productName?.toLowerCase() || "").includes(word) ||
-//           (product.category?.toLowerCase() || "").includes(word) ||
-//           (product.invoiceNo?.toLowerCase() || "").includes(word)
-//         )
-//       );
-//     }
-//   }
+  //   if (searchText) {
+  //     // If customer matches exactly → only return that
+  //     const exactMatch = allProducts.filter(
+  //       product => product.customer?.toLowerCase() === searchText
+  //     );
 
-//   setFilteredProducts(filtered);
-// }, [filterCriteria, allProducts]);
+  //     if (exactMatch.length > 0) {
+  //       filtered = exactMatch;
+  //     } else {
+  //       // Otherwise → normal includes search
+  //       filtered = allProducts.filter(product =>
+  //         searchWords.every(word =>
+  //           (product.customer?.toLowerCase() || "").includes(word) ||
+  //           (product.date?.toLowerCase() || "").includes(word) ||
+  //           (product.productName?.toLowerCase() || "").includes(word) ||
+  //           (product.category?.toLowerCase() || "").includes(word) ||
+  //           (product.invoiceNo?.toLowerCase() || "").includes(word)
+  //         )
+  //       );
+  //     }
+  //   }
 
-useEffect(() => {
-  const searchText = filterCriteria.toLowerCase().trim();
+  //   setFilteredProducts(filtered);
+  // }, [filterCriteria, allProducts]);
 
-  let filtered = allProducts;
+  useEffect(() => {
+    const searchText = filterCriteria.toLowerCase().trim();
+    let filtered = allProducts;
+    if (searchText) {
+      // If exact customer match
+      const exactMatch = allProducts.filter(
+        product => product.customer?.toLowerCase() === searchText
+      );
+      if (exactMatch.length > 0) {
+        filtered = exactMatch;
+      } else {
+        // Build one string containing outlet + product details
+        filtered = allProducts.filter(product => {
+          const combinedText = [
+            product.customer,
+            product.category,
+            product.productName,
+            product.date,
+            product.invoiceNo
+          ]
+            .map(f => f?.toLowerCase() || "")
+            .join(" ");
 
-  if (searchText) {
-    // If exact customer match
-    const exactMatch = allProducts.filter(
-      product => product.customer?.toLowerCase() === searchText
-    );
-
-    if (exactMatch.length > 0) {
-      filtered = exactMatch;
-    } else {
-      // Build one string containing outlet + product details
-      filtered = allProducts.filter(product => {
-        const combinedText = [
-          product.customer,
-          product.category,
-          product.productName,
-          product.date,
-          product.invoiceNo
-        ]
-          .map(f => f?.toLowerCase() || "")
-          .join(" ");
-
-        return combinedText.includes(searchText);
-      });
+          return combinedText.includes(searchText);
+        });
+      }
     }
-  }
-
-  setFilteredProducts(filtered);
-}, [filterCriteria, allProducts]);
+    setFilteredProducts(filtered);
+  }, [filterCriteria, allProducts]);
 
 
   const handleFilterChange = (e: any) => {
