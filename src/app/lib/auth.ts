@@ -59,7 +59,6 @@ export async function deleteSession() {
   redirect("/")
 }
 
-
 // "use server"
 // import { SignJWT, jwtVerify } from "jose";
 // import { cookies } from "next/headers";
