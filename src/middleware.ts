@@ -215,10 +215,18 @@ export default async function middleware(req: NextRequest) {
     roleRouteMap[role].includes(path)
   );
 
-  const cookie = cookies().get('aurorafood_session')?.value;
+  // const cookie = cookies().get('aurorafood_session')?.value;
 
-  console.log("Middleware path:", req.nextUrl.pathname);
-  console.log("Session cookie:", cookie);
+  // console.log("Middleware path:", req.nextUrl.pathname);
+  // console.log("Session cookie:", cookie);
+   const cookie = req.cookies.get("aurorafood_session")?.value;
+
+  console.log("Cookie exists:", !!cookie);
+
+  if (cookie) {
+    const session = await decrypt(cookie);
+    console.log("Decoded session:", session);
+  }
 
   // If no session cookie is found and the route is protected, redirect to the home page
   if (!cookie && protectingRoles.length > 0) {
