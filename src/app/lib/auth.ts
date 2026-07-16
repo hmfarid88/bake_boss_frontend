@@ -38,7 +38,7 @@ export async function createSession(username: string, roles: string) {
 }
 
 export async function updateSession() {
-  const session = cookies().get('session')?.value
+  const session = cookies().get('aurorafood_session')?.value
   const payload = await decrypt(session)
 
   if (!session || !payload) {
