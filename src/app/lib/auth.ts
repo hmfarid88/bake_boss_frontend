@@ -12,7 +12,6 @@ export async function encrypt(payload: any) {
     .setExpirationTime('1d')
     .sign(encodedKey)
 }
-
 export async function decrypt(session: string | undefined = '') {
   try {
     const { payload } = await jwtVerify(session, encodedKey, {
