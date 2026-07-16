@@ -23,6 +23,7 @@ export async function decrypt(session: string | undefined = '') {
     console.error('Failed to verify session', error)
   }
 }
+
 export async function createSession(username: string, roles: string) {
   const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000)
   const session = await encrypt({ username, roles, expiresAt })
