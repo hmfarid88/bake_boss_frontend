@@ -28,9 +28,9 @@ export async function createSession(username: string, roles: string) {
   const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000)
   const session = await encrypt({ username, roles, expiresAt })
 
-  cookies().set('session', session, {
+  cookies().set('aurorafood_session', session, {
     httpOnly: true,
-    secure: false,
+    secure: true,
     expires: expiresAt,
     sameSite: 'lax',
     path: '/',
@@ -46,9 +46,9 @@ export async function updateSession() {
   }
 
   const expires = new Date(Date.now() + 24 * 60 * 60 * 1000)
-  cookies().set('session', session, {
+  cookies().set('aurorafood_session', session, {
     httpOnly: true,
-    secure: false,
+    secure: true,
     expires: expires,
     sameSite: 'lax',
     path: '/',
@@ -56,7 +56,7 @@ export async function updateSession() {
 }
 
 export async function deleteSession() {
-  cookies().delete('session')
+  cookies().delete('aurorafood_session')
   redirect("/")
 }
 
