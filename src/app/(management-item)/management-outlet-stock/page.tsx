@@ -53,6 +53,7 @@ const Page = () => {
 
             if (response.ok) {
                 setNewProductQty("");
+                setProductId("");
                 toast.success("Update Successful!");
             } else {
                 const data = await response.json();

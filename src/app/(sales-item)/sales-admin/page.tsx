@@ -1,3 +1,5 @@
+
+import ReadyGoods from "@/app/components/ReadyGoods"
 import ShopInfo from "@/app/components/ShopInfo"
 
 const Page = () => {
@@ -10,6 +12,10 @@ const Page = () => {
                     <div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
                         <ShopInfo />
                     </div>
+                    {/* <input type="radio" name="my_tabs_2" role="tab" className="tab" aria-label="READY GOODS" />
+                    <div role="tabpanel" className="tab-content bg-base-100 border-base-300 rounded-box p-6">
+                          <ReadyGoods />
+                    </div> */}
 
                 </div>
             </div>
