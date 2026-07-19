@@ -3,10 +3,13 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useAppSelector } from "@/app/store";
 import Select from "react-select";
 import { ToastContainer, toast } from 'react-toastify';
-import { FiEdit } from "react-icons/fi";
+import { FiEdit, FiSettings } from "react-icons/fi";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { useReactToPrint } from 'react-to-print';
 import { FcPrint } from 'react-icons/fc';
+import { TbTransferIn } from 'react-icons/tb';
+import { uid } from 'uid';
+import Link from 'next/link';
 
 type Product = {
     itemName: string;
@@ -14,6 +17,15 @@ type Product = {
     qty: number;
     averageRate: number;
 };
+
+interface items {
+    itemId: number,
+    itemNo: string,
+    itemName: string,
+    materialsName: string,
+    qty: number,
+    averageRate: number
+}
 const Page: React.FC = () => {
 
     const uname = useAppSelector((state) => state.username.username);
@@ -27,17 +39,24 @@ const Page: React.FC = () => {
     const [filterCriteria, setFilterCriteria] = useState('');
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [allProducts, setAllProducts] = useState<Product[]>([]);
+    const [materialsName, setMaterialsName] = useState("");
+    const [qty, setQty] = useState("");
+    const [saleRate, setSaleRate] = useState("");
 
+    const [productName, setProductName] = useState("");
+    const [itemOption, setItemOption] = useState([]);
+    const [items, setItems] = useState<items[]>([]);
+    const invoiceNo = uid();
 
     useEffect(() => {
-        fetch(`${apiBaseUrl}/api/getMaterials/grouped?username=${username}`)
+        fetch(`${apiBaseUrl}/api/getReadyGoods/grouped?username=${username}`)
             .then(response => response.json())
             .then(data => {
                 setAllProducts(data);
                 setFilteredProducts(data);
             })
             .catch(error => console.error('Error fetching products:', error));
-    }, [apiBaseUrl, username]);
+    }, [apiBaseUrl, username, materialsName]);
 
     useEffect(() => {
         const terms = filterCriteria.split(',').map(term => term.trim().toLowerCase());
@@ -60,27 +79,13 @@ const Page: React.FC = () => {
         return total + product.qty;
     }, 0);
 
-
-    interface items {
-        itemId: number,
-        itemNo: string,
-        itemName: string,
-        materialsName: string,
-        qty: number,
-        averageRate: number
-    }
-
-    const [productName, setProductName] = useState("");
-    const [itemOption, setItemOption] = useState([]);
-    const [items, setItems] = useState<items[]>([]);
-
     const HandleItemMake = (e: any) => {
         e.preventDefault();
         if (!productName) {
             toast.error("Select any item first !")
             return;
         }
-        fetch(`${apiBaseUrl}/api/getItemList?username=${username}&itemName=${productName}`)
+        fetch(`${apiBaseUrl}/api/getReadyGoodsList?username=${username}&itemName=${productName}`)
             .then(response => response.json())
             .then(data => {
                 if (data.length === 0) {
@@ -92,7 +97,6 @@ const Page: React.FC = () => {
             })
             .catch(error => console.error('Error fetching item list:', error));
     };
-
 
     useEffect(() => {
         fetch(`${apiBaseUrl}/api/getMadeProducts?username=${username}`)
@@ -112,11 +116,6 @@ const Page: React.FC = () => {
         return items.reduce((total, item) => total + (item.averageRate * item.qty), 0);
     };
 
-    const setMaterialChange = (index: number, value: string) => {
-        const updatedItems = [...items];
-        updatedItems[index].materialsName = value;
-        setItems(updatedItems);
-    };
 
     const handleQtyChange = (index: number, value: string) => {
         const updatedItems = [...items];
@@ -172,22 +171,19 @@ const Page: React.FC = () => {
     }
     const [materialsOption, setMaterialsOption] = useState([]);
     useEffect(() => {
-        fetch(`${apiBaseUrl}/api/getMaterialsName?username=${username}`)
+        fetch(`${apiBaseUrl}/sales/getSalesStock?username=${username}`)
             .then(response => response.json())
             .then(data => {
                 const transformedData = data.map((item: any) => ({
                     id: item.id,
-                    value: item.materialsName,
-                    label: item.materialsName
+                    value: item.productName,
+                    label: item.productName
                 }));
                 setMaterialsOption(transformedData);
 
             })
             .catch(error => console.error('Error fetching products:', error));
     }, [apiBaseUrl, username]);
-
-    const [materialsName, setMaterialsName] = useState("");
-    const [qty, setQty] = useState("");
 
     const handleItemAdd = async (e: any) => {
         e.preventDefault();
@@ -223,12 +219,54 @@ const Page: React.FC = () => {
             toast.error("Sorry, this item is exist !")
         }
     }
+
+    const handleReadyStockAdd = async (e: any) => {
+        e.preventDefault();
+
+        if (!saleRate) {
+            toast.warning("Sale Rate Is Empty!");
+            return;
+        }
+
+        const stockItem = {
+            productName: items[0].itemName,
+            costPrice: calculateTotal(),
+            saleRate: saleRate,
+            stockRate: calculateTotal(),
+            username: username,
+            invoiceNo: invoiceNo,
+        };
+
+        try {
+            const response = await fetch(`${apiBaseUrl}/sales/addReadyGoods`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify([stockItem]),
+            });
+
+            const data = await response.json();
+
+            if (data.success) {
+                toast.success(data.message);
+                setQty("");
+            } else {
+                toast.warning(data.message);
+            }
+
+        } catch (error) {
+            console.error(error);
+            toast.error("Something went wrong!");
+        }
+    };
     return (
         <div className='container min-h-screen'>
             <div className="grid grid-cols-1 md:grid-cols-2">
                 <div className="flex flex-col w-full items-center justify-center pt-5">
                     <div className="overflow-x-auto">
                         <div className="flex justify-between pl-7 pr-5 pt-1">
+                           <Link href="/ready-goods-setting" ><FiSettings size={24} /></Link> 
                             <label className="input input-bordered flex max-w-xs  items-center gap-2">
                                 <input type="text" value={filterCriteria} onChange={handleFilterChange} className="grow" placeholder="Search" />
                                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor" className="h-4 w-4 opacity-70">
@@ -293,11 +331,16 @@ const Page: React.FC = () => {
                                     <>
                                         <h1 className="uppercase">{items[0].itemName}</h1>
 
-                                        <a href="#fac_itemlist" className="btn btn-circle btn-ghost">
+                                        <a href="#add-to-stock" className="btn btn-circle btn-ghost">
+                                            <TbTransferIn size={20} />
+                                        </a>
+
+                                        <a href="#_itemlist" className="btn btn-circle btn-ghost">
                                             <FiEdit size={20} />
                                         </a>
                                     </>
                                 )}
+
                             </div>
                             <div className="card-body">
                                 <table className="table">
@@ -332,7 +375,7 @@ const Page: React.FC = () => {
                             </div>
                         </div>
                         {/* modal area */}
-                        <div className="modal sm:modal-middle" role="dialog" id="fac_itemlist">
+                        <div className="modal sm:modal-middle" role="dialog" id="_itemlist">
                             <div className="modal-box">
                                 <h3 className="font-bold text-md uppercase">EDIT ITEM : {items[0]?.itemName}</h3>
 
@@ -376,6 +419,24 @@ const Page: React.FC = () => {
                                     <Select className="text-black h-[32px] w-[200px]" name="materialsname" onChange={(selectedOption: any) => setMaterialsName(selectedOption.value)} options={materialsOption} />
                                     <input type='number' value={qty} onChange={(e: any) => setQty(e.target.value)} className='input-sm  w-[200px] mt-2 rounded-md bg-white text-black' placeholder='QTY' />
                                     <button onClick={handleItemAdd} className='btn btn-success btn-sm w-[200px]'>ADD</button>
+                                </div>
+                                <div className="modal-action">
+                                    <a href="#" className="btn btn-square btn-ghost">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-10 h-10">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                        </svg>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal sm:modal-middle" role="dialog" id="add-to-stock">
+                            <div className="modal-box">
+                                <h3 className="font-bold text-md uppercase">PRODUCT NAME : {items[0]?.itemName}</h3>
+
+                                <div className="flex flex-col gap-2 pt-10 items-center justify-center">
+                                    <label><span>ADD SALE RATE</span> </label>
+                                    <input type='number' value={saleRate} onChange={(e: any) => setSaleRate(e.target.value)} className='input-sm  w-[200px] mt-2 rounded-md bg-white text-black' placeholder='Sale Rate' />
+                                    <button onClick={handleReadyStockAdd} className='btn btn-success btn-sm w-[200px]'>ADD TO STOCK</button>
                                 </div>
                                 <div className="modal-action">
                                     <a href="#" className="btn btn-square btn-ghost">

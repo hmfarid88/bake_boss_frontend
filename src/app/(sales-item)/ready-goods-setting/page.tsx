@@ -6,8 +6,8 @@ import Select from "react-select";
 import { uid } from "uid";
 import { useAppDispatch, useAppSelector } from "@/app/store";
 import { toast } from 'react-toastify';
-import { FcPlus } from 'react-icons/fc';
-const ReadyGoods = () => {
+
+const Page = () => {
   const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
   const [pending, setPending] = useState(false);
   const [shouldFetch, setShouldFetch] = useState(true);
@@ -103,8 +103,7 @@ const ReadyGoods = () => {
   };
 
   const [materialsOption, setMaterialsOption] = useState([]);
- 
-  useEffect(() => {
+   useEffect(() => {
     fetch(`${apiBaseUrl}/sales/getSalesStock?username=${username}`)
       .then(response => response.json())
       .then(data => {
@@ -121,7 +120,7 @@ const ReadyGoods = () => {
   }, [ingredientsName, apiBaseUrl, username]);
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 w-full">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-5 p-10 w-full h-screen">
       <div className="grid grid-cols-1 w-full h-72">
         <label className="form-control w-full max-w-xs">
           <div className="label">
@@ -185,4 +184,4 @@ const ReadyGoods = () => {
   )
 }
 
-export default ReadyGoods
+export default Page
