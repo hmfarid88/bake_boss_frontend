@@ -47,45 +47,6 @@ const ProductMrp = () => {
     };
 
 
-    // const [itemOption, setItemOption] = useState([]);
-    //   useEffect(() => {
-    //     const fetchMadeProducts = () => {
-    //       fetch(`${apiBaseUrl}/api/getAdditionalName`)
-    //         .then(response => response.json())
-    //         .then(data => {
-    //           const transformedData = data.map((item: any) => ({
-    //             value: item.additionalName,
-    //             label: item.additionalName
-    //           }));
-    //           setItemOption(transformedData);
-    //         })
-    //         .catch(error => console.error('Error fetching products:', error));
-    //     };
-    
-    //     // Fetch data initially
-    //     fetchMadeProducts();
-    //   }, [apiBaseUrl]);
-
-    //  const [itemOption, setItemOption] = useState([]);
-    //     useEffect(() => {
-    
-    //         const fetchMadeProducts = () => {
-    //             fetch(`${apiBaseUrl}/api/getMadeProducts`)
-    //                 .then(response => response.json())
-    //                 .then(data => {
-    //                     const transformedData = data.map((madeItem: any) => ({
-    //                         value: madeItem,
-    //                         label: madeItem
-    //                     }));
-    //                     setItemOption(transformedData);
-    //                 })
-    //                 .catch(error => console.error('Error fetching products:', error));
-    //         };
-    
-    //         // Fetch data initially
-    //         fetchMadeProducts();
-    //     }, [apiBaseUrl, itemOption]);
-
 type OptionType = {
   value: string;
   label: string;
@@ -98,7 +59,7 @@ useEffect(() => {
       // fetch both APIs together
       const [additionalRes, madeProductsRes] = await Promise.all([
         fetch(`${apiBaseUrl}/api/getAdditionalName`),
-        fetch(`${apiBaseUrl}/api/getMadeProducts`)
+        fetch(`${apiBaseUrl}/api/getMadeProducts?username=${username}`)
       ]);
 
       const additionalData = await additionalRes.json();
