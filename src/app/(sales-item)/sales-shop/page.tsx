@@ -249,7 +249,7 @@ const Page: React.FC = () => {
             .then(data => {
                 const transformedData = data.map((item: any) => ({
                     value: item.productId,
-                    label: `${item.productName}, ${Number(item.remainingQty).toFixed(2)}`
+                    label: `${item.productName}, ${Number(item.remainingQty).toFixed(4)}`
                 }));
                 setProductOption(transformedData);
             })

@@ -262,7 +262,7 @@ const ProductStock = () => {
     useEffect(() => {
 
         const fetchMadeProducts = () => {
-            fetch(`${apiBaseUrl}/api/getMadeProducts`)
+            fetch(`${apiBaseUrl}/api/getMadeProducts?username=${username}`)
                 .then(response => response.json())
                 .then(data => {
                     const transformedData = data.map((madeItem: any) => ({
@@ -276,7 +276,7 @@ const ProductStock = () => {
 
         // Fetch data initially
         fetchMadeProducts();
-    }, [apiBaseUrl, newItemName]);
+    }, [apiBaseUrl, newItemName, username]);
 
     return (
         <div className="flex w-full">

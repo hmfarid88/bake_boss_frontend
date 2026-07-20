@@ -120,7 +120,7 @@ const ReItemMake = () => {
     const [itemOption, setItemOption] = useState([]);
     useEffect(() => {
 
-        fetch(`${apiBaseUrl}/api/getMadeProducts`)
+        fetch(`${apiBaseUrl}/api/getMadeProducts?username=${username}`)
             .then(response => response.json())
             .then(data => {
                 const transformedData = data.map((madeItem: any) => ({
