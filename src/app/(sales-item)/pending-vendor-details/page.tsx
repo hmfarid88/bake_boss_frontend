@@ -93,8 +93,9 @@ const Page = () => {
                 body: JSON.stringify({ username, soldInvoice:invoiceNo }),
             });
 
+             const error = await response.json();
             if (!response.ok) {
-                const error = await response.json();
+              
                 toast.error(error.message);
             } else {
                 toast.success("Products added successfully !");
