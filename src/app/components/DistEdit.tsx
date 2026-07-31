@@ -146,7 +146,7 @@ const DistEdit = () => {
     const [itemOption, setItemOption] = useState([]);
     useEffect(() => {
         const fetchMadeProducts = () => {
-            fetch(`${apiBaseUrl}/api/getMadeProducts`)
+            fetch(`${apiBaseUrl}/api/getMadeProducts?username=${username}`)
                 .then(response => response.json())
                 .then(data => {
                     const transformedData = data.map((madeItem: any) => ({
@@ -159,7 +159,7 @@ const DistEdit = () => {
         };
 
         fetchMadeProducts();
-    }, [apiBaseUrl]);
+    }, [apiBaseUrl, username]);
     return (
 
         <div className="flex items-center justify-center">
