@@ -136,9 +136,9 @@ const Page = () => {
                                     {filteredProducts?.map((products, index) => (
                                         <tr key={index}>
                                             <td className='text-left p-0'>{index + 1}</td>
-                                            <td>{products.materialsName}</td>
+                                            <td>{products?.date} | {products?.materialsName}</td>
                                             <td>{Number((products?.averageRate ?? 0).toFixed(2)).toLocaleString('en-IN')}</td>
-                                            <td>{Number(products.materialsQty.toFixed(2))}</td>
+                                            <td>{Number(products?.materialsQty.toFixed(2))}</td>
                                             <td className='text-right pr-0'>{Number((products?.averageRate ?? 0 * products.materialsQty).toFixed(2)).toLocaleString('en-IN')}</td>
                                         </tr>
                                     ))}

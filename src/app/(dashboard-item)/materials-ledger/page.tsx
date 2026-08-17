@@ -92,14 +92,14 @@ const Page = () => {
                 {filteredProducts?.map((product, index) => (
                   <tr key={index} className="capitalize">
                     <td>{index + 1}</td>
-                    <td>{product.date}</td>
-                    <td>{product.materialsName}</td>
-                    <td>{product.supplierName}</td>
-                    <td>{product.supplierInvoice}</td>
-                    <td>{Number(product.materialsRate.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{product.status}</td>
-                    <td>{Number(product.materialsQty.toFixed(2)).toLocaleString('en-IN')}</td>
-                    <td>{Number(product.remainingQty.toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{product?.date}</td>
+                    <td>{product?.materialsName}</td>
+                    <td>{product?.supplierName}</td>
+                    <td>{product?.supplierInvoice}</td>
+                    <td>{Number((product?.materialsRate ?? 0).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{product?.status}</td>
+                    <td>{Number((product?.materialsQty ?? 0).toFixed(2)).toLocaleString('en-IN')}</td>
+                    <td>{Number((product?.remainingQty ?? 0 ).toFixed(2)).toLocaleString('en-IN')}</td>
                   </tr>
                 ))}
               </tbody>
