@@ -121,7 +121,7 @@ const Invoice = () => {
                                         <td>{products.category}, {products.productName}</td>
                                         <td>{Number((products?.saleRate ?? 0).toFixed(2)).toLocaleString('en-IN')}</td>
                                         <td>{Number(products.productQty.toFixed(2))}</td>
-                                        <td className='text-right pr-0'>{Number((products?.saleRate ?? 0 * products.productQty).toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td className='text-right pr-0'>{Number(((products?.saleRate ?? 0) * (products?.productQty ?? 0)).toFixed(2)).toLocaleString('en-IN')}</td>
                                     </tr>
                                 ))}
                             </tbody>
