@@ -144,28 +144,67 @@ const Page = () => {
     }
   };
 
+  // useEffect(() => {
+  //   const now = new Date();
+  //   const hour = Number(
+  //     new Intl.DateTimeFormat('en-US', {
+  //       timeZone: 'Asia/Dhaka',
+  //       hour: '2-digit',
+  //       hour12: false,
+  //     }).format(now)
+  //   );
+  //   let percent = 19;
+  //   if (hour >= 20 || hour < 2) {
+  //     percent = 100;
+  //   }
+
+  const [percent, setPercent] = useState<number>(19);
   useEffect(() => {
-    const now = new Date();
-    const hour = Number(
-      new Intl.DateTimeFormat('en-US', {
-        timeZone: 'Asia/Dhaka',
-        hour: '2-digit',
-        hour12: false,
-      }).format(now)
-    );
-    let percent = 19;
-    if (hour >= 20 || hour < 2) {
-      percent = 100;
-    }
+    const getServerTimeAndProducts = async () => {
+      try {
+        // Get real server time
+        const timeResponse = await fetch(
+          `${apiBaseUrl}/api/server-time`
+        );
 
+        const timeData = await timeResponse.json();
 
-    fetch(`${apiBaseUrl}/sales/sales/today?username=${username}&percent=${percent}`)
-      .then(response => response.json())
-      .then(data => {
+        const serverDate = new Date(timeData.time);
+
+        const hour = Number(
+          new Intl.DateTimeFormat("en-US", {
+            timeZone: "Asia/Dhaka",
+            hour: "2-digit",
+            hour12: false,
+          }).format(serverDate)
+        );
+
+        // Calculate percentage from SERVER time
+        let newPercent = 19;
+
+        if (hour >= 20 || hour < 2) {
+          newPercent = 100;
+        }
+
+        // Update state for UI
+        setPercent(newPercent);
+
+        // Use newPercent directly, NOT percent
+        const response = await fetch(
+          `${apiBaseUrl}/sales/sales/today?username=${username}&percent=${percent}`
+        );
+
+        const data = await response.json();
+
         setAllProducts(data);
         setFilteredProducts(data);
-      })
-      .catch(error => console.error("Error fetching products:", error));
+
+      } catch (error) {
+        console.error("Error fetching server time/products:", error);
+      }
+    };
+
+    getServerTimeAndProducts();
 
   }, [apiBaseUrl, username, updatedQty]);
 

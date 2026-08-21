@@ -203,7 +203,7 @@ const Page: React.FC = () => {
         <div className='container-2xl min-h-screen'>
             <div className="flex flex-col">
                 <div className="flex pt-5 px-10 pb-0">
-                    <input type="date" name="date" onChange={(e: any) => setDate(e.target.value)} max={maxDate} value={date} className="input input-ghost" />
+                    <input type="date" name="date" onChange={(e: any) => setDate(e.target.value)} max={maxDate} value={date} className="input input-ghost" readOnly />
                 </div>
 
                 <div className="flex flex-col w-full">
