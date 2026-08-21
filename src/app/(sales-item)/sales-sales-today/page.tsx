@@ -191,7 +191,7 @@ const Page = () => {
 
         // Use newPercent directly, NOT percent
         const response = await fetch(
-          `${apiBaseUrl}/sales/sales/today?username=${username}&percent=${percent}`
+          `${apiBaseUrl}/sales/sales/today?username=${username}&percent=${newPercent}`
         );
 
         const data = await response.json();

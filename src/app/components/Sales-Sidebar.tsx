@@ -1,13 +1,13 @@
 import React from 'react'
 import Link from 'next/link'
 import { IoHomeOutline } from "react-icons/io5";
-import { RiSecurePaymentLine } from "react-icons/ri";
+import { RiDatabaseLine, RiPassPendingLine, RiSecurePaymentLine } from "react-icons/ri";
 import { BsDatabaseCheck } from "react-icons/bs";
 import { MdAddShoppingCart, MdPendingActions, MdReadMore, MdOutlineAssignmentReturn, MdOutlineInterests } from "react-icons/md";
-import { CiShop, CiMemoPad  } from "react-icons/ci";
+import { CiShop, CiMemoPad } from "react-icons/ci";
 import { TbReportSearch } from "react-icons/tb";
 import { MdOutlinePayments } from "react-icons/md";
-import { PiNotebook } from "react-icons/pi";
+import { PiNotebook, PiStrategyDuotone } from "react-icons/pi";
 import { VscRepo } from "react-icons/vsc";
 import { GrUserAdmin } from "react-icons/gr";
 import CashBook from './Sales-Cashbook';
@@ -30,10 +30,11 @@ export const SalesSidebar = () => {
                     <label htmlFor="my-drawer-3" aria-label="close sidebar" className="drawer-overlay"></label>
                     <ul className="menu p-4 w-60 min-h-full bg-base-200 text-base-content">
                         <li><Link href="/sales-dashboard"><IoHomeOutline size={20} /> HOME</Link></li>
-                        <li><Link href="/pending-product"><MdPendingActions size={20} /> PRODUCT PENDING</Link></li>
+                        <li><Link href="/pending-product"><RiPassPendingLine size={20} /> PRODUCT PENDING</Link></li>
                         <li><Link href="/pending-return"><MdPendingActions size={20} /> RETURN PENDING</Link></li>
                         <li><Link href="/sales-stock"><BsDatabaseCheck size={20} /> PRODUCT STOCK</Link></li>
-                        <li><Link href="/ready-goods"><BsDatabaseCheck size={20} /> READY GOODS</Link></li>
+                        <li><Link href="/price-sheet"><PiStrategyDuotone size={20} /> PRICE SHEET</Link></li>
+                        <li><Link href="/ready-goods"><RiDatabaseLine size={20} /> READY GOODS</Link></li>
                         {/* <li><Link href="/sales-additional"><MdReadMore size={20} /> ADDITIONAL STOCK</Link></li> */}
                         <li><Link href="/product-return"><MdOutlineAssignmentReturn size={20} /> PRODUCT RETURN</Link></li>
                         <li><Link href="/sales-shop" className='text-success'><MdAddShoppingCart size={20} />CUSTOMER SALE</Link></li>
