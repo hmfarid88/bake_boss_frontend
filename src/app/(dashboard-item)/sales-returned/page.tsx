@@ -42,16 +42,46 @@ const Page = () => {
   }, [apiBaseUrl, username]);
 
 
+  // useEffect(() => {
+  //   const filtered = allProducts.filter(product =>
+  //     (product.username.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+  //     (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+  //     (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+  //     (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
+  //     (product.soldInvoice.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
+  //   );
+  //   setFilteredProducts(filtered);
+  // }, [filterCriteria, allProducts]);
+
   useEffect(() => {
-    const filtered = allProducts.filter(product =>
-      (product.username.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-      (product.productName.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-      (product.category.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-      (product.date.toLowerCase().includes(filterCriteria.toLowerCase()) || '') ||
-      (product.soldInvoice.toLowerCase().includes(filterCriteria.toLowerCase()) || '')
-    );
-    setFilteredProducts(filtered);
-  }, [filterCriteria, allProducts]);
+      const searchText = filterCriteria.toLowerCase().trim();
+      let filtered = allProducts;
+      if (searchText) {
+        // If exact customer match
+        const exactMatch = allProducts.filter(
+          product => product.username?.toLowerCase() === searchText
+        );
+        if (exactMatch.length > 0) {
+          filtered = exactMatch;
+        } else {
+          // Build one string containing outlet + product details
+          filtered = allProducts.filter(product => {
+            const combinedText = [
+              product.username,
+              product.category,
+              product.productName,
+              product.date,
+              product.soldInvoice
+            ]
+              .map(f => f?.toLowerCase() || "")
+              .join(" ");
+  
+            return combinedText.includes(searchText);
+          });
+        }
+      }
+      setFilteredProducts(filtered);
+    }, [filterCriteria, allProducts]);
 
   const handleFilterChange = (e: any) => {
     setFilterCriteria(e.target.value);
