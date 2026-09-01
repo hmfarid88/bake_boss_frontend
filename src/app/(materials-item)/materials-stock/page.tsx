@@ -7,6 +7,7 @@ import CurrentDate from "@/app/components/CurrentDate";
 import { MdOutlineEditNote } from "react-icons/md";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
+import ProductMrp from "@/app/components/ProductMrp";
 
 type Product = {
     materialsId: number;
@@ -129,6 +130,7 @@ const Page = () => {
                             <path fillRule="evenodd" d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z" clipRule="evenodd" />
                         </svg>
                     </label>
+                    <a href="#materials_mrp" className='btn btn-primary'>MRP SETTING</a>
                     <button onClick={handlePrint} className='btn btn-ghost btn-square'><FcPrint size={36} /></button>
                 </div>
                 <div className="overflow-x-auto">
@@ -214,6 +216,20 @@ const Page = () => {
                         </div>
                     </div>
                 </div>
+                <div className="modal sm:modal-middle" role="dialog" id="materials_mrp">
+                <div className="modal-box">
+                    <div className="flex w-full items-center justify-center p-2">
+                        <ProductMrp/>
+                    </div>
+                    <div className="modal-action">
+                        <a href="#" className="btn btn-square btn-ghost">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-10 h-10">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                            </svg>
+                        </a>
+                    </div>
+                </div>
+            </div>
             </div>
         </div>
     )
