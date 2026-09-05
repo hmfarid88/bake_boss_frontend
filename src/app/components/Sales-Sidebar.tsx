@@ -5,7 +5,7 @@ import { RiDatabaseLine, RiPassPendingLine, RiSecurePaymentLine } from "react-ic
 import { BsDatabaseCheck } from "react-icons/bs";
 import { MdAddShoppingCart, MdPendingActions, MdReadMore, MdOutlineAssignmentReturn, MdOutlineInterests } from "react-icons/md";
 import { CiShop, CiMemoPad } from "react-icons/ci";
-import { TbReportSearch } from "react-icons/tb";
+import { TbBorderStyle2, TbReportSearch } from "react-icons/tb";
 import { MdOutlinePayments } from "react-icons/md";
 import { PiNotebook, PiStrategyDuotone } from "react-icons/pi";
 import { VscRepo } from "react-icons/vsc";
@@ -37,7 +37,8 @@ export const SalesSidebar = () => {
                         <li><Link href="/ready-goods"><RiDatabaseLine size={20} /> READY GOODS</Link></li>
                         {/* <li><Link href="/sales-additional"><MdReadMore size={20} /> ADDITIONAL STOCK</Link></li> */}
                         <li><Link href="/product-return"><MdOutlineAssignmentReturn size={20} /> PRODUCT RETURN</Link></li>
-                        <li><Link href="/sales-shop" className='text-success'><MdAddShoppingCart size={20} />CUSTOMER SALE</Link></li>
+                        <li><Link href="/orders" ><MdAddShoppingCart size={20} />ORDER SECTION</Link></li>
+                        <li><Link href="/sales-shop" className='text-success'>< TbBorderStyle2 size={20} />CUSTOMER SALE</Link></li>
                         <li><Link href="/vendor-sale"><CiShop size={20} />VENDOR SALE</Link></li>
                         {/* <li><Link href="/sales-requisition"><PiNotebook size={20} />REQUISITION</Link></li> */}
                         <li>

@@ -14,6 +14,7 @@ import requisitionMaterialsReducer from "../store/requisitionMaterials";
 import vendorSaleReducer from "../store/vendorSale";
 import reItemMakingReducer from "../store/reItemMakingSlice";
 import productionStockReducer from "../store/productionStockSlice";
+import orderReducer from "../store/orderSlice";
 
 import {
   persistReducer,
@@ -27,6 +28,7 @@ import {
 } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
+
 
 
 
@@ -45,7 +47,8 @@ const rootReducer = combineReducers({
   requisitionMaterials:requisitionMaterialsReducer,
   vendorSalesProduct:vendorSaleReducer,
   reItemMaterialUse:reItemMakingReducer,
-  productionStock:productionStockReducer
+  productionStock:productionStockReducer,
+  orders:orderReducer
  
 });
 
