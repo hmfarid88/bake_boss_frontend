@@ -365,7 +365,7 @@ const Page: React.FC = () => {
 
                                             <td>
                                                 {
-                                                    item.productQty
+                                                    Number(item.productQty).toFixed(2)
                                                 }
                                             </td>
 

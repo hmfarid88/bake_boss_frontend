@@ -662,14 +662,7 @@ const Page: React.FC = () => {
                                         {currentOrder.orderId}
                                     </div>
                                 </div>
-                                {/* <div>
-                                    <div className="text-xs opacity-60">
-                                        TABLE NO
-                                    </div>
-                                    <div className="text-xl font-bold text-primary ">
-                                        {currentOrder.tableNo}
-                                    </div>
-                                </div> */}
+                                
                                 <div>
 
                                     <div className="text-xs opacity-60 mb-1">
@@ -962,7 +955,7 @@ const Page: React.FC = () => {
                                                     className="input input-bordered input-sm w-20 text-center"
 
                                                     value={
-                                                        item.productQty
+                                                        Number(item.productQty).toFixed(2)
                                                     }
 
                                                     onChange={e => {
