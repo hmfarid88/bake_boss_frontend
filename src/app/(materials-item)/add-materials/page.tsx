@@ -233,7 +233,7 @@ const Page = () => {
     }, [supplierName, apiBaseUrl, username]);
     return (
 
-        <div className="flex w-full h-screen gap-5">
+        <div className="flex w-full min-h-screen gap-5">
             <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-3">
                 <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-2 h-72">
                     <label className="form-control w-full max-w-xs">

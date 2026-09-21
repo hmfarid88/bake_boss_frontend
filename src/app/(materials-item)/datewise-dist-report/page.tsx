@@ -3,7 +3,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { useAppSelector } from "@/app/store";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type Product = {
     date: string;
@@ -19,7 +19,7 @@ const Page = () => {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
-
+    const router = useRouter();
     const searchParams = useSearchParams();
     const startDate = searchParams.get('startDate');
     const endDate = searchParams.get('endDate');
@@ -42,7 +42,9 @@ const Page = () => {
             .catch(error => console.error('Error fetching products:', error));
     }, [apiBaseUrl, username, startDate, endDate]);
 
-
+    const handleInvoice = (invoiceNo: string) => {
+        router.push(`/materials-invoice?invoiceNo=${encodeURIComponent(invoiceNo)}`);
+    };
     useEffect(() => {
         const searchText = filterCriteria.toLowerCase().trim();
         let filtered = allProducts;
@@ -189,7 +191,18 @@ const Page = () => {
                                             <td>{product.date}</td>
                                             <td>{product.materialsName}</td>
                                             <td>{product.madeItem}</td>
-                                            <td className="uppercase">{product.supplierInvoice}</td>
+                                            <td className="uppercase">
+                                                <a
+                                                    href="#"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        handleInvoice(product.supplierInvoice);
+                                                    }}
+                                                    className="cursor-pointer"
+                                                >
+                                                    {product.supplierInvoice}
+                                                </a>
+                                            </td>
                                             <td>{Number(product.materialsRate).toLocaleString("en-IN")}</td>
                                             <td>{Number(product.materialsQty).toLocaleString("en-IN")}</td>
                                             <td>
@@ -216,19 +229,19 @@ const Page = () => {
                             </tbody>
                             <tfoot>
                                 {!groupView ? (
-                                <tr className="font-semibold text-lg">
-                                    <td colSpan={5}></td>
-                                    <td>TOTAL</td>
-                                    <td>{Number(totalQty?.toFixed(2)).toLocaleString('en-IN')}</td>
-                                    <td>{Number(totalValue?.toFixed(2)).toLocaleString('en-IN')}</td>
-                                </tr>
-                                ):(
-                                     <tr className="font-semibold text-lg">
-                                    <td colSpan={4}></td>
-                                    <td>TOTAL</td>
-                                    <td>{Number(totalQty?.toFixed(2)).toLocaleString('en-IN')}</td>
-                                    <td>{Number(totalValue?.toFixed(2)).toLocaleString('en-IN')}</td>
-                                </tr>
+                                    <tr className="font-semibold text-lg">
+                                        <td colSpan={5}></td>
+                                        <td>TOTAL</td>
+                                        <td>{Number(totalQty?.toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td>{Number(totalValue?.toFixed(2)).toLocaleString('en-IN')}</td>
+                                    </tr>
+                                ) : (
+                                    <tr className="font-semibold text-lg">
+                                        <td colSpan={4}></td>
+                                        <td>TOTAL</td>
+                                        <td>{Number(totalQty?.toFixed(2)).toLocaleString('en-IN')}</td>
+                                        <td>{Number(totalValue?.toFixed(2)).toLocaleString('en-IN')}</td>
+                                    </tr>
                                 )}
                             </tfoot>
                         </table>

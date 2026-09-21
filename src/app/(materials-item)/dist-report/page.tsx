@@ -1,8 +1,9 @@
 'use client'
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useAppSelector } from "@/app/store";
-import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
+import { useRouter } from "next/navigation";
+import { FcPrint } from "react-icons/fc";
 import CurrentMonthYear from "@/app/components/CurrentMonthYear";
 import DateToDate from "@/app/components/DateToDate";
 
@@ -20,7 +21,7 @@ const Page = () => {
     const apiBaseUrl = process.env.NEXT_PUBLIC_API_BASE_URL;
     const uname = useAppSelector((state) => state.username.username);
     const username = uname ? uname.username : 'Guest';
-
+    const router = useRouter();
     const contentToPrint = useRef(null);
     const handlePrint = useReactToPrint({
         content: () => contentToPrint.current,
@@ -29,6 +30,11 @@ const Page = () => {
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [allProducts, setAllProducts] = useState<Product[]>([]);
     const [groupView, setGroupView] = useState(false);
+
+    const handleInvoice = (invoiceNo: string) => {
+        router.push(`/materials-invoice?invoiceNo=${encodeURIComponent(invoiceNo)}`);
+    };
+
     useEffect(() => {
         fetch(`${apiBaseUrl}/api/getAllSoldRawMaterials?username=${username}`)
             .then(response => response.json())
@@ -163,7 +169,18 @@ const Page = () => {
                                             <td>{product.date}</td>
                                             <td>{product.materialsName}</td>
                                             <td>{product.madeItem}</td>
-                                            <td className="uppercase">{product.supplierInvoice}</td>
+                                            <td className="uppercase">
+                                                <a
+                                                    href="#"
+                                                    onClick={(e) => {
+                                                        e.preventDefault();
+                                                        handleInvoice(product.supplierInvoice);
+                                                    }}
+                                                    className="cursor-pointer"
+                                                >
+                                                    {product.supplierInvoice}
+                                                </a>
+                                            </td>
                                             <td>{Number(product.materialsRate).toLocaleString("en-IN")}</td>
                                             <td>{Number(product.materialsQty).toLocaleString("en-IN")}</td>
                                             <td>
