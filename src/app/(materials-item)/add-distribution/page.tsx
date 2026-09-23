@@ -132,6 +132,7 @@ const Page: React.FC = () => {
             }
             router.push(`/materials-invoice?invoiceNo=${invoiceNo}`);
             setRetailer("");
+            setDate("");
             dispatch(deleteAllProducts());
 
         } catch (error: any) {
