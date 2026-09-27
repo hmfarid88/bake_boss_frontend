@@ -60,7 +60,9 @@ const Page = () => {
   const handleFilterChange = (e: any) => {
     setFilterCriteria(e.target.value);
   };
-
+ const totalQty = filteredProducts.reduce((total, product) => {
+    return total + product.materialsQty;
+  }, 0);
   return (
     <div className="container-2xl">
       <div className="flex flex-col w-full min-h-[calc(100vh-228px)] p-4 items-center justify-center">
@@ -105,7 +107,14 @@ const Page = () => {
                   </tr>
                 ))}
               </tbody>
-
+              <tfoot>
+                <tr className="font-semibold text-lg">
+                  <td colSpan={6}></td>
+                  <td>TOTAL</td>
+                  <td>{Number(totalQty?.toFixed(2)).toLocaleString('en-IN')}</td>
+                  <td></td>
+                </tr>
+              </tfoot>
             </table>
           </div>
         </div>
