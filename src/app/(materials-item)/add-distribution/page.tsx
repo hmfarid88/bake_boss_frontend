@@ -82,7 +82,7 @@ const Page: React.FC = () => {
             const data = await response.json();
             const productToDamage = {
                 id: uid(),
-                date: data.date,
+                date: date,
                 materialsName: data.materialsName,
                 averageRate: data.averageRate,
                 materialsQty: numericProductQty,
