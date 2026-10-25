@@ -4,6 +4,8 @@ import { useAppSelector } from "@/app/store";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
 import { useRouter, useSearchParams } from "next/navigation";
+import { FiEdit } from "react-icons/fi";
+import { toast, ToastContainer } from "react-toastify";
 
 type Product = {
     date: string;
@@ -12,6 +14,7 @@ type Product = {
     supplierInvoice: string;
     materialsRate: number;
     materialsQty: number;
+    materialsId: number;
 
 };
 
@@ -32,6 +35,9 @@ const Page = () => {
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
     const [allProducts, setAllProducts] = useState<Product[]>([]);
     const [groupView, setGroupView] = useState(false);
+    const [selectedProduct, setSelectedProduct] = useState<Product>();
+    const [updatedQty, setUpdatedQty] = useState<number | "">("");
+    const [updatedRate, setUpdatedRate] = useState<number | "">("");
     useEffect(() => {
         fetch(`${apiBaseUrl}/api/datewiseSoldRawMaterialsLedger?username=${username}&startDate=${startDate}&endDate=${endDate}`)
             .then(response => response.json())
@@ -40,10 +46,77 @@ const Page = () => {
                 setFilteredProducts(data);
             })
             .catch(error => console.error('Error fetching products:', error));
-    }, [apiBaseUrl, username, startDate, endDate]);
+    }, [apiBaseUrl, username, startDate, endDate, updatedQty, updatedRate]);
 
     const handleInvoice = (invoiceNo: string) => {
         router.push(`/materials-invoice?invoiceNo=${encodeURIComponent(invoiceNo)}`);
+    };
+    const handleEditClick = (product: any) => {
+        setSelectedProduct(product);
+    };
+    const handleRateUpdate = async (productId: number) => {
+        if (!updatedRate) {
+            toast.warning("Rate is empty !");
+            return;
+        }
+        try {
+            const response = await fetch(`${apiBaseUrl}/sales/update-materials-rate/${productId}?username=${username}&newRate=${updatedRate}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                setUpdatedRate("");
+                toast.success("Update Successful!");
+            } else {
+                const data = await response.json();
+                toast.warning(data.message || "Something went wrong!");
+            }
+        } catch (error: any) {
+            toast.error("Failed to update rate: " + error.message);
+        }
+    };
+    const handleQtyUpdate = async (productId: number) => {
+        if (!updatedQty) {
+            toast.warning("Quantity is empty !");
+            return;
+        }
+        try {
+            const response = await fetch(`${apiBaseUrl}/sales/update-materials-quantity/${productId}?username=${username}&newQty=${updatedQty}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                setUpdatedQty("");
+                toast.success("Update Successful!");
+            } else {
+                const data = await response.json();
+                toast.warning(data.message || "Something went wrong!");
+            }
+        } catch (error: any) {
+            toast.error("Failed to update quantity: " + error.message);
+        }
+    };
+    const handleProductDelete = async (productId: number) => {
+        try {
+            const response = await fetch(`${apiBaseUrl}/sales/delete-materials/${productId}?username=${username}`, {
+                method: 'DELETE',
+            });
+
+            if (response.ok) {
+                toast.success("Product deleted successfully !");
+            } else {
+                const data = await response.json();
+                toast.warning(data.message || "Failed to delete product!");
+            }
+        } catch (error: any) {
+            toast.error("Error deleting product: " + error.message);
+        }
     };
     useEffect(() => {
         const searchText = filterCriteria.toLowerCase().trim();
@@ -136,32 +209,7 @@ const Page = () => {
                     <div ref={contentToPrint} className="flex-1 p-5">
                         <div className="flex flex-col items-center pb-5"><h4 className="font-bold">MATERIALS DISTRIBUTION</h4>Date: {startDate} TO {endDate}</div>
                         <table className="table table-sm text-center">
-                            {/* <thead>
-                                <tr>
-                                    <th>SN</th>
-                                    <th>DATE</th>
-                                    <th>MATERIALS NAME</th>
-                                    <th>OUTLET NAME</th>
-                                    <th>INVOICE NO</th>
-                                    <th>COST PRICE</th>
-                                    <th>QTY</th>
-                                    <th>SUB TOTAL</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {filteredProducts?.map((product, index) => (
-                                    <tr key={index} className="capitalize">
-                                        <td>{index + 1}</td>
-                                        <td>{product.date}</td>
-                                        <td>{product.materialsName}</td>
-                                        <td>{product.madeItem}</td>
-                                        <td className="uppercase">{product.supplierInvoice}</td>
-                                        <td>{Number(product.materialsRate?.toFixed(2)).toLocaleString('en-IN')}</td>
-                                        <td>{Number(product.materialsQty?.toFixed(2)).toLocaleString('en-IN')}</td>
-                                        <td>{Number((product.materialsRate * product.materialsQty)?.toFixed(2)).toLocaleString('en-IN')}</td>
-                                    </tr>
-                                ))}
-                            </tbody> */}
+
                             <thead>
                                 {!groupView ? (
                                     <tr>
@@ -173,6 +221,7 @@ const Page = () => {
                                         <th>COST PRICE</th>
                                         <th>QTY</th>
                                         <th>SUB TOTAL</th>
+                                        <th>ACTIONS</th>
                                     </tr>
                                 ) : (
                                     <tr>
@@ -180,6 +229,7 @@ const Page = () => {
                                         <th colSpan={4}>MATERIALS NAME</th>
                                         <th>TOTAL QTY</th>
                                         <th>TOTAL VALUE</th>
+                                        <th>ACTIONS</th>
                                     </tr>
                                 )}
                             </thead>
@@ -210,6 +260,9 @@ const Page = () => {
                                                     product.materialsQty * product.materialsRate
                                                 ).toLocaleString("en-IN")}
                                             </td>
+                                            <td>
+                                                <a href="#edit_materials_sale" className="btn btn-xs btn-ghost"> <FiEdit size={16} onClick={() => handleEditClick(product)} /> </a>
+                                            </td>
                                         </tr>
                                     ))
                                 ) : (
@@ -222,6 +275,9 @@ const Page = () => {
                                             </td>
                                             <td>
                                                 {Number(product.totalValue.toFixed(2)).toLocaleString("en-IN")}
+                                            </td>
+                                            <td>
+                                                <a href="#edit_materials_sale" className="btn btn-xs btn-ghost"> <FiEdit size={16} onClick={() => handleEditClick(product)} /> </a>
                                             </td>
                                         </tr>
                                     ))
@@ -247,7 +303,61 @@ const Page = () => {
                         </table>
                     </div>
                 </div>
+
+                {selectedProduct && (
+                    <div className="modal sm:modal-middle" role="dialog" id="edit_materials_sale">
+                        <div className="modal-box gap-5">
+                            <h3 className="font-bold text-lg">Edit Product: {selectedProduct.materialsName}</h3>
+                            <div className="flex flex-col gap-2 p-3">
+                                <p>Outlet: {selectedProduct.madeItem}</p>
+                                <p>Sold Invoice: {selectedProduct.supplierInvoice}</p>
+                                <p>Sale Rate: {selectedProduct.materialsRate.toLocaleString('en-IN')}
+                                    <input className="input input-sm input-bordered ml-2 w-[100px]" type="number" value={updatedRate} name="productRate" onChange={(e) => {
+                                    const value = Number(e.target.value);
+                                    if (value >= 0) {
+                                        setUpdatedRate(value);
+                                    }
+                                }} />
+                                <button className="btn btn-sm btn-accent ml-3" onClick={() => {
+                                        if (window.confirm("Are you sure you want to update this item?")) {
+                                            handleRateUpdate(selectedProduct.materialsId);
+                                        }
+                                    }} >Apply</button>
+                                </p>
+                                <p>Quantity: {selectedProduct.materialsQty.toFixed(2)}
+                                <input className="input input-sm input-bordered ml-2 w-[100px]" type="number" value={updatedQty} name="productQty" onChange={(e) => {
+                                    const value = Number(e.target.value);
+                                    if (value >= 0) {
+                                        setUpdatedQty(value);
+                                    }
+                                }} />
+                                    <button className="btn btn-sm btn-accent ml-3" onClick={() => {
+                                        if (window.confirm("Are you sure you want to update this item?")) {
+                                            handleQtyUpdate(selectedProduct.materialsId);
+                                        }
+                                    }} >Apply</button></p>
+
+                                <p>Total: {((selectedProduct.materialsRate * selectedProduct.materialsQty)).toLocaleString('en-IN')}</p>
+                            </div>
+                            <div className="flex gap-3 p-3">
+                                <button className="btn btn-sm btn-error ml-3" onClick={() => {
+                                    if (window.confirm("Are you sure you want to delete this item?")) {
+                                        handleProductDelete(selectedProduct.materialsId);
+                                    }
+                                }} >Delete This Item</button>
+                            </div>
+                            <div className="modal-action">
+                                <a href="#" className="btn btn-square btn-ghost">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" className="w-10 h-10">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="m9.75 9.75 4.5 4.5m0-4.5-4.5 4.5M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                )}
             </div>
+            <ToastContainer autoClose={1000} theme="dark" />
         </div>
     )
 }

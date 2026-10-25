@@ -6,7 +6,6 @@ import { useReactToPrint } from 'react-to-print';
 import { useSearchParams } from "next/navigation";
 import { FiEdit } from "react-icons/fi";
 import { toast } from "react-toastify";
-import { updateDiscount } from "@/app/store/salesProductSaleSlice";
 
 type Product = {
     productId: number;
@@ -44,7 +43,6 @@ const Page = () => {
         setSelectedProduct(product);
     };
     const handleQtyUpdate = async (productId: number) => {
-
         if (!updatedQty) {
             toast.warning("Quantity is empty !");
             return;

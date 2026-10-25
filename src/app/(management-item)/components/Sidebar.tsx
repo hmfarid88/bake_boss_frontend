@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { IoHomeOutline } from "react-icons/io5";
 import { HiOutlineShoppingBag } from "react-icons/hi2";
 import { TbReportSearch } from "react-icons/tb";
-import { MdOutlineInterests } from "react-icons/md";
+import { MdOutlineInterests, MdOutlinePayments } from "react-icons/md";
 import { GoDatabase } from 'react-icons/go';
 import { GrUserAdmin } from 'react-icons/gr';
 
@@ -30,6 +30,7 @@ export const Sidebar = () => {
                         <li><Link href="/outlet-vendor-sale-report"><HiOutlineShoppingBag size={20} /> VENDOR SALE</Link></li>
                         <li><Link href="/management-profit"><MdOutlineInterests size={20} /> OUTLET PROFIT</Link></li>
                         <li><Link href="/outlet-stock"><GoDatabase size={20} /> OUTLET STOCK</Link></li>
+                        <li><Link href="/outlet-payments"><MdOutlinePayments size={20} /> OUTLET PAYMENTS</Link></li>
                         <li><Link href="/userupdate"><GrUserAdmin size={20} /> USER UPDATE</Link></li>
                     </ul>
 

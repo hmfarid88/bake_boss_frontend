@@ -4,6 +4,7 @@ import { useAppSelector } from "@/app/store";
 import { FcPrint } from "react-icons/fc";
 import { useReactToPrint } from 'react-to-print';
 import { useSearchParams } from "next/navigation";
+import { toast } from "react-toastify";
 
 type Product = {
     date: string;
@@ -12,6 +13,7 @@ type Product = {
     supplierInvoice: string;
     materialsRate: number;
     materialsQty: number;
+    materialsId: number;
 
 };
 
@@ -42,7 +44,23 @@ const Page = () => {
             })
             .catch(error => console.error('Error fetching products:', error));
     }, [apiBaseUrl, username, startDate, endDate]);
+    
+    const handleProductDelete = async (productId: number) => {
+        try {
+            const response = await fetch(`${apiBaseUrl}/sales/delete-materialStock/${productId}?username=${username}`, {
+                method: 'DELETE',
+            });
 
+            if (response.ok) {
+                toast.success("Product deleted successfully !");
+            } else {
+                const data = await response.json();
+                toast.warning(data.message || "Failed to delete product!");
+            }
+        } catch (error: any) {
+            toast.error("Error deleting product: " + error.message);
+        }
+    };
 
     useEffect(() => {
         const filtered = allProducts.filter(product =>
@@ -130,6 +148,7 @@ const Page = () => {
                                         <th>COST PRICE</th>
                                         <th>QTY</th>
                                         <th>SUB TOTAL</th>
+                                        <th>ACTION</th>
                                     </tr>
                                 ) : (
                                     <tr>
@@ -137,6 +156,7 @@ const Page = () => {
                                         <th colSpan={4}>MATERIALS NAME</th>
                                         <th>TOTAL QTY</th>
                                         <th>TOTAL VALUE</th>
+                                        <th>ACTION</th>
                                     </tr>
                                 )}
                             </thead>
@@ -152,7 +172,13 @@ const Page = () => {
                                             <td>{Number(product.materialsRate.toFixed(2)).toLocaleString('en-IN')}</td>
                                             <td>{Number(product.materialsQty.toFixed(2)).toLocaleString('en-IN')}</td>
                                             <td>{Number((product.materialsRate * product.materialsQty).toFixed(2)).toLocaleString('en-IN')}</td>
-
+                                            <td>
+                                                <button className="btn btn-sm btn-error ml-3" onClick={() => {
+                                                    if (window.confirm("Are you sure you want to delete this item?")) {
+                                                        handleProductDelete(product.materialsId);
+                                                    }
+                                                }} >Delete</button>
+                                            </td>
                                         </tr>
                                     ))
                                 ) : (
@@ -165,6 +191,13 @@ const Page = () => {
                                             </td>
                                             <td>
                                                 {Number(product.totalValue.toFixed(2)).toLocaleString("en-IN")}
+                                            </td>
+                                            <td>
+                                                <button className="btn btn-sm btn-error ml-3" onClick={() => {
+                                                    if (window.confirm("Are you sure you want to delete this item?")) {
+                                                        handleProductDelete(product.materialsId);
+                                                    }
+                                                }} >Delete</button>
                                             </td>
                                         </tr>
                                     ))
