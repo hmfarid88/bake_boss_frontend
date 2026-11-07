@@ -230,30 +230,33 @@ const Page = () => {
                                         setUpdatedQty(value);
                                     }
                                 }} />
-                                    <button className="btn btn-sm btn-accent ml-3" onClick={() => {
+                                    {/* <button className="btn btn-sm btn-accent ml-3" onClick={() => {
                                         if (window.confirm("Are you sure you want to update this item?")) {
                                             handleQtyUpdate(selectedProduct.productId);
                                         }
-                                    }} >Apply</button></p>
-                                <p>Discount: {selectedProduct.discount.toFixed(2)}<input className="input input-sm input-bordered ml-2 w-[100px]" type="number" name="discount" value={updatedDiscount} onChange={(e) => {
+                                    }} >Apply</button> */}
+                                    </p>
+                                <p>
+                                    Discount: {selectedProduct.discount.toFixed(2)}<input className="input input-sm input-bordered ml-2 w-[100px]" type="number" name="discount" value={updatedDiscount} onChange={(e) => {
                                     const value = Number(e.target.value);
                                     if (value >= 0) {
                                         setUpdatedDiscount(value);
                                     }
                                 }} />
-                                    <button className="btn btn-sm btn-accent ml-3" onClick={() => {
+                                    {/* <button className="btn btn-sm btn-accent ml-3" onClick={() => {
                                         if (window.confirm("Are you sure you want to update this item?")) {
                                             handleDiscountUpdate(selectedProduct.productId);
                                         }
-                                    }} >Apply</button></p>
+                                    }} >Apply</button> */}
+                                    </p>
                                 <p>Total: {((selectedProduct.saleRate * selectedProduct.productQty) - (selectedProduct.discount)).toLocaleString('en-IN')}</p>
                             </div>
                             <div className="flex gap-3 p-3">
-                                <button className="btn btn-sm btn-error ml-3" onClick={() => {
+                                {/* <button className="btn btn-sm btn-error ml-3" onClick={() => {
                                     if (window.confirm("Are you sure you want to delete this item?")) {
                                         handleProductDelete(selectedProduct.productId);
                                     }
-                                }} >Delete This Item</button>
+                                }} >Delete This Item</button> */}
                             </div>
                             <div className="modal-action">
                                 <a href="#" className="btn btn-square btn-ghost">
