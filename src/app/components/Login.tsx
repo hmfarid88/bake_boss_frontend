@@ -51,6 +51,7 @@ const Login = () => {
                 } else if (data.roles === 'ROLE_MATERIALS') {
                     router.push("/materials-dashboard");
                 }
+                
                 toast.success("Congrats, login successful!");
             }
 
